@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,8 +7,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import HairServices from "./pages/HairServices";
 import ColorJourney from "./pages/hair-services/ColorJourney";
-import CutsStyling from "./pages/hair-services/CutsStyling";
-import FamilyCare from "./pages/hair-services/FamilyCare";
 import Balayage from "./pages/hair-services/Balayage";
 import ColorCorrection from "./pages/hair-services/ColorCorrection";
 import Extensions from "./pages/hair-services/Extensions";
@@ -39,8 +38,6 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/hair-services" element={<HairServices />} />
           <Route path="/hair-services/color-journey" element={<ColorJourney />} />
-          <Route path="/hair-services/cuts-styling" element={<CutsStyling />} />
-          <Route path="/hair-services/family-care" element={<FamilyCare />} />
           <Route path="/hair-services/balayage" element={<Balayage />} />
           <Route path="/hair-services/color-correction" element={<ColorCorrection />} />
           <Route path="/hair-services/extensions" element={<Extensions />} />

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -27,11 +26,11 @@ const HairServices = () => {
       link: '/hair-services/color-journey'
     },
     {
-      title: 'Cut & Style Evolution',
-      subtitle: 'Precision cuts that define your personality',
+      title: 'Precision Cuts',
+      subtitle: 'Expert cutting for every style and personality',
       image: '/lovable-uploads/f41c2f8a-628b-41e1-b27c-4fab5011976b.png',
       description: 'From classic cuts to modern trends, discover your perfect style',
-      link: '/hair-services/cuts-styling'
+      link: '/hair-services/precision-cuts'
     },
     {
       title: 'Senior Care Services',
