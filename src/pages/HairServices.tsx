@@ -1,102 +1,157 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Phone, ArrowRight, Heart, Shield, Sparkles } from 'lucide-react';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+import { ArrowLeft, Phone, Heart, Shield, Sparkles, Palette, Scissors, Clock, Star } from 'lucide-react';
 
 const HairServices = () => {
-  const customerJourneys = [
-    {
-      title: 'Color Dreams',
-      subtitle: 'Bold & Beautiful',
-      image: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=800&h=600&fit=crop', // Woman with beautiful blonde balayage highlights
-      description: 'From subtle highlights to dramatic transformations',
-      link: '/hair-services/color-journey'
-    },
-    {
-      title: 'Perfect Cuts',
-      subtitle: 'Style That Fits',
-      image: 'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=800&h=600&fit=crop', // Professional stylist cutting hair with precision
-      description: 'Precision cuts that work with your lifestyle',
-      link: '/hair-services/precision-cuts'
-    },
-    {
-      title: 'Family Care',
-      subtitle: 'Gentle & Caring',
-      image: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=800&h=600&fit=crop', // Gentle hair styling for elderly woman in salon
-      description: 'Special moments for all generations',
-      link: '/hair-services/senior-care'
-    }
-  ];
+  const [activeFilter, setActiveFilter] = useState('all');
 
-  const specializedServices = [
+  const filterCategories = [
     {
-      icon: Heart,
-      title: 'Children\'s Services',
-      image: 'https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=300&h=200&fit=crop', // Child getting first haircut in salon chair
-      price: 'From $25',
-      link: '/hair-services/childrens-services'
+      id: 'all',
+      title: 'All Services',
+      subtitle: 'Everything we offer',
+      icon: Star,
+      description: 'Browse our complete range of hair services'
     },
     {
-      icon: Shield,
-      title: 'Privacy & Modesty',
-      image: 'https://images.unsplash.com/photo-1562004760-aceed7bb0fe3?w=300&h=200&fit=crop', // Private salon suite with curtains for modesty
-      price: 'From $45',
-      link: '/hair-services/privacy-services'
+      id: 'transformation',
+      title: 'Transform Me',
+      subtitle: 'Bold new looks',
+      icon: Palette,
+      description: 'Ready for a dramatic change? From color corrections to complete makeovers'
     },
     {
+      id: 'maintenance',
+      title: 'Maintain My Look',
+      subtitle: 'Keep it fresh',
+      icon: Scissors,
+      description: 'Touch-ups, trims, and treatments to keep your style perfect'
+    },
+    {
+      id: 'special',
+      title: 'Special Moments',
+      subtitle: 'Important occasions',
       icon: Sparkles,
-      title: 'Special Occasions',
-      image: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=300&h=200&fit=crop', // Elegant updo bridal hairstyle being created
-      price: 'From $35',
-      link: '/hair-services/styling-services'
+      description: 'Weddings, events, and celebrations deserve special attention'
+    },
+    {
+      id: 'comfort',
+      title: 'Comfort First',
+      subtitle: 'Gentle & caring',
+      icon: Heart,
+      description: 'Services designed for children, seniors, and those seeking privacy'
     }
   ];
 
-  const expertiseServices = [
+  const allServices = [
     {
+      id: 'balayage',
       title: 'Balayage',
-      image: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=250&h=180&fit=crop', // Hand-painted balayage technique in progress
+      image: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=350&h=250&fit=crop',
       price: '$110+',
+      description: 'Hand-painted highlights for natural dimension',
+      categories: ['transformation', 'special'],
       link: '/hair-services/balayage'
     },
     {
-      title: 'Color Fix',
-      image: 'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=250&h=180&fit=crop', // Color correction from damaged to healthy hair transformation
-      price: '$35+',
+      id: 'color-correction',
+      title: 'Color Correction',
+      image: 'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=350&h=250&fit=crop',
+      price: '$85+',
+      description: 'Fix previous color mishaps professionally',
+      categories: ['transformation'],
       link: '/hair-services/color-correction'
     },
     {
-      title: 'Extensions',
-      image: 'https://images.unsplash.com/photo-1487412912498-0447578fcca8?w=250&h=180&fit=crop', // Hair extension application process showing length transformation
+      id: 'precision-cuts',
+      title: 'Precision Cuts',
+      image: 'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=350&h=250&fit=crop',
+      price: '$45+',
+      description: 'Expert cutting for your face shape',
+      categories: ['maintenance', 'transformation'],
+      link: '/hair-services/precision-cuts'
+    },
+    {
+      id: 'root-touch',
+      title: 'Root Touch-Up',
+      image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=350&h=250&fit=crop',
+      price: '$65+',
+      description: 'Keep your color looking fresh',
+      categories: ['maintenance'],
+      link: '/hair-services/root-touch-up'
+    },
+    {
+      id: 'extensions',
+      title: 'Hair Extensions',
+      image: 'https://images.unsplash.com/photo-1487412912498-0447578fcca8?w=350&h=250&fit=crop',
       price: '$150+',
+      description: 'Add length and volume instantly',
+      categories: ['transformation', 'special'],
       link: '/hair-services/extensions'
     },
     {
-      title: 'Treatments',
-      image: 'https://images.unsplash.com/photo-1616847220575-1b875cea11dd?w=250&h=180&fit=crop', // Deep conditioning hair treatment mask being applied
+      id: 'treatments',
+      title: 'Hair Treatments',
+      image: 'https://images.unsplash.com/photo-1616847220575-1b875cea11dd?w=350&h=250&fit=crop',
       price: '$35+',
+      description: 'Deep conditioning and repair',
+      categories: ['maintenance'],
       link: '/hair-services/hair-treatments'
     },
     {
-      title: 'Chemical',
-      image: 'https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=250&h=180&fit=crop', // Professional perm rods and chemical processing
+      id: 'chemical',
+      title: 'Chemical Services',
+      image: 'https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=350&h=250&fit=crop',
       price: 'Consult',
+      description: 'Perms, relaxers, and texture changes',
+      categories: ['transformation'],
       link: '/hair-services/chemical-services'
     },
     {
-      title: 'Root Touch',
-      image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=250&h=180&fit=crop', // Precise root touch-up color application at hairline
-      price: '$65+',
-      link: '/hair-services/root-touch-up'
+      id: 'styling',
+      title: 'Special Occasion Styling',
+      image: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=350&h=250&fit=crop',
+      price: '$55+',
+      description: 'Elegant updos for your big day',
+      categories: ['special'],
+      link: '/hair-services/styling-services'
+    },
+    {
+      id: 'children',
+      title: 'Children\'s Services',
+      image: 'https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=350&h=250&fit=crop',
+      price: '$25+',
+      description: 'Gentle cuts for little ones',
+      categories: ['comfort'],
+      link: '/hair-services/childrens-services'
+    },
+    {
+      id: 'senior',
+      title: 'Senior Care',
+      image: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=350&h=250&fit=crop',
+      price: '$35+',
+      description: 'Comfortable styling for seniors',
+      categories: ['comfort'],
+      link: '/hair-services/senior-care'
+    },
+    {
+      id: 'privacy',
+      title: 'Privacy Services',
+      image: 'https://images.unsplash.com/photo-1562004760-aceed7bb0fe3?w=350&h=250&fit=crop',
+      price: '$45+',
+      description: 'Private suite for modesty',
+      categories: ['comfort'],
+      link: '/hair-services/privacy-services'
     }
   ];
+
+  const filteredServices = activeFilter === 'all' 
+    ? allServices 
+    : allServices.filter(service => service.categories.includes(activeFilter));
+
+  const activeFilterData = filterCategories.find(cat => cat.id === activeFilter);
 
   return (
     <div className="min-h-screen bg-white">
@@ -111,7 +166,7 @@ const HairServices = () => {
             
             <div className="text-center">
               <h1 className="text-2xl font-light text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
-                Your Hair Journey
+                Hair Services
               </h1>
             </div>
             
@@ -123,129 +178,110 @@ const HairServices = () => {
         </div>
       </header>
 
-      {/* Main Content - Horizontal Layout */}
-      <div className="min-h-[calc(100vh-80px)] flex">
-        {/* Left Side - Hero & Customer Journeys */}
-        <div className="flex-1 bg-gradient-to-br from-red-50 to-white flex flex-col">
-          {/* Hero Message */}
-          <div className="text-center py-8 px-6">
-            <h2 className="text-4xl font-light text-stone-800 mb-3" style={{ fontFamily: 'Imperial Script, cursive' }}>
-              This Is About You
+      {/* Main Content */}
+      <div className="flex min-h-[calc(100vh-80px)]">
+        {/* Left Side - Filter Navigation */}
+        <div className="w-1/3 bg-gradient-to-br from-red-50 to-stone-50 p-8 border-r border-stone-200">
+          <div className="sticky top-8">
+            <h2 className="text-3xl font-light text-stone-800 mb-3" style={{ fontFamily: 'Imperial Script, cursive' }}>
+              What Are You Looking For?
             </h2>
-            <p className="text-lg text-stone-600 max-w-xl mx-auto">
-              Your story • Your style • Your comfort • Your needs
+            <p className="text-stone-600 mb-8">
+              Choose what best describes your hair goals
             </p>
-          </div>
 
-          {/* Customer Journey Carousel */}
-          <div className="flex-1 px-8 pb-8">
-            <Carousel className="w-full max-w-4xl mx-auto">
-              <CarouselContent>
-                {customerJourneys.map((journey, index) => (
-                  <CarouselItem key={index}>
-                    <Link to={journey.link} className="group block">
-                      <div className="relative h-80 rounded-2xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-500">
-                        <img 
-                          src={journey.image} 
-                          alt={journey.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                        <div className="absolute bottom-0 left-0 right-0 p-8">
-                          <h3 className="text-white text-3xl font-light mb-2" style={{ fontFamily: 'Imperial Script, cursive' }}>
-                            {journey.title}
-                          </h3>
-                          <p className="text-white/90 text-lg mb-2">{journey.subtitle}</p>
-                          <p className="text-white/80">{journey.description}</p>
-                          <div className="flex items-center mt-4 text-white group-hover:text-red-200">
-                            <span className="mr-2">Start your journey</span>
-                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="left-4" />
-              <CarouselNext className="right-4" />
-            </Carousel>
+            <div className="space-y-4">
+              {filterCategories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setActiveFilter(category.id)}
+                  className={`w-full text-left p-4 rounded-xl transition-all duration-300 border-2 ${
+                    activeFilter === category.id
+                      ? 'bg-white border-red-200 shadow-lg'
+                      : 'bg-white/50 border-transparent hover:bg-white hover:shadow-md'
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className={`p-2 rounded-lg ${
+                      activeFilter === category.id ? 'bg-red-100' : 'bg-stone-100'
+                    }`}>
+                      <category.icon className={`w-5 h-5 ${
+                        activeFilter === category.id ? 'text-red-600' : 'text-stone-600'
+                      }`} />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-medium text-stone-800 mb-1">{category.title}</h3>
+                      <p className="text-sm text-stone-600 mb-2">{category.subtitle}</p>
+                      <p className="text-xs text-stone-500">{category.description}</p>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            {/* CTA Section */}
+            <div className="mt-8 p-6 bg-gradient-to-r from-red-600 to-red-700 rounded-xl text-white">
+              <h3 className="text-lg font-light mb-2" style={{ fontFamily: 'Imperial Script, cursive' }}>
+                Still Not Sure?
+              </h3>
+              <p className="text-sm text-red-100 mb-4">
+                Book a consultation and let our experts guide you
+              </p>
+              <Button size="sm" className="bg-white text-red-700 hover:bg-red-50 w-full">
+                Free Consultation
+              </Button>
+            </div>
           </div>
         </div>
 
-        {/* Right Side - Services Grid */}
-        <div className="flex-1 bg-stone-50 flex flex-col min-h-[calc(100vh-80px)]">
-          {/* Special Care Services */}
-          <div className="p-6 border-b border-stone-200">
-            <h3 className="text-xl font-light text-stone-800 mb-4 text-center" style={{ fontFamily: 'Imperial Script, cursive' }}>
-              We See You
-            </h3>
-            <div className="grid grid-cols-3 gap-4">
-              {specializedServices.map((service, index) => (
-                <Link key={index} to={service.link} className="group">
-                  <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group-hover:-translate-y-1">
-                    <div className="relative h-24 overflow-hidden">
-                      <img 
-                        src={service.image} 
-                        alt={service.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                    </div>
-                    <div className="p-3">
-                      <div className="flex items-center gap-2 mb-2">
-                        <service.icon className="w-4 h-4 text-red-600" />
-                        <h4 className="text-sm font-medium text-stone-800">{service.title}</h4>
+        {/* Right Side - Service Gallery */}
+        <div className="flex-1 p-8">
+          <div className="mb-6">
+            <h2 className="text-2xl font-light text-stone-800 mb-2" style={{ fontFamily: 'Imperial Script, cursive' }}>
+              {activeFilterData?.title}
+            </h2>
+            <p className="text-stone-600">{activeFilterData?.description}</p>
+            <p className="text-sm text-stone-500 mt-1">
+              {filteredServices.length} service{filteredServices.length !== 1 ? 's' : ''} available
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6">
+            {filteredServices.map((service) => (
+              <Link key={service.id} to={service.link} className="group">
+                <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-2">
+                  <div className="relative h-48 overflow-hidden">
+                    <img 
+                      src={service.image} 
+                      alt={service.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute top-4 right-4">
+                      <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
+                        <span className="text-sm font-medium text-red-600">{service.price}</span>
                       </div>
-                      <p className="text-xs text-red-600 font-medium">{service.price}</p>
                     </div>
                   </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Expertise Grid */}
-          <div className="flex-1 p-6">
-            <h3 className="text-xl font-light text-stone-800 mb-4 text-center" style={{ fontFamily: 'Imperial Script, cursive' }}>
-              Our Expertise
-            </h3>
-            <div className="grid grid-cols-3 gap-3 auto-rows-fr">
-              {expertiseServices.map((service, index) => (
-                <Link key={index} to={service.link} className="group">
-                  <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-full flex flex-col">
-                    <div className="relative flex-1 overflow-hidden min-h-[120px]">
-                      <img 
-                        src={service.image} 
-                        alt={service.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    </div>
-                    <div className="p-3">
-                      <h4 className="text-sm font-medium text-stone-800 mb-1">{service.title}</h4>
-                      <p className="text-xs text-red-600 font-medium">{service.price}</p>
+                  <div className="p-6">
+                    <h3 className="text-xl font-medium text-stone-800 mb-2">{service.title}</h3>
+                    <p className="text-stone-600 text-sm mb-4">{service.description}</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-stone-500">Starting at {service.price}</span>
+                      <div className="text-red-600 group-hover:text-red-700">
+                        <span className="text-sm font-medium">Learn More →</span>
+                      </div>
                     </div>
                   </div>
-                </Link>
-              ))}
-            </div>
+                </div>
+              </Link>
+            ))}
           </div>
 
-          {/* Bottom CTA */}
-          <div className="p-6 bg-gradient-to-r from-red-600 to-red-700 text-white">
-            <div className="text-center">
-              <h4 className="text-lg font-light mb-2" style={{ fontFamily: 'Imperial Script, cursive' }}>
-                Ready to Begin?
-              </h4>
-              <div className="flex gap-3 justify-center">
-                <Button size="sm" className="bg-white text-red-700 hover:bg-red-50">
-                  Book Now
-                </Button>
-                <Button size="sm" variant="outline" className="border-white text-white hover:bg-white/10">
-                  Call (732) 613-1942
-                </Button>
-              </div>
+          {filteredServices.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-stone-500">No services match your current selection.</p>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
