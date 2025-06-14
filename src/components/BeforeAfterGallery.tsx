@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface TransformationImage {
@@ -16,52 +16,55 @@ interface BeforeAfterGalleryProps {
 
 const BeforeAfterGallery = ({ transformations, className = "" }: BeforeAfterGalleryProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [sliderPosition, setSliderPosition] = useState(50);
-  const [isDragging, setIsDragging] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [revealProgress, setRevealProgress] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const currentTransformation = transformations[currentIndex];
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !containerRef.current) return;
-    
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = (x / rect.width) * 100;
-    setSliderPosition(Math.max(0, Math.min(100, percentage)));
-  };
-
-  const handleMouseDown = () => {
-    setIsDragging(true);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
+  // Auto-reveal animation
   useEffect(() => {
-    const handleGlobalMouseUp = () => setIsDragging(false);
-    document.addEventListener('mouseup', handleGlobalMouseUp);
-    return () => document.removeEventListener('mouseup', handleGlobalMouseUp);
-  }, []);
+    const startReveal = () => {
+      setIsAnimating(true);
+      setRevealProgress(0);
+      
+      const duration = 2500; // 2.5 seconds
+      const startTime = Date.now();
+      
+      const animate = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function for smooth animation
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setRevealProgress(eased * 100);
+        
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          setIsAnimating(false);
+        }
+      };
+      
+      requestAnimationFrame(animate);
+    };
+
+    // Start animation after a brief delay
+    const timer = setTimeout(startReveal, 500);
+    return () => clearTimeout(timer);
+  }, [currentIndex]);
 
   const nextTransformation = () => {
     setCurrentIndex((prev) => (prev + 1) % transformations.length);
-    setSliderPosition(50);
   };
 
   const prevTransformation = () => {
     setCurrentIndex((prev) => (prev - 1 + transformations.length) % transformations.length);
-    setSliderPosition(50);
   };
 
   return (
     <div className={`relative group ${className}`}>
       <div 
-        ref={containerRef}
-        className="relative h-48 overflow-hidden rounded-lg cursor-ew-resize select-none"
-        onMouseMove={handleMouseMove}
-        onMouseLeave={() => setIsDragging(false)}
+        className="relative h-48 overflow-hidden rounded-lg select-none"
         style={{ 
           background: `linear-gradient(135deg, 
             rgba(239, 68, 68, 0.1) 0%, 
@@ -69,28 +72,24 @@ const BeforeAfterGallery = ({ transformations, className = "" }: BeforeAfterGall
             rgba(59, 130, 246, 0.1) 100%)` 
         }}
       >
-        {/* Before Image */}
-        <div 
-          className="absolute inset-0 transition-all duration-300 ease-out"
-          style={{
-            clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)`,
-            filter: 'saturate(0.8) brightness(0.9)'
-          }}
-        >
+        {/* Before Image (Base Layer) */}
+        <div className="absolute inset-0">
           <img
             src={currentTransformation.before}
             alt={`${currentTransformation.title} - Before`}
             className="w-full h-full object-cover"
-            draggable={false}
+            style={{
+              filter: 'saturate(0.8) brightness(0.9)'
+            }}
           />
           <div className="absolute inset-0 bg-gradient-to-br from-stone-900/20 via-transparent to-transparent" />
         </div>
 
-        {/* After Image */}
+        {/* After Image (Revealing Layer) */}
         <div 
           className="absolute inset-0 transition-all duration-300 ease-out"
           style={{
-            clipPath: `polygon(${sliderPosition}% 0, 100% 0, 100% 100%, ${sliderPosition}% 100%)`,
+            clipPath: `polygon(0 0, ${revealProgress}% 0, ${revealProgress}% 100%, 0 100%)`,
             filter: 'saturate(1.1) brightness(1.05)'
           }}
         >
@@ -98,42 +97,27 @@ const BeforeAfterGallery = ({ transformations, className = "" }: BeforeAfterGall
             src={currentTransformation.after}
             alt={`${currentTransformation.title} - After`}
             className="w-full h-full object-cover"
-            draggable={false}
           />
           <div className="absolute inset-0 bg-gradient-to-bl from-red-500/10 via-transparent to-transparent" />
         </div>
 
-        {/* Interactive Slider Line */}
+        {/* Animated Reveal Line */}
         <div 
-          className="absolute top-0 bottom-0 w-1 bg-white shadow-lg transition-all duration-200 ease-out group-hover:w-1.5"
+          className="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg transition-all duration-200 ease-out"
           style={{
-            left: `${sliderPosition}%`,
+            left: `${revealProgress}%`,
             transform: 'translateX(-50%)',
             background: 'linear-gradient(to bottom, rgba(255,255,255,0.9) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.9) 100%)',
-            boxShadow: '0 0 10px rgba(0,0,0,0.3), inset 0 0 2px rgba(255,255,255,0.8)'
+            boxShadow: '0 0 10px rgba(0,0,0,0.3), inset 0 0 2px rgba(255,255,255,0.8)',
+            opacity: isAnimating ? 1 : 0.7
           }}
-        >
-          {/* Drag Handle */}
-          <div 
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg cursor-ew-resize flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            onMouseDown={handleMouseDown}
-            style={{
-              background: 'radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(248,250,252,1) 100%)',
-              border: '2px solid rgba(239, 68, 68, 0.3)'
-            }}
-          >
-            <div className="flex items-center gap-0.5">
-              <div className="w-1 h-3 bg-stone-400 rounded-full"></div>
-              <div className="w-1 h-3 bg-stone-400 rounded-full"></div>
-            </div>
-          </div>
-        </div>
+        />
 
         {/* Before/After Labels */}
         <div className="absolute bottom-4 left-4">
           <div 
             className="bg-stone-800/80 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium transition-opacity duration-300"
-            style={{ opacity: sliderPosition > 20 ? 1 : 0.3 }}
+            style={{ opacity: revealProgress > 20 ? 1 : 0.3 }}
           >
             Before
           </div>
@@ -141,7 +125,7 @@ const BeforeAfterGallery = ({ transformations, className = "" }: BeforeAfterGall
         <div className="absolute bottom-4 right-4">
           <div 
             className="bg-red-600/80 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium transition-opacity duration-300"
-            style={{ opacity: sliderPosition < 80 ? 1 : 0.3 }}
+            style={{ opacity: revealProgress < 80 ? 1 : 0.3 }}
           >
             After
           </div>
@@ -188,6 +172,15 @@ const BeforeAfterGallery = ({ transformations, className = "" }: BeforeAfterGall
             </div>
           </div>
         )}
+
+        {/* Reveal Progress Indicator */}
+        {isAnimating && (
+          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2">
+            <div className="bg-black/50 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs">
+              Revealing transformation...
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Transformation Info */}
@@ -195,8 +188,8 @@ const BeforeAfterGallery = ({ transformations, className = "" }: BeforeAfterGall
         <h4 className="text-sm font-medium text-stone-800">{currentTransformation.title}</h4>
         <div className="flex items-center gap-2 mt-1">
           <div className="flex items-center gap-1">
-            <div className="w-2 h-2 bg-stone-400 rounded-full"></div>
-            <span className="text-xs text-stone-500">Drag to compare</span>
+            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+            <span className="text-xs text-stone-500">Auto-revealing transformation</span>
           </div>
           {currentTransformation.timeframe && (
             <>
