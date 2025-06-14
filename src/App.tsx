@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -23,6 +22,10 @@ import Transformations from "./pages/Transformations";
 import CulturalCelebrations from "./pages/CulturalCelebrations";
 import Careers from "./pages/Careers";
 import NotFound from "./pages/NotFound";
+import ChildrensServices from "./pages/hair-services/ChildrensServices";
+import PrivacyServices from "./pages/hair-services/PrivacyServices";
+import StylingServices from "./pages/hair-services/StylingServices";
+import HairTreatments from "./pages/hair-services/HairTreatments";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +48,10 @@ const App = () => (
           <Route path="/hair-services/root-touch-up" element={<RootTouchUp />} />
           <Route path="/hair-services/chemical-services" element={<ChemicalServices />} />
           <Route path="/hair-services/senior-care" element={<SeniorCare />} />
+          <Route path="/hair-services/childrens-services" element={<ChildrensServices />} />
+          <Route path="/hair-services/privacy-services" element={<PrivacyServices />} />
+          <Route path="/hair-services/styling-services" element={<StylingServices />} />
+          <Route path="/hair-services/hair-treatments" element={<HairTreatments />} />
           <Route path="/makeup-services" element={<MakeupServices />} />
           <Route path="/products" element={<Products />} />
           <Route path="/med-spa" element={<MedSpa />} />

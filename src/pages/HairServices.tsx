@@ -34,11 +34,11 @@ const HairServices = () => {
       link: '/hair-services/cuts-styling'
     },
     {
-      title: 'Family Hair Care',
-      subtitle: 'Quality service for all ages',
+      title: 'Senior Care Services',
+      subtitle: 'Gentle care and mother-daughter moments',
       image: '/lovable-uploads/fbc6cbfd-042f-414f-bb0d-e91e731efe1f.png',
-      description: 'Children\'s first cuts to grandparents\' styling - we care for the whole family',
-      link: '/hair-services/family-care'
+      description: 'Comfort, respect, and special bonding experiences for all generations',
+      link: '/hair-services/senior-care'
     }
   ];
 
@@ -72,11 +72,32 @@ const HairServices = () => {
       link: '/hair-services/precision-cuts'
     },
     {
-      title: 'Root Touch-Up',
-      subtitle: 'Quick color maintenance',
+      title: 'Privacy Services',
+      subtitle: 'Respectful care with complete discretion',
+      image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&h=300&fit=crop',
+      price: 'Starting at $45',
+      link: '/hair-services/privacy-services'
+    },
+    {
+      title: 'Children\'s Services',
+      subtitle: 'Gentle care for little ones',
+      image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=300&fit=crop',
+      price: 'Starting at $25',
+      link: '/hair-services/childrens-services'
+    },
+    {
+      title: 'Styling & Finishing',
+      subtitle: 'Professional blowouts and updos',
+      image: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=400&h=300&fit=crop',
+      price: 'Starting at $25',
+      link: '/hair-services/styling-services'
+    },
+    {
+      title: 'Hair Treatments',
+      subtitle: 'Deep conditioning and restoration',
       image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&h=300&fit=crop',
-      price: 'Starting at $65',
-      link: '/hair-services/root-touch-up'
+      price: 'Starting at $35',
+      link: '/hair-services/hair-treatments'
     },
     {
       title: 'Chemical Services',
@@ -217,9 +238,9 @@ const HairServices = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-light mb-6 text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
-              Specialized Service Journeys
+              Complete Service Journeys
             </h2>
-            <p className="text-lg text-stone-600">Expert techniques for advanced transformations</p>
+            <p className="text-lg text-stone-600">Expert techniques and specialized care for every need</p>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
