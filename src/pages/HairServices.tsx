@@ -42,6 +42,30 @@ const HairServices = () => {
     }
   ];
 
+  const specializedServices = [
+    {
+      title: 'Balayage Artistry',
+      subtitle: 'Hand-painted highlights for natural dimension',
+      image: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=400&h=300&fit=crop',
+      price: 'Starting at $110',
+      link: '/hair-services/balayage'
+    },
+    {
+      title: 'Color Correction',
+      subtitle: 'Expert repair for color mishaps',
+      image: 'https://images.unsplash.com/photo-1541101767792-f9b2b1c4f127?w=400&h=300&fit=crop',
+      price: 'Consultation $35',
+      link: '/hair-services/color-correction'
+    },
+    {
+      title: 'Hair Extensions',
+      subtitle: 'Length, volume, and transformation',
+      image: 'https://images.unsplash.com/photo-1506085452766-f3d992529149?w=400&h=300&fit=crop',
+      price: 'Starting at $150',
+      link: '/hair-services/extensions'
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -167,8 +191,44 @@ const HairServices = () => {
         </div>
       </section>
 
+      {/* Specialized Services */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-light mb-6 text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
+              Specialized Service Journeys
+            </h2>
+            <p className="text-lg text-stone-600">Expert techniques for advanced transformations</p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {specializedServices.map((service, index) => (
+              <Link key={index} to={service.link} className="group">
+                <div className="bg-gradient-to-br from-stone-50 to-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
+                  <div className="relative h-48 overflow-hidden">
+                    <img 
+                      src={service.image} 
+                      alt={service.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-medium text-stone-800 mb-2">{service.title}</h3>
+                    <p className="text-stone-600 mb-3">{service.subtitle}</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-red-600 font-medium">{service.price}</span>
+                      <ArrowRight className="w-4 h-4 text-stone-400 group-hover:text-red-600 group-hover:translate-x-1 transition-all" />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Quick Services Overview */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-stone-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h3 className="text-3xl font-light text-center mb-12 text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
@@ -182,7 +242,7 @@ const HairServices = () => {
                 <p className="text-xs text-stone-500">Consultation • Cut • Style</p>
               </div>
               
-              <div className="text-center p-6 bg-stone-50 rounded-xl">
+              <div className="text-center p-6 bg-stone-50 rounded-xl border border-stone-200">
                 <Palette className="w-8 h-8 text-stone-600 mx-auto mb-4" />
                 <h4 className="text-lg font-medium text-stone-800 mb-2">Color Artistry</h4>
                 <p className="text-stone-600 text-sm mb-3">Full Color $85+ • Highlights $95+</p>
