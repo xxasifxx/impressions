@@ -55,7 +55,7 @@ const TransformationShowcase = () => {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-12 items-start">
-          {/* Prom Transformation Story */}
+          {/* Transformation Story */}
           <div className="lg:col-span-1">
             <div className="bg-gradient-to-br from-stone-800 to-stone-900 rounded-2xl p-8 shadow-2xl">
               <div className="flex items-center gap-2 mb-4">
@@ -63,28 +63,15 @@ const TransformationShowcase = () => {
                 <span className="text-amber-400 font-medium">Featured Story</span>
               </div>
               <h3 className="text-3xl font-light mb-4 tracking-wide" style={{ fontFamily: 'Fleur De Leah, cursive' }}>
-                Prom Night Magic
+                Transformation Magic
               </h3>
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="text-center">
-                  <img 
-                    src="/assets/gallery/gallery-10.jpg" 
-                    alt="Before prom transformation"
-                    className="w-full h-48 object-cover rounded-lg mb-2"
-                  />
-                  <span className="text-sm text-stone-400">Before</span>
-                </div>
-                <div className="text-center">
-                  <img 
-                    src="/assets/gallery/gallery-12.jpg" 
-                    alt="After prom transformation"
-                    className="w-full h-48 object-cover rounded-lg mb-2"
-                  />
-                  <span className="text-sm text-amber-400">After</span>
+              <div className="mb-6">
+                <div className="w-full h-48 bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg mb-4 flex items-center justify-center">
+                  <span className="text-white text-lg font-medium">Before & After Gallery</span>
                 </div>
               </div>
               <blockquote className="text-stone-300 italic mb-6">
-                "I felt like a princess! The transformation was beyond my dreams."
+                "The transformation was beyond my dreams. I felt like a completely new person!"
               </blockquote>
               <Link to="/transformations">
                 <Button variant="outline" className="w-full border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-stone-900">

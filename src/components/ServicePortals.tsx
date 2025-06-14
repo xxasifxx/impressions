@@ -21,97 +21,97 @@ const ServicePortals = () => {
 
         {/* Service Portals Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-          {/* Hair Services */}
-          <Link to="/hair-services" className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300">
-            <div className="aspect-[3/4] relative bg-gradient-to-br from-stone-100 to-amber-50 p-8 flex flex-col justify-between">
+          {/* Hair Services - Classic & Professional */}
+          <Link to="/hair-services" className="group relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105">
+            <div className="aspect-[3/4] relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 p-8 flex flex-col justify-between text-white">
               <div className="text-center">
-                <Scissors className="w-12 h-12 text-amber-500 mx-auto mb-4" />
-                <h3 className="text-2xl font-light mb-2 tracking-wide text-stone-800" style={{ fontFamily: 'Fleur De Leah, cursive' }}>
-                  Hair Services
+                <Scissors className="w-14 h-14 text-amber-400 mx-auto mb-6 group-hover:rotate-12 transition-transform duration-300" />
+                <h3 className="text-3xl font-bold mb-3 tracking-tight" style={{ fontFamily: 'system-ui, sans-serif' }}>
+                  HAIR SERVICES
                 </h3>
-                <p className="text-sm text-stone-600 mb-4">Expert cuts, coloring & styling</p>
-                <div className="space-y-1 text-xs text-stone-600">
+                <p className="text-sm text-slate-300 mb-6 font-medium uppercase tracking-wide">Expert cuts, coloring & styling</p>
+                <div className="space-y-2 text-xs text-slate-400 font-mono">
                   <p>• Kids Cuts from $25</p>
                   <p>• Adult Cuts from $45</p>
                   <p>• Full Color from $85</p>
                   <p>• Highlights from $95</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-xs text-amber-600">
+              <div className="flex items-center gap-2 text-xs text-amber-400 uppercase font-bold tracking-wide">
                 <Star className="w-3 h-3 fill-current" />
                 <span>Professional Stylists</span>
               </div>
             </div>
           </Link>
 
-          {/* Cultural & Special Services */}
-          <Link to="/cultural-celebrations" className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300">
-            <div className="aspect-[3/4] relative bg-gradient-to-br from-emerald-50 to-stone-50 p-8 flex flex-col justify-between">
+          {/* Cultural & Special Services - Warm & Celebratory */}
+          <Link to="/cultural-celebrations" className="group relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105">
+            <div className="aspect-[3/4] relative bg-gradient-to-br from-orange-600 via-rose-500 to-pink-600 p-8 flex flex-col justify-between text-white">
               <div className="text-center">
-                <Sparkles className="w-12 h-12 text-emerald-500 mx-auto mb-4" />
-                <h3 className="text-2xl font-light mb-2 tracking-wide text-stone-800" style={{ fontFamily: 'Fleur De Leah, cursive' }}>
+                <Sparkles className="w-14 h-14 text-yellow-200 mx-auto mb-6 animate-pulse" />
+                <h3 className="text-3xl font-light mb-3 tracking-wide" style={{ fontFamily: 'serif' }}>
                   Cultural Services
                 </h3>
-                <p className="text-sm text-stone-600 mb-4">Diwali, Ramadan & cultural celebrations</p>
-                <div className="space-y-1 text-xs text-stone-600">
+                <p className="text-sm text-orange-100 mb-6 italic">Diwali, Ramadan & cultural celebrations</p>
+                <div className="space-y-2 text-xs text-orange-200" style={{ fontFamily: 'serif' }}>
                   <p>• Henna (Mehndi) from $25</p>
                   <p>• Eyebrow Threading $20</p>
                   <p>• Cultural Makeup $65</p>
                   <p>• Special Occasion Packages</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-xs text-emerald-600">
+              <div className="flex items-center gap-2 text-xs text-yellow-200 italic">
                 <Sparkles className="w-3 h-3" />
                 <span>Diwali Special</span>
               </div>
             </div>
           </Link>
 
-          {/* Makeup & Beauty */}
-          <Link to="/makeup-services" className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300">
-            <div className="aspect-[3/4] relative bg-gradient-to-br from-rose-50 to-stone-50 p-8 flex flex-col justify-between">
+          {/* Makeup & Beauty - Glamorous & Modern */}
+          <Link to="/makeup-services" className="group relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105">
+            <div className="aspect-[3/4] relative bg-gradient-to-br from-violet-900 via-purple-800 to-fuchsia-800 p-8 flex flex-col justify-between text-white">
               <div className="text-center">
-                <Palette className="w-12 h-12 text-rose-500 mx-auto mb-4" />
-                <h3 className="text-2xl font-light mb-2 tracking-wide text-stone-800" style={{ fontFamily: 'Fleur De Leah, cursive' }}>
-                  Makeup & Lashes
+                <Palette className="w-14 h-14 text-pink-300 mx-auto mb-6 group-hover:animate-spin" />
+                <h3 className="text-3xl font-thin mb-3 tracking-widest uppercase" style={{ fontFamily: 'system-ui, sans-serif', letterSpacing: '0.2em' }}>
+                  MAKEUP & LASHES
                 </h3>
-                <p className="text-sm text-stone-600 mb-4">Prom, events & everyday glam</p>
-                <div className="space-y-1 text-xs text-stone-600">
+                <p className="text-sm text-purple-200 mb-6 font-light">Prom, events & everyday glam</p>
+                <div className="space-y-2 text-xs text-purple-300 tracking-wide">
                   <p>• Makeup Application $55</p>
                   <p>• Lash Extensions $85</p>
                   <p>• Prom Packages $120</p>
                   <p>• Bridal Makeup from $95</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-xs text-rose-600">
-                <Star className="w-3 h-3 fill-current" />
+              <div className="flex items-center gap-2 text-xs text-pink-300 uppercase font-semibold">
+                <Star className="w-3 h-3 fill-current animate-pulse" />
                 <span>Trending</span>
               </div>
             </div>
           </Link>
 
-          {/* Career Opportunities */}
-          <Link to="/careers" className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 border-2 border-green-200">
-            <div className="aspect-[3/4] relative bg-gradient-to-br from-green-50 to-stone-50 p-8 flex flex-col justify-between">
+          {/* Career Opportunities - Fresh & Professional */}
+          <Link to="/careers" className="group relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 border-4 border-emerald-300">
+            <div className="aspect-[3/4] relative bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-600 p-8 flex flex-col justify-between text-white">
               <div className="text-center">
-                <Users className="w-12 h-12 text-green-600 mx-auto mb-4" />
-                <h3 className="text-2xl font-light mb-2 tracking-wide text-stone-800" style={{ fontFamily: 'Fleur De Leah, cursive' }}>
+                <Users className="w-14 h-14 text-cyan-200 mx-auto mb-6 group-hover:animate-bounce" />
+                <h3 className="text-3xl font-semibold mb-3" style={{ fontFamily: 'system-ui, sans-serif' }}>
                   Join Our Team
                 </h3>
-                <p className="text-sm text-stone-600 mb-4">We're hiring talented stylists</p>
-                <div className="space-y-1 text-xs text-stone-600">
+                <p className="text-sm text-emerald-100 mb-6 font-medium">We're hiring talented stylists</p>
+                <div className="space-y-2 text-xs text-emerald-200">
                   <p>• Junior Hair Stylist</p>
                   <p>• Competitive Pay</p>
                   <p>• Professional Environment</p>
                   <p>• Growth Opportunities</p>
                 </div>
               </div>
-              <span className="text-xs text-green-700 bg-green-100 px-3 py-1 rounded-full mx-auto">Now Hiring</span>
+              <span className="text-xs text-emerald-900 bg-cyan-200 px-3 py-2 rounded-full mx-auto font-bold uppercase tracking-wide">Now Hiring</span>
             </div>
           </Link>
         </div>
 
-        {/* Spring Transformation Packages - from flyer content */}
+        {/* Spring Transformation Packages */}
         <div className="mt-16 bg-white rounded-2xl p-8 shadow-lg max-w-4xl mx-auto">
           <div className="text-center mb-6">
             <h3 className="text-3xl font-light text-stone-800 mb-2" style={{ fontFamily: 'Fleur De Leah, cursive' }}>
