@@ -15,6 +15,7 @@ import Extensions from "./pages/hair-services/Extensions";
 import PrecisionCuts from "./pages/hair-services/PrecisionCuts";
 import RootTouchUp from "./pages/hair-services/RootTouchUp";
 import ChemicalServices from "./pages/hair-services/ChemicalServices";
+import SeniorCare from "./pages/hair-services/SeniorCare";
 import MakeupServices from "./pages/MakeupServices";
 import Products from "./pages/Products";
 import MedSpa from "./pages/MedSpa";
@@ -43,6 +44,7 @@ const App = () => (
           <Route path="/hair-services/precision-cuts" element={<PrecisionCuts />} />
           <Route path="/hair-services/root-touch-up" element={<RootTouchUp />} />
           <Route path="/hair-services/chemical-services" element={<ChemicalServices />} />
+          <Route path="/hair-services/senior-care" element={<SeniorCare />} />
           <Route path="/makeup-services" element={<MakeupServices />} />
           <Route path="/products" element={<Products />} />
           <Route path="/med-spa" element={<MedSpa />} />
