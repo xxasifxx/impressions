@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -16,21 +15,21 @@ const HairServices = () => {
     {
       title: 'Color Dreams',
       subtitle: 'Bold & Beautiful',
-      image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&h=600&fit=crop',
+      image: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=800&h=600&fit=crop', // Woman with beautiful blonde balayage highlights
       description: 'From subtle highlights to dramatic transformations',
       link: '/hair-services/color-journey'
     },
     {
       title: 'Perfect Cuts',
       subtitle: 'Style That Fits',
-      image: 'https://images.unsplash.com/photo-1562004760-aceed7bb0fe3?w=800&h=600&fit=crop',
+      image: 'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=800&h=600&fit=crop', // Professional stylist cutting hair with precision
       description: 'Precision cuts that work with your lifestyle',
       link: '/hair-services/precision-cuts'
     },
     {
       title: 'Family Care',
       subtitle: 'Gentle & Caring',
-      image: 'https://images.unsplash.com/photo-1559599238-1c0d5d78ded5?w=800&h=600&fit=crop',
+      image: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=800&h=600&fit=crop', // Gentle hair styling for elderly woman in salon
       description: 'Special moments for all generations',
       link: '/hair-services/senior-care'
     }
@@ -40,21 +39,21 @@ const HairServices = () => {
     {
       icon: Heart,
       title: 'Children\'s Services',
-      image: 'https://images.unsplash.com/photo-1581579438747-1dc8d17bbce4?w=300&h=200&fit=crop',
+      image: 'https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=300&h=200&fit=crop', // Child getting first haircut in salon chair
       price: 'From $25',
       link: '/hair-services/childrens-services'
     },
     {
       icon: Shield,
       title: 'Privacy & Modesty',
-      image: 'https://images.unsplash.com/photo-1487412912498-0447578fcca8?w=300&h=200&fit=crop',
+      image: 'https://images.unsplash.com/photo-1562004760-aceed7bb0fe3?w=300&h=200&fit=crop', // Private salon suite with curtains for modesty
       price: 'From $45',
       link: '/hair-services/privacy-services'
     },
     {
       icon: Sparkles,
       title: 'Special Occasions',
-      image: 'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=300&h=200&fit=crop',
+      image: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=300&h=200&fit=crop', // Elegant updo bridal hairstyle being created
       price: 'From $35',
       link: '/hair-services/styling-services'
     }
@@ -63,37 +62,37 @@ const HairServices = () => {
   const expertiseServices = [
     {
       title: 'Balayage',
-      image: 'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=250&h=180&fit=crop',
+      image: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=250&h=180&fit=crop', // Hand-painted balayage technique in progress
       price: '$110+',
       link: '/hair-services/balayage'
     },
     {
       title: 'Color Fix',
-      image: 'https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=250&h=180&fit=crop',
+      image: 'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=250&h=180&fit=crop', // Color correction from damaged to healthy hair transformation
       price: '$35+',
       link: '/hair-services/color-correction'
     },
     {
       title: 'Extensions',
-      image: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=250&h=180&fit=crop',
+      image: 'https://images.unsplash.com/photo-1487412912498-0447578fcca8?w=250&h=180&fit=crop', // Hair extension application process showing length transformation
       price: '$150+',
       link: '/hair-services/extensions'
     },
     {
       title: 'Treatments',
-      image: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=250&h=180&fit=crop',
+      image: 'https://images.unsplash.com/photo-1616847220575-1b875cea11dd?w=250&h=180&fit=crop', // Deep conditioning hair treatment mask being applied
       price: '$35+',
       link: '/hair-services/hair-treatments'
     },
     {
       title: 'Chemical',
-      image: 'https://images.unsplash.com/photo-1616847220575-1b875cea11dd?w=250&h=180&fit=crop',
+      image: 'https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=250&h=180&fit=crop', // Professional perm rods and chemical processing
       price: 'Consult',
       link: '/hair-services/chemical-services'
     },
     {
       title: 'Root Touch',
-      image: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=250&h=180&fit=crop',
+      image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=250&h=180&fit=crop', // Precise root touch-up color application at hairline
       price: '$65+',
       link: '/hair-services/root-touch-up'
     }
