@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, Phone, Clock } from 'lucide-react';
@@ -35,7 +34,7 @@ const Header = () => {
           {/* Logo */}
           <div className="text-2xl text-slate-900">
             <Link to="/" className="block">
-              <div className="text-4xl font-normal italic text-red-700 tracking-wide" style={{ fontFamily: 'Great Vibes, cursive' }}>
+              <div className="text-4xl font-normal italic text-red-700 tracking-wide" style={{ fontFamily: 'Dancing Script, cursive' }}>
                 Impressions
               </div>
               <div className="text-xs font-light tracking-[0.2em] text-slate-600 mt-1">
