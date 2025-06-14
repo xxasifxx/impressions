@@ -33,8 +33,15 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <div className="text-2xl font-bold text-slate-900">
-            <Link to="/">Impressions Salon & Spa</Link>
+          <div className="text-2xl text-slate-900">
+            <Link to="/" className="block">
+              <div className="font-serif text-3xl font-normal tracking-wide">
+                Impressions
+              </div>
+              <div className="text-xs font-light tracking-[0.2em] text-slate-600 mt-1">
+                SALON & SPA
+              </div>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
