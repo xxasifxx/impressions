@@ -39,8 +39,8 @@ const ServicesSection = () => {
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-slate-900 mb-6" style={{ fontFamily: 'Fleur De Leah, cursive' }}>Our Services</h2>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+          <h2 className="text-4xl font-bold text-stone-900 mb-6 tracking-wide" style={{ fontFamily: 'Fleur De Leah, cursive' }}>Our Services</h2>
+          <p className="text-lg text-stone-600 max-w-2xl mx-auto">
             From everyday maintenance to special occasions, we offer comprehensive beauty services 
             for the whole family in a welcoming, multicultural environment.
           </p>
@@ -48,7 +48,7 @@ const ServicesSection = () => {
         
         <div className="grid md:grid-cols-2 gap-8">
           {services.map((service, index) => (
-            <div key={index} className="group bg-gradient-to-br from-rose-50 to-pink-50 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
+            <div key={index} className="group bg-gradient-to-br from-amber-50 to-stone-50 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
               <div className="relative overflow-hidden h-48">
                 <img 
                   src={service.image} 
@@ -60,20 +60,20 @@ const ServicesSection = () => {
                   <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
                     <service.icon className="w-5 h-5 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold text-white" style={{ fontFamily: 'Fleur De Leah, cursive' }}>{service.title}</h3>
+                  <h3 className="text-xl font-semibold text-white tracking-wide" style={{ fontFamily: 'Fleur De Leah, cursive' }}>{service.title}</h3>
                 </div>
               </div>
               <div className="p-6">
-                <p className="text-slate-600 mb-4">{service.description}</p>
+                <p className="text-stone-600 mb-4">{service.description}</p>
                 <div className="space-y-2 mb-6">
                   {service.features.map((feature, idx) => (
                     <div key={idx} className="flex items-center space-x-2">
-                      <div className="w-1.5 h-1.5 bg-rose-400 rounded-full"></div>
-                      <span className="text-sm text-slate-600">{feature}</span>
+                      <div className="w-1.5 h-1.5 bg-amber-400 rounded-full"></div>
+                      <span className="text-sm text-stone-600">{feature}</span>
                     </div>
                   ))}
                 </div>
-                <Button variant="outline" className="w-full border-rose-200 text-rose-600 hover:bg-rose-50">
+                <Button variant="outline" className="w-full border-amber-200 text-amber-700 hover:bg-amber-50 hover:text-amber-800">
                   Learn More & Book
                 </Button>
               </div>
