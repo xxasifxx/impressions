@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface TransformationImage {
@@ -16,42 +16,8 @@ interface BeforeAfterGalleryProps {
 
 const BeforeAfterGallery = ({ transformations, className = "" }: BeforeAfterGalleryProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [revealProgress, setRevealProgress] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
 
   const currentTransformation = transformations[currentIndex];
-
-  // Auto-reveal animation
-  useEffect(() => {
-    const startReveal = () => {
-      setIsAnimating(true);
-      setRevealProgress(0);
-      
-      const duration = 2500; // 2.5 seconds
-      const startTime = Date.now();
-      
-      const animate = () => {
-        const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        
-        // Easing function for smooth animation
-        const eased = 1 - Math.pow(1 - progress, 3);
-        setRevealProgress(eased * 100);
-        
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        } else {
-          setIsAnimating(false);
-        }
-      };
-      
-      requestAnimationFrame(animate);
-    };
-
-    // Start animation after a brief delay
-    const timer = setTimeout(startReveal, 500);
-    return () => clearTimeout(timer);
-  }, [currentIndex]);
 
   const nextTransformation = () => {
     setCurrentIndex((prev) => (prev + 1) % transformations.length);
@@ -87,9 +53,8 @@ const BeforeAfterGallery = ({ transformations, className = "" }: BeforeAfterGall
 
         {/* After Image (Revealing Layer) */}
         <div 
-          className="absolute inset-0 transition-all duration-300 ease-out"
+          className="absolute inset-0 transition-all duration-1000 ease-out group-hover:translate-x-0 translate-x-full"
           style={{
-            clipPath: `polygon(0 0, ${revealProgress}% 0, ${revealProgress}% 100%, 0 100%)`,
             filter: 'saturate(1.1) brightness(1.05)'
           }}
         >
@@ -101,31 +66,27 @@ const BeforeAfterGallery = ({ transformations, className = "" }: BeforeAfterGall
           <div className="absolute inset-0 bg-gradient-to-bl from-red-500/10 via-transparent to-transparent" />
         </div>
 
-        {/* Animated Reveal Line */}
+        {/* Reveal Line */}
         <div 
-          className="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg transition-all duration-200 ease-out"
+          className="absolute top-0 bottom-0 right-0 w-0.5 bg-white shadow-lg transition-all duration-1000 ease-out group-hover:right-full group-hover:left-0"
           style={{
-            left: `${revealProgress}%`,
-            transform: 'translateX(-50%)',
             background: 'linear-gradient(to bottom, rgba(255,255,255,0.9) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.9) 100%)',
             boxShadow: '0 0 10px rgba(0,0,0,0.3), inset 0 0 2px rgba(255,255,255,0.8)',
-            opacity: isAnimating ? 1 : 0.7
+            opacity: 1
           }}
         />
 
         {/* Before/After Labels */}
         <div className="absolute bottom-4 left-4">
           <div 
-            className="bg-stone-800/80 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium transition-opacity duration-300"
-            style={{ opacity: revealProgress > 20 ? 1 : 0.3 }}
+            className="bg-stone-800/80 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium transition-opacity duration-300 group-hover:opacity-30"
           >
             Before
           </div>
         </div>
         <div className="absolute bottom-4 right-4">
           <div 
-            className="bg-red-600/80 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium transition-opacity duration-300"
-            style={{ opacity: revealProgress < 80 ? 1 : 0.3 }}
+            className="bg-red-600/80 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium transition-opacity duration-300 opacity-0 group-hover:opacity-100"
           >
             After
           </div>
@@ -173,14 +134,12 @@ const BeforeAfterGallery = ({ transformations, className = "" }: BeforeAfterGall
           </div>
         )}
 
-        {/* Reveal Progress Indicator */}
-        {isAnimating && (
-          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2">
-            <div className="bg-black/50 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs">
-              Revealing transformation...
-            </div>
+        {/* Hover Instruction */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none">
+          <div className="bg-black/50 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs opacity-50 group-hover:opacity-0 transition-opacity duration-500">
+            Hover to reveal transformation
           </div>
-        )}
+        </div>
       </div>
 
       {/* Transformation Info */}
@@ -188,8 +147,8 @@ const BeforeAfterGallery = ({ transformations, className = "" }: BeforeAfterGall
         <h4 className="text-sm font-medium text-stone-800">{currentTransformation.title}</h4>
         <div className="flex items-center gap-2 mt-1">
           <div className="flex items-center gap-1">
-            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-            <span className="text-xs text-stone-500">Auto-revealing transformation</span>
+            <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+            <span className="text-xs text-stone-500">Hover to see transformation</span>
           </div>
           {currentTransformation.timeframe && (
             <>
