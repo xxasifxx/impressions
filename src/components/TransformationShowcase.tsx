@@ -68,7 +68,7 @@ const TransformationShowcase = () => {
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="text-center">
                   <img 
-                    src="/lovable-uploads/46eaf28c-0012-415c-a930-cc3832c40ac8.png" 
+                    src="/assets/gallery/gallery-10.jpg" 
                     alt="Before prom transformation"
                     className="w-full h-48 object-cover rounded-lg mb-2"
                   />
@@ -76,7 +76,7 @@ const TransformationShowcase = () => {
                 </div>
                 <div className="text-center">
                   <img 
-                    src="/lovable-uploads/5b93eca0-6808-4052-af4d-cf567c69ecdf.png" 
+                    src="/assets/gallery/gallery-12.jpg" 
                     alt="After prom transformation"
                     className="w-full h-48 object-cover rounded-lg mb-2"
                   />
