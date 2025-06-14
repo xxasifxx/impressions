@@ -63,6 +63,27 @@ const HairServices = () => {
       image: 'https://images.unsplash.com/photo-1506085452766-f3d992529149?w=400&h=300&fit=crop',
       price: 'Starting at $150',
       link: '/hair-services/extensions'
+    },
+    {
+      title: 'Precision Cuts',
+      subtitle: 'Expert cutting for every style',
+      image: 'https://images.unsplash.com/photo-1594736797933-d0b22e4b7b72?w=400&h=300&fit=crop',
+      price: 'Starting at $45',
+      link: '/hair-services/precision-cuts'
+    },
+    {
+      title: 'Root Touch-Up',
+      subtitle: 'Quick color maintenance',
+      image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&h=300&fit=crop',
+      price: 'Starting at $65',
+      link: '/hair-services/root-touch-up'
+    },
+    {
+      title: 'Chemical Services',
+      subtitle: 'Perms, relaxers & smoothing treatments',
+      image: 'https://images.unsplash.com/photo-1616847220575-1b875cea11dd?w=400&h=300&fit=crop',
+      price: 'Consultation Required',
+      link: '/hair-services/chemical-services'
     }
   ];
 
@@ -201,7 +222,7 @@ const HairServices = () => {
             <p className="text-lg text-stone-600">Expert techniques for advanced transformations</p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {specializedServices.map((service, index) => (
               <Link key={index} to={service.link} className="group">
                 <div className="bg-gradient-to-br from-stone-50 to-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
