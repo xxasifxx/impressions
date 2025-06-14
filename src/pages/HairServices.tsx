@@ -16,21 +16,21 @@ const HairServices = () => {
     {
       title: 'Color Dreams',
       subtitle: 'Bold & Beautiful',
-      image: '/lovable-uploads/5b93eca0-6808-4052-af4d-cf567c69ecdf.png',
+      image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&h=600&fit=crop',
       description: 'From subtle highlights to dramatic transformations',
       link: '/hair-services/color-journey'
     },
     {
       title: 'Perfect Cuts',
       subtitle: 'Style That Fits',
-      image: '/lovable-uploads/f41c2f8a-628b-41e1-b27c-4fab5011976b.png',
+      image: 'https://images.unsplash.com/photo-1562004760-aceed7bb0fe3?w=800&h=600&fit=crop',
       description: 'Precision cuts that work with your lifestyle',
       link: '/hair-services/precision-cuts'
     },
     {
       title: 'Family Care',
       subtitle: 'Gentle & Caring',
-      image: '/lovable-uploads/fbc6cbfd-042f-414f-bb0d-e91e731efe1f.png',
+      image: 'https://images.unsplash.com/photo-1559599238-1c0d5d78ded5?w=800&h=600&fit=crop',
       description: 'Special moments for all generations',
       link: '/hair-services/senior-care'
     }
@@ -40,21 +40,21 @@ const HairServices = () => {
     {
       icon: Heart,
       title: 'Children\'s Services',
-      image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&h=200&fit=crop',
+      image: 'https://images.unsplash.com/photo-1581579438747-1dc8d17bbce4?w=300&h=200&fit=crop',
       price: 'From $25',
       link: '/hair-services/childrens-services'
     },
     {
       icon: Shield,
       title: 'Privacy & Modesty',
-      image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=300&h=200&fit=crop',
+      image: 'https://images.unsplash.com/photo-1487412912498-0447578fcca8?w=300&h=200&fit=crop',
       price: 'From $45',
       link: '/hair-services/privacy-services'
     },
     {
       icon: Sparkles,
       title: 'Special Occasions',
-      image: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=300&h=200&fit=crop',
+      image: 'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=300&h=200&fit=crop',
       price: 'From $35',
       link: '/hair-services/styling-services'
     }
@@ -63,25 +63,25 @@ const HairServices = () => {
   const expertiseServices = [
     {
       title: 'Balayage',
-      image: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=250&h=180&fit=crop',
+      image: 'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=250&h=180&fit=crop',
       price: '$110+',
       link: '/hair-services/balayage'
     },
     {
       title: 'Color Fix',
-      image: 'https://images.unsplash.com/photo-1541101767792-f9b2b1c4f127?w=250&h=180&fit=crop',
+      image: 'https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=250&h=180&fit=crop',
       price: '$35+',
       link: '/hair-services/color-correction'
     },
     {
       title: 'Extensions',
-      image: 'https://images.unsplash.com/photo-1506085452766-f3d992529149?w=250&h=180&fit=crop',
+      image: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=250&h=180&fit=crop',
       price: '$150+',
       link: '/hair-services/extensions'
     },
     {
       title: 'Treatments',
-      image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=250&h=180&fit=crop',
+      image: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=250&h=180&fit=crop',
       price: '$35+',
       link: '/hair-services/hair-treatments'
     },
@@ -93,14 +93,14 @@ const HairServices = () => {
     },
     {
       title: 'Root Touch',
-      image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=250&h=180&fit=crop',
+      image: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=250&h=180&fit=crop',
       price: '$65+',
       link: '/hair-services/root-touch-up'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-white overflow-hidden">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-stone-200 sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
@@ -125,7 +125,7 @@ const HairServices = () => {
       </header>
 
       {/* Main Content - Horizontal Layout */}
-      <div className="h-[calc(100vh-80px)] flex">
+      <div className="min-h-[calc(100vh-80px)] flex">
         {/* Left Side - Hero & Customer Journeys */}
         <div className="flex-1 bg-gradient-to-br from-red-50 to-white flex flex-col">
           {/* Hero Message */}
@@ -139,7 +139,7 @@ const HairServices = () => {
           </div>
 
           {/* Customer Journey Carousel */}
-          <div className="flex-1 px-8">
+          <div className="flex-1 px-8 pb-8">
             <Carousel className="w-full max-w-4xl mx-auto">
               <CarouselContent>
                 {customerJourneys.map((journey, index) => (
@@ -175,7 +175,7 @@ const HairServices = () => {
         </div>
 
         {/* Right Side - Services Grid */}
-        <div className="flex-1 bg-stone-50 flex flex-col">
+        <div className="flex-1 bg-stone-50 flex flex-col min-h-[calc(100vh-80px)]">
           {/* Special Care Services */}
           <div className="p-6 border-b border-stone-200">
             <h3 className="text-xl font-light text-stone-800 mb-4 text-center" style={{ fontFamily: 'Imperial Script, cursive' }}>
@@ -210,11 +210,11 @@ const HairServices = () => {
             <h3 className="text-xl font-light text-stone-800 mb-4 text-center" style={{ fontFamily: 'Imperial Script, cursive' }}>
               Our Expertise
             </h3>
-            <div className="grid grid-cols-3 gap-3 h-full">
+            <div className="grid grid-cols-3 gap-3 auto-rows-fr">
               {expertiseServices.map((service, index) => (
                 <Link key={index} to={service.link} className="group">
                   <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-full flex flex-col">
-                    <div className="relative flex-1 overflow-hidden">
+                    <div className="relative flex-1 overflow-hidden min-h-[120px]">
                       <img 
                         src={service.image} 
                         alt={service.title}
