@@ -1,25 +1,39 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Star, MapPin, Clock } from 'lucide-react';
+import { Star, MapPin, Clock, Sparkles } from 'lucide-react';
 
 const HeroBanner = () => {
   return (
-    <section className="relative h-[80vh] bg-gradient-to-br from-neutral-50 via-stone-50 to-rose-50/30 flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen bg-gradient-to-br from-neutral-50 via-stone-50 to-emerald-50/30 flex items-center justify-center overflow-hidden">
       {/* Elegant background elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 right-1/3 w-96 h-96 bg-rose-100/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/4 right-1/3 w-96 h-96 bg-emerald-100/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-1/3 left-1/4 w-80 h-80 bg-stone-100/30 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-emerald-50/40 rounded-full blur-2xl"></div>
       </div>
       
-      {/* Main hero image */}
+      {/* Main transformation showcase */}
       <div className="absolute right-0 top-0 w-1/2 h-full overflow-hidden">
-        <img 
-          src="/lovable-uploads/5b93eca0-6808-4052-af4d-cf567c69ecdf.png" 
-          alt="Professional makeup and hair styling at Impressions"
-          className="w-full h-full object-cover object-center opacity-85"
-        />
-        <div className="absolute inset-0 bg-gradient-to-l from-transparent via-white/10 to-white/80"></div>
+        <div className="relative w-full h-full">
+          <img 
+            src="/lovable-uploads/5b93eca0-6808-4052-af4d-cf567c69ecdf.png" 
+            alt="Stunning prom transformation - professional makeup and hair styling"
+            className="w-full h-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-l from-transparent via-white/5 to-white/70"></div>
+          
+          {/* Transformation story overlay */}
+          <div className="absolute bottom-8 right-8 bg-white/90 backdrop-blur-sm rounded-xl p-6 max-w-xs">
+            <div className="flex items-center gap-2 mb-2">
+              <Sparkles className="w-5 h-5 text-emerald-600" />
+              <span className="text-sm font-medium text-emerald-700">Prom Transformation</span>
+            </div>
+            <p className="text-sm text-slate-600">
+              "From everyday beautiful to prom night stunning - complete hair, makeup & styling"
+            </p>
+          </div>
+        </div>
       </div>
       
       {/* Content */}
@@ -27,38 +41,43 @@ const HeroBanner = () => {
         <div>
           {/* Brand Identity */}
           <div className="mb-8">
-            <h1 className="text-5xl md:text-6xl font-light mb-2 tracking-tight leading-tight">
+            <h1 className="text-6xl md:text-7xl font-light mb-3 tracking-tight leading-tight">
               <span className="text-slate-800 font-extralight">Impressions</span>
             </h1>
-            <p className="text-lg text-rose-600 font-medium tracking-wider uppercase">
-              Hair Salon • Makeup Studio • Med Spa
+            <div className="w-24 h-1 bg-gradient-to-r from-emerald-600 to-emerald-400 mb-4"></div>
+            <p className="text-xl text-emerald-700 font-medium tracking-wide">
+              Beauty • Artistry • Transformation
             </p>
           </div>
           
-          {/* Refined Value Proposition */}
-          <div className="text-xl md:text-2xl mb-8 font-light text-slate-700 leading-relaxed">
-            Elevating beauty through 
-            <span className="font-medium text-slate-900"> expert artistry</span> and 
-            <span className="font-medium text-slate-900"> personalized care</span> since 2015
+          {/* Narrative Value Proposition */}
+          <div className="text-2xl md:text-3xl mb-8 font-light text-slate-700 leading-relaxed">
+            Where every client's story becomes a 
+            <span className="font-medium text-emerald-800"> beautiful transformation</span>
           </div>
           
-          {/* Key Differentiators */}
-          <div className="grid grid-cols-1 gap-4 mb-8 max-w-md">
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-2 bg-rose-400 rounded-full"></div>
-              <span className="text-slate-700">Multilingual team serving diverse families</span>
+          {/* Story highlights */}
+          <div className="space-y-4 mb-8 max-w-md">
+            <div className="flex items-start gap-4">
+              <div className="w-3 h-3 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
+              <div>
+                <span className="font-medium text-slate-800">Prom & Special Events</span>
+                <p className="text-slate-600 text-sm">Complete transformations that create lasting memories</p>
+              </div>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-2 bg-rose-400 rounded-full"></div>
-              <span className="text-slate-700">Private area for cultural preferences</span>
+            <div className="flex items-start gap-4">
+              <div className="w-3 h-3 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
+              <div>
+                <span className="font-medium text-slate-800">Cultural Celebrations</span>
+                <p className="text-slate-600 text-sm">Honoring traditions with Ramadan, Diwali & seasonal specials</p>
+              </div>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-2 bg-rose-400 rounded-full"></div>
-              <span className="text-slate-700">Professional makeup & lash artistry</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-2 bg-rose-400 rounded-full"></div>
-              <span className="text-slate-700">Specializing in bridal & special events</span>
+            <div className="flex items-start gap-4">
+              <div className="w-3 h-3 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
+              <div>
+                <span className="font-medium text-slate-800">Med Spa Services</span>
+                <p className="text-slate-600 text-sm">Advanced skincare with hydrafacials & LED therapy</p>
+              </div>
             </div>
           </div>
           
@@ -66,33 +85,33 @@ const HeroBanner = () => {
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
             <Button 
               size="lg" 
-              className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-3 text-base font-medium"
+              className="bg-emerald-700 hover:bg-emerald-800 text-white px-8 py-4 text-lg font-medium rounded-xl"
             >
-              Book Appointment
+              Book Your Transformation
             </Button>
             <Button 
               size="lg" 
               variant="outline"
-              className="border-slate-300 text-slate-700 hover:bg-slate-50 px-8 py-3 text-base font-medium"
+              className="border-emerald-300 text-emerald-700 hover:bg-emerald-50 px-8 py-4 text-lg font-medium rounded-xl"
             >
               (732) 613-1942
             </Button>
           </div>
           
-          {/* Location & Hours */}
+          {/* Location & Social Proof */}
           <div className="flex items-center gap-6 text-sm text-slate-600">
             <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4" />
+              <MapPin className="w-4 h-4 text-emerald-600" />
               <span>East Brunswick, NJ</span>
             </div>
             <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4" />
-              <span>Mon-Sat 9AM-7PM</span>
+              <Star className="w-4 h-4 text-yellow-500 fill-current" />
+              <span>4.9/5 • 200+ Reviews</span>
             </div>
           </div>
         </div>
         
-        {/* Right side is for the image */}
+        {/* Right side space for image */}
         <div></div>
       </div>
     </section>
