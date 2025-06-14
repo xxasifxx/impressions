@@ -9,29 +9,29 @@ const ServicesSection = () => {
       title: "Hair Cuts & Styling",
       description: "Professional cuts for all ages, from children's first haircuts to trendy adult styles. Blowouts, updos, and special occasion styling.",
       icon: Scissors,
-      image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      features: ["Kids & Adult Cuts", "Blowouts", "Special Occasion Styling", "Beard Trims"]
+      image: "/lovable-uploads/f41c2f8a-628b-41e1-b27c-4fab5011976b.png",
+      features: ["Kids & Adult Cuts", "Blowouts & Styling", "Special Occasion Updos", "Curls & Texture"]
     },
     {
       title: "Hair Coloring",
       description: "From subtle highlights to bold transformations. Root touch-ups, full color, balayage, and color corrections by experienced colorists.",
       icon: Palette,
-      image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      image: "/lovable-uploads/f41c2f8a-628b-41e1-b27c-4fab5011976b.png",
       features: ["Highlights & Lowlights", "Full Color", "Balayage", "Color Correction"]
     },
     {
-      title: "Makeup Services",
-      description: "Professional makeup for weddings, special events, and everyday looks. Bridal packages available with trial sessions.",
+      title: "Makeup & Lashes",
+      description: "Professional makeup for weddings, special events, and everyday looks. Expert lash extensions and eyebrow threading services.",
       icon: Crown,
-      image: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      features: ["Bridal Makeup", "Special Events", "Makeup Lessons", "Lash Application"]
+      image: "/lovable-uploads/5b93eca0-6808-4052-af4d-cf567c69ecdf.png",
+      features: ["Bridal Makeup", "Lash Extensions", "Eyebrow Threading", "Special Events"]
     },
     {
-      title: "Skincare & Facials",
-      description: "Rejuvenating facial treatments, deep cleansing, anti-aging treatments, and skincare consultations for healthy, glowing skin.",
+      title: "Specialty Services",
+      description: "Unique cultural beauty services including henna tattoo artistry and specialized treatments for diverse beauty traditions.",
       icon: Sparkles,
-      image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      features: ["Deep Cleansing Facials", "Anti-Aging Treatments", "Skincare Consultation", "Eyebrow Shaping"]
+      image: "/lovable-uploads/fbc6cbfd-042f-414f-bb0d-e91e731efe1f.png",
+      features: ["Henna Tattoo Artistry", "Cultural Beauty Services", "Eyebrow Shaping", "Special Occasion Packages"]
     }
   ];
 

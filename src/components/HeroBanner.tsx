@@ -15,7 +15,7 @@ const HeroBanner = () => {
       {/* Main hero image */}
       <div className="absolute right-0 top-0 w-1/2 h-full overflow-hidden">
         <img 
-          src="/lovable-uploads/52cae70f-1233-4245-8345-ba3f7d434a46.png" 
+          src="/lovable-uploads/5b93eca0-6808-4052-af4d-cf567c69ecdf.png" 
           alt="Professional makeup and hair styling at Impressions"
           className="w-full h-full object-cover object-center opacity-85"
         />
@@ -54,11 +54,11 @@ const HeroBanner = () => {
             </div>
             <div className="flex items-center gap-3">
               <div className="w-2 h-2 bg-rose-400 rounded-full"></div>
-              <span className="text-slate-700">Professional makeup artistry</span>
+              <span className="text-slate-700">Professional makeup & lash artistry</span>
             </div>
             <div className="flex items-center gap-3">
               <div className="w-2 h-2 bg-rose-400 rounded-full"></div>
-              <span className="text-slate-700">Walk-ins welcome, appointments prioritized</span>
+              <span className="text-slate-700">Specializing in bridal & special events</span>
             </div>
           </div>
           
