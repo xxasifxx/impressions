@@ -35,7 +35,7 @@ const Header = () => {
           {/* Logo */}
           <div className="text-2xl text-slate-900">
             <Link to="/" className="block">
-              <div className="font-serif text-3xl font-normal tracking-wide">
+              <div className="font-serif text-4xl font-normal italic text-red-700 tracking-wide" style={{ fontFamily: 'Dancing Script, cursive' }}>
                 Impressions
               </div>
               <div className="text-xs font-light tracking-[0.2em] text-slate-600 mt-1">
