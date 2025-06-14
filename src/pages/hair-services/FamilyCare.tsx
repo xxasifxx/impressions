@@ -2,78 +2,48 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Users, Heart, Star, Gift, Camera, Shield } from 'lucide-react';
+import { ArrowLeft, Heart, Users, Baby, Star, Shield, Lock } from 'lucide-react';
 
 const FamilyCare = () => {
   const familyServices = [
     {
-      title: 'Children\'s First Haircut Experience',
+      title: 'First Haircut Experience',
+      description: 'Making your little one\'s first haircut a magical memory',
+      image: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&h=400&fit=crop',
       price: '$25',
-      description: 'A gentle, memorable introduction to salon care with special touches',
-      features: ['Comfort-focused approach', 'First haircut certificate', 'Photo memories', 'Lock of hair keepsake'],
-      image: '/lovable-uploads/fbc6cbfd-042f-414f-bb0d-e91e731efe1f.png'
+      includes: ['Certificate & photo', 'Lock of hair keepsake', 'Gentle approach', 'Parent participation']
     },
     {
-      title: 'Father & Son/Daughter Bonding',
-      price: '$65',
-      description: 'Share the salon experience with matching or complementary styles',
-      features: ['Simultaneous appointments', 'Memory-making experience', 'Photo session included', 'Special father-child pricing'],
-      image: '/lovable-uploads/5b93eca0-6808-4052-af4d-cf567c69ecdf.png'
+      title: 'Children\'s Cuts & Styling',
+      description: 'Fun, age-appropriate cuts that kids love and parents appreciate',
+      image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=400&fit=crop',
+      price: '$25-30',
+      includes: ['School-friendly styles', 'Easy maintenance', 'Fun accessories', 'Patient stylists']
     },
     {
-      title: 'Mother & Daughter Styling',
-      price: '$75+',
-      description: 'Bonding time with coordinated or individual styling preferences',
-      features: ['Quality time together', 'Style consultations for both', 'Special occasion preparation', 'Memory photos'],
-      image: '/lovable-uploads/f41c2f8a-628b-41e1-b27c-4fab5011976b.png'
-    },
-    {
-      title: 'Multi-Generational Appointments',
-      price: 'Custom pricing',
-      description: 'Grandparents, parents, and children all together for family styling',
-      features: ['Extended appointment times', 'Family discounts applied', 'Group photo session', 'Celebration of family traditions'],
-      image: '/lovable-uploads/5b93eca0-6808-4052-af4d-cf567c69ecdf.png'
+      title: 'Family Package Deals',
+      description: 'Special pricing when the whole family gets pampered together',
+      image: 'https://images.unsplash.com/photo-1609220136736-443140cffec6?w=600&h=400&fit=crop',
+      price: 'Save 15%',
+      includes: ['Multiple services', 'Coordinated appointments', 'Group photos', 'Memory making']
     }
   ];
 
-  const familyValues = [
-    {
-      icon: Heart,
-      title: 'Inclusive Environment',
-      description: 'A welcoming space where every family member feels comfortable and valued'
-    },
+  const specialNeeds = [
     {
       icon: Shield,
-      title: 'Safety First',
-      description: 'Child-safe products and gentle techniques for our youngest clients'
+      title: 'Sensory-Friendly Environment',
+      description: 'Quiet spaces and gentle techniques for children with sensory sensitivities'
     },
     {
-      icon: Camera,
-      title: 'Memory Making',
-      description: 'Capturing special moments with complimentary photos of milestone haircuts'
+      icon: Heart,
+      title: 'Patience & Understanding',
+      description: 'Our stylists are trained to work with children of all temperaments'
     },
     {
-      icon: Gift,
-      title: 'Special Touches',
-      description: 'Certificates, keepsakes, and small surprises to make visits memorable'
-    }
-  ];
-
-  const testimonials = [
-    {
-      quote: "Three generations of our family come here. My grandmother, my mother, and now my daughter all have their hair done at Impressions. It's become our tradition.",
-      author: "Sarah M.",
-      relationship: "Multi-generational client"
-    },
-    {
-      quote: "My son's first haircut was such a special experience. They made him comfortable, took photos, and gave us a certificate. We'll treasure these memories forever.",
-      author: "Jennifer K.",
-      relationship: "Mother of first-time client"
-    },
-    {
-      quote: "As a single dad, I wasn't sure how to handle my daughter's hair needs. The staff here has been so patient and helpful in teaching me how to care for her curls.",
-      author: "Marcus T.",
-      relationship: "Father and daughter duo"
+      icon: Users,
+      title: 'Parent Involvement',
+      description: 'Parents can stay close and be part of the experience'
     }
   ];
 
@@ -90,71 +60,94 @@ const FamilyCare = () => {
             
             <div className="text-center">
               <div className="text-2xl font-light text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
-                Family Hair Care
+                Family Care
               </div>
-              <div className="text-xs text-stone-500 tracking-wide">A Salon for the Whole Family Since 2010</div>
+              <div className="text-xs text-stone-500 tracking-wide">Creating Beautiful Memories Together</div>
             </div>
             
             <Button size="sm" className="bg-red-700 hover:bg-red-800">
-              Book Family Time
+              Book Family Visit
             </Button>
           </div>
         </div>
       </header>
 
       {/* Hero */}
-      <section className="py-20 bg-gradient-to-br from-amber-50 via-white to-red-50">
+      <section className="py-20 bg-gradient-to-br from-pink-50 via-white to-purple-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h1 className="text-6xl font-light mb-6 text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
-              Generations of Beauty
+              A Salon for Every Family
             </h1>
-            <p className="text-xl text-stone-600 max-w-3xl mx-auto mb-8">
-              For over a decade, we've been more than a salon - we're part of your family's story • 
-              Creating memories and traditions that span generations
+            <p className="text-xl text-stone-600 max-w-3xl mx-auto">
+              From first haircuts to family celebrations, we create beautiful memories in a welcoming, comfortable environment for all ages
             </p>
-            <div className="flex items-center justify-center gap-8 text-sm text-stone-500">
-              <div className="flex items-center gap-2">
-                <Users className="w-4 h-4 text-red-600" />
-                <span>Family-Owned Business</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Heart className="w-4 h-4 text-red-600" />
-                <span>Serving All Ages</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Star className="w-4 h-4 text-amber-500" />
-                <span>Creating Memories Since 2010</span>
+          </div>
+
+          {/* Featured Family Moment */}
+          <div className="max-w-4xl mx-auto mb-16">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+              <img 
+                src="https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=1200&h=600&fit=crop" 
+                alt="Family getting hair done together"
+                className="w-full h-96 object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+              <div className="absolute bottom-8 left-8 right-8 text-white">
+                <h2 className="text-3xl font-light mb-4">Making Memories Together</h2>
+                <p className="text-lg text-white/90">Every family has a story - let us help you look and feel your best for every chapter</p>
               </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Hero Image Showcase */}
-          <div className="max-w-4xl mx-auto mb-16">
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="relative rounded-2xl overflow-hidden shadow-xl">
-                <img 
-                  src="/lovable-uploads/f41c2f8a-628b-41e1-b27c-4fab5011976b.png" 
-                  alt="Family styling session"
-                  className="w-full h-80 object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                <div className="absolute bottom-6 left-6 right-6 text-white">
-                  <h3 className="text-xl font-medium mb-2">Mother & Daughter Styling</h3>
-                  <p className="text-white/80 text-sm">Bonding through beauty, creating lasting memories</p>
+      {/* Private Booth Section */}
+      <section className="py-20 bg-stone-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <div className="flex items-center gap-3 mb-6">
+                  <Lock className="w-8 h-8 text-purple-600" />
+                  <h2 className="text-4xl font-light text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
+                    Private Booth Experience
+                  </h2>
                 </div>
+                <p className="text-lg text-stone-600 mb-6">
+                  For our privacy-focused customers, we offer a completely private booth where you can enjoy our services 
+                  in complete comfort and discretion. Perfect for those who prefer a more intimate salon experience.
+                </p>
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-center gap-3">
+                    <Shield className="w-5 h-5 text-purple-600" />
+                    <span className="text-stone-700">Complete privacy and discretion</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Heart className="w-5 h-5 text-purple-600" />
+                    <span className="text-stone-700">Comfortable, welcoming environment</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Users className="w-5 h-5 text-purple-600" />
+                    <span className="text-stone-700">Perfect for families or individual appointments</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Star className="w-5 h-5 text-purple-600" />
+                    <span className="text-stone-700">All services available in private setting</span>
+                  </div>
+                </div>
+                <Button className="bg-purple-600 hover:bg-purple-700 px-8 py-3">
+                  Reserve Private Booth
+                </Button>
               </div>
-              
-              <div className="relative rounded-2xl overflow-hidden shadow-xl">
+              <div className="relative">
                 <img 
-                  src="/lovable-uploads/5b93eca0-6808-4052-af4d-cf567c69ecdf.png" 
-                  alt="Multi-generational appointment"
-                  className="w-full h-80 object-cover"
+                  src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&h=500&fit=crop" 
+                  alt="Private salon booth"
+                  className="w-full h-96 object-cover rounded-2xl shadow-xl"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                <div className="absolute bottom-6 left-6 right-6 text-white">
-                  <h3 className="text-xl font-medium mb-2">Three Generations Together</h3>
-                  <p className="text-white/80 text-sm">Grandmother, mother, and daughter - all in one visit</p>
+                <div className="absolute top-4 right-4 bg-purple-600/90 text-white px-3 py-1 rounded-full text-sm">
+                  Private & Discreet
                 </div>
               </div>
             </div>
@@ -167,35 +160,33 @@ const FamilyCare = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-light mb-6 text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
-              Special Family Experiences
+              Family Services
             </h2>
-            <p className="text-lg text-stone-600 max-w-2xl mx-auto">
-              More than just haircuts - we create experiences that bring families together and mark life's special moments
-            </p>
+            <p className="text-lg text-stone-600">Specialized care for every member of your family</p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {familyServices.map((service, index) => (
-              <div key={index} className="bg-gradient-to-br from-stone-50 to-white rounded-2xl shadow-lg border border-stone-100 overflow-hidden">
+              <div key={index} className="bg-white rounded-2xl shadow-lg border border-stone-100 overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="h-48 overflow-hidden">
                   <img src={service.image} alt={service.title} className="w-full h-full object-cover" />
                 </div>
-                <div className="p-8">
+                <div className="p-6">
                   <div className="flex justify-between items-start mb-4">
                     <h3 className="text-xl font-medium text-stone-800">{service.title}</h3>
-                    <span className="text-xl font-bold text-red-600">{service.price}</span>
+                    <span className="text-lg font-bold text-pink-600">{service.price}</span>
                   </div>
-                  <p className="text-stone-600 mb-6">{service.description}</p>
-                  <div className="space-y-3 mb-6">
-                    {service.features.map((feature, featureIndex) => (
-                      <div key={featureIndex} className="flex items-center gap-3">
-                        <div className="w-2 h-2 bg-red-600 rounded-full"></div>
-                        <span className="text-stone-600 text-sm">{feature}</span>
+                  <p className="text-stone-600 mb-4">{service.description}</p>
+                  <div className="space-y-2 mb-6">
+                    {service.includes.map((item, itemIndex) => (
+                      <div key={itemIndex} className="flex items-center gap-2 text-sm text-stone-500">
+                        <Baby className="w-3 h-3" />
+                        <span>{item}</span>
                       </div>
                     ))}
                   </div>
-                  <Button className="w-full bg-red-600 hover:bg-red-700">
-                    Book This Experience
+                  <Button className="w-full bg-pink-600 hover:bg-pink-700">
+                    Book This Service
                   </Button>
                 </div>
               </div>
@@ -204,73 +195,46 @@ const FamilyCare = () => {
         </div>
       </section>
 
-      {/* Family Values */}
-      <section className="py-20 bg-stone-50">
+      {/* Special Needs Support */}
+      <section className="py-16 bg-pink-50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-light mb-6 text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
-              Our Family Values
-            </h2>
-            <p className="text-lg text-stone-600 max-w-2xl mx-auto">
-              What makes our salon special for families
+          <div className="max-w-4xl mx-auto text-center">
+            <h3 className="text-3xl font-light mb-8 text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
+              Special Needs & Considerations
+            </h3>
+            <p className="text-lg text-stone-600 mb-12">
+              We believe every child deserves a positive salon experience, regardless of their unique needs
             </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-            {familyValues.map((value, index) => (
-              <div key={index} className="text-center p-6 bg-white rounded-xl shadow-sm">
-                <value.icon className="w-12 h-12 text-red-600 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-stone-800 mb-3">{value.title}</h3>
-                <p className="text-stone-600 text-sm">{value.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-light mb-6 text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
-              Family Stories
-            </h2>
-          </div>
-
-          <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="p-8 bg-gradient-to-br from-red-50 to-white rounded-2xl shadow-lg">
-                <blockquote className="text-stone-700 italic mb-6 text-lg leading-relaxed">
-                  "{testimonial.quote}"
-                </blockquote>
-                <div className="text-right">
-                  <div className="font-medium text-stone-800">{testimonial.author}</div>
-                  <div className="text-stone-500 text-sm">{testimonial.relationship}</div>
+            <div className="grid md:grid-cols-3 gap-8">
+              {specialNeeds.map((need, index) => (
+                <div key={index} className="p-6 bg-white rounded-xl shadow-sm">
+                  <need.icon className="w-8 h-8 text-pink-600 mx-auto mb-4" />
+                  <h4 className="text-lg font-medium text-stone-800 mb-3">{need.title}</h4>
+                  <p className="text-stone-600">{need.description}</p>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-red-600 text-white">
+      <section className="py-16 bg-pink-600 text-white">
         <div className="container mx-auto px-4 text-center">
           <h3 className="text-4xl font-light mb-6" style={{ fontFamily: 'Imperial Script, cursive' }}>
-            Become Part of Our Family
+            Ready for a Family Hair Day?
           </h3>
-          <p className="text-xl mb-8 text-red-100">
-            Start your family's beauty story with us - book your first family appointment today
+          <p className="text-xl mb-8 text-pink-100">
+            Book your family appointment and create beautiful memories together
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-red-700 hover:bg-red-50 px-12 py-4 text-lg">
-              Book Family Appointment
+            <Button size="lg" className="bg-white text-pink-700 hover:bg-pink-50 px-12 py-4 text-lg">
+              Book Family Package
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 px-12 py-4 text-lg">
-              Call (732) 613-1942
+            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-pink-700 px-12 py-4 text-lg">
+              Reserve Private Booth
             </Button>
           </div>
-          <p className="text-red-200 mt-6">Walk-ins welcome • Family discounts available • Creating memories since 2010</p>
         </div>
       </section>
     </div>
