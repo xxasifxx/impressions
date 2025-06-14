@@ -1,105 +1,95 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Star, Heart, Users } from 'lucide-react';
+import { Star, MapPin, Clock } from 'lucide-react';
 
 const HeroBanner = () => {
   return (
-    <section className="relative h-[750px] bg-gradient-to-br from-rose-100 via-pink-100 to-purple-100 flex items-center justify-center overflow-hidden">
-      {/* Enhanced background pattern */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-16 left-16 w-40 h-40 bg-rose-400 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-16 right-16 w-48 h-48 bg-purple-400 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/3 left-1/4 w-32 h-32 bg-pink-400 rounded-full blur-2xl animate-pulse delay-500"></div>
-        <div className="absolute bottom-1/3 left-1/2 w-36 h-36 bg-rose-300 rounded-full blur-3xl animate-pulse delay-700"></div>
-      </div>
-      
-      {/* Floating elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 right-1/4 animate-bounce delay-200">
-          <Star className="w-6 h-6 text-rose-400 opacity-60" fill="currentColor" />
-        </div>
-        <div className="absolute bottom-32 left-1/4 animate-bounce delay-700">
-          <Heart className="w-8 h-8 text-pink-400 opacity-60" fill="currentColor" />
-        </div>
-        <div className="absolute top-1/2 right-20 animate-bounce delay-1000">
-          <Users className="w-7 h-7 text-purple-400 opacity-60" />
-        </div>
+    <section className="relative h-[700px] bg-gradient-to-b from-slate-50 to-white flex items-center justify-center">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-20 right-20 w-96 h-96 bg-slate-900 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-20 w-72 h-72 bg-slate-700 rounded-full blur-3xl"></div>
       </div>
       
       {/* Content */}
-      <div className="relative z-10 text-center text-slate-800 px-4 max-w-5xl mx-auto">
-        {/* Trust indicators */}
-        <div className="flex justify-center items-center gap-6 mb-6 text-sm text-slate-600">
-          <div className="flex items-center gap-1">
-            <Star className="w-4 h-4 text-yellow-500" fill="currentColor" />
-            <span className="font-medium">9+ Years in Central Jersey</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Heart className="w-4 h-4 text-rose-500" fill="currentColor" />
-            <span className="font-medium">Family-Owned & Operated</span>
-          </div>
-        </div>
-        
-        <h1 className="text-6xl md:text-7xl font-bold mb-6 tracking-tight">
-          <span className="bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 bg-clip-text text-transparent">
-            Impressions
-          </span>
+      <div className="relative z-10 text-center text-slate-900 px-4 max-w-4xl mx-auto">
+        {/* Primary Heading */}
+        <h1 className="text-6xl md:text-7xl font-light mb-4 tracking-tight">
+          <span className="font-extralight text-slate-600">Impressions</span>
           <br />
-          <span className="text-slate-900 text-4xl md:text-5xl font-light">
-            Hair Salon & Spa
-          </span>
+          <span className="font-normal">Hair Salon & Spa</span>
         </h1>
         
-        <div className="text-2xl md:text-3xl mb-6 font-medium text-slate-700">
-          <span className="bg-gradient-to-r from-rose-500 to-pink-500 bg-clip-text text-transparent">
-            Where Every Family Feels at Home
-          </span>
+        {/* Key Value Proposition */}
+        <div className="text-xl md:text-2xl mb-12 font-light text-slate-700 max-w-2xl mx-auto leading-relaxed">
+          Serving Central Jersey's diverse families since 2015 with 
+          <span className="font-medium text-slate-900"> multilingual expertise</span> and 
+          <span className="font-medium text-slate-900"> culturally respectful care</span>
         </div>
         
-        <p className="text-lg md:text-xl mb-4 text-slate-600 max-w-3xl mx-auto leading-relaxed">
-          Serving Central Jersey families since 2015 with <strong>multilingual stylists</strong> who speak 
-          English, Spanish, Hindi, Urdu & Arabic
-        </p>
-        
-        {/* Unique value props */}
-        <div className="flex flex-wrap justify-center gap-4 mb-8 text-sm">
-          <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-rose-200">
-            <span className="text-rose-600 font-medium">✨ Private Area Available</span>
+        {/* Trust Indicators - Clean Layout */}
+        <div className="flex flex-col md:flex-row justify-center items-center gap-8 mb-12 text-sm text-slate-600">
+          <div className="flex items-center gap-2">
+            <Star className="w-4 h-4 text-amber-500" fill="currentColor" />
+            <span className="font-medium">9+ Years Established</span>
           </div>
-          <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-pink-200">
-            <span className="text-pink-600 font-medium">👨‍👩‍👧‍👦 Walk-ins Welcome</span>
+          <div className="hidden md:block w-px h-4 bg-slate-300"></div>
+          <div className="flex items-center gap-2">
+            <MapPin className="w-4 h-4 text-slate-600" />
+            <span className="font-medium">East Brunswick, NJ</span>
           </div>
-          <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-purple-200">
-            <span className="text-purple-600 font-medium">🧕 Head Covering Friendly</span>
+          <div className="hidden md:block w-px h-4 bg-slate-300"></div>
+          <div className="flex items-center gap-2">
+            <Clock className="w-4 h-4 text-slate-600" />
+            <span className="font-medium">Walk-ins Welcome</span>
           </div>
         </div>
         
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        {/* Core USPs - Strategic Placement */}
+        <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-3xl mx-auto">
+          <div className="text-center p-4">
+            <div className="text-3xl mb-2">🌍</div>
+            <h3 className="font-medium text-slate-900 mb-1">Multilingual Team</h3>
+            <p className="text-sm text-slate-600">English, Spanish, Hindi, Urdu & Arabic</p>
+          </div>
+          <div className="text-center p-4">
+            <div className="text-3xl mb-2">🤱</div>
+            <h3 className="font-medium text-slate-900 mb-1">Private Area Available</h3>
+            <p className="text-sm text-slate-600">Head covering friendly environment</p>
+          </div>
+          <div className="text-center p-4">
+            <div className="text-3xl mb-2">👨‍👩‍👧‍👦</div>
+            <h3 className="font-medium text-slate-900 mb-1">Family Focused</h3>
+            <p className="text-sm text-slate-600">All ages, from kids to grandparents</p>
+          </div>
+        </div>
+        
+        {/* Call to Actions */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
           <Button 
             size="lg" 
-            className="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white px-10 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200"
+            className="bg-slate-900 hover:bg-slate-800 text-white px-12 py-4 text-base font-medium tracking-wide"
           >
-            💅 Book Your Appointment
+            Book Appointment
           </Button>
           <Button 
             size="lg" 
             variant="outline"
-            className="border-2 border-rose-500 text-rose-600 hover:bg-gradient-to-r hover:from-rose-500 hover:to-pink-500 hover:text-white px-10 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+            className="border-slate-300 text-slate-700 hover:bg-slate-50 px-12 py-4 text-base font-medium tracking-wide"
           >
-            📞 Call (732) 613-1942
+            Call (732) 613-1942
           </Button>
         </div>
         
-        {/* Social proof */}
-        <div className="mt-8 text-center">
-          <p className="text-sm text-slate-500 mb-2">Trusted by families across Central Jersey</p>
-          <div className="flex justify-center items-center gap-1">
+        {/* Social Proof - Minimal */}
+        <div className="text-center">
+          <div className="flex justify-center items-center gap-1 mb-2">
             {[1,2,3,4,5].map((star) => (
-              <Star key={star} className="w-4 h-4 text-yellow-500" fill="currentColor" />
+              <Star key={star} className="w-4 h-4 text-amber-500" fill="currentColor" />
             ))}
-            <span className="ml-2 text-sm text-slate-600 font-medium">4.8/5 from 150+ happy clients</span>
           </div>
+          <p className="text-sm text-slate-500">4.8/5 rating from 150+ families across Central Jersey</p>
         </div>
       </div>
     </section>
