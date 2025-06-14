@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -16,7 +17,7 @@ const HairServices = () => {
             </Link>
             
             <div className="text-center">
-              <div className="text-2xl font-light text-stone-800" style={{ fontFamily: 'Dancing Script, cursive' }}>
+              <div className="text-2xl font-light text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
                 Impressions Hair Salon
               </div>
               <div className="text-xs text-stone-500 tracking-wide">Professional Hair Services</div>
@@ -36,7 +37,7 @@ const HairServices = () => {
       <section className="py-20 bg-gradient-to-br from-white via-stone-50 to-green-50/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h1 className="text-6xl font-light mb-6 text-stone-800" style={{ fontFamily: 'Dancing Script, cursive', letterSpacing: '0.05em' }}>
+            <h1 className="text-6xl font-light mb-6 text-stone-800" style={{ fontFamily: 'Imperial Script, cursive', letterSpacing: '0.05em' }}>
               Professional Hair Services
             </h1>
             <p className="text-xl text-stone-600 max-w-3xl mx-auto mb-8">
@@ -63,7 +64,7 @@ const HairServices = () => {
             <div className="bg-white rounded-2xl p-8 shadow-lg border border-stone-100">
               <div className="flex items-center gap-3 mb-4">
                 <Scissors className="w-6 h-6 text-green-700" />
-                <h3 className="text-2xl font-light text-stone-800" style={{ fontFamily: 'Dancing Script, cursive' }}>
+                <h3 className="text-2xl font-light text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
                   Hair Cuts
                 </h3>
               </div>
@@ -87,7 +88,7 @@ const HairServices = () => {
             <div className="bg-white rounded-2xl p-8 shadow-lg border border-stone-100">
               <div className="flex items-center gap-3 mb-4">
                 <Palette className="w-6 h-6 text-amber-600" />
-                <h3 className="text-2xl font-light text-stone-800" style={{ fontFamily: 'Dancing Script, cursive' }}>
+                <h3 className="text-2xl font-light text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
                   Hair Color
                 </h3>
               </div>
@@ -111,7 +112,7 @@ const HairServices = () => {
             <div className="bg-white rounded-2xl p-8 shadow-lg border border-stone-100">
               <div className="flex items-center gap-3 mb-4">
                 <Star className="w-6 h-6 text-rose-500" />
-                <h3 className="text-2xl font-light text-stone-800" style={{ fontFamily: 'Dancing Script, cursive' }}>
+                <h3 className="text-2xl font-light text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
                   Special Styling
                 </h3>
               </div>
@@ -135,7 +136,7 @@ const HairServices = () => {
 
           {/* Transformation Packages */}
           <div className="bg-gradient-to-br from-amber-50 to-white rounded-2xl p-8 shadow-lg max-w-4xl mx-auto mb-16">
-            <h3 className="text-3xl font-light text-center mb-8 text-stone-800" style={{ fontFamily: 'Dancing Script, cursive' }}>
+            <h3 className="text-3xl font-light text-center mb-8 text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
               Complete Transformation Packages
             </h3>
             <div className="grid md:grid-cols-3 gap-6">
@@ -188,7 +189,7 @@ const HairServices = () => {
       {/* Video Showcase Section */}
       <section className="py-16 bg-stone-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-light text-center mb-12 text-stone-800" style={{ fontFamily: 'Dancing Script, cursive' }}>
+          <h2 className="text-4xl font-light text-center mb-12 text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
             See Our Work in Action
           </h2>
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
