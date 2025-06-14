@@ -5,92 +5,95 @@ import { Star, MapPin, Clock } from 'lucide-react';
 
 const HeroBanner = () => {
   return (
-    <section className="relative h-[700px] bg-gradient-to-b from-slate-50 to-white flex items-center justify-center">
-      {/* Subtle background pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-20 right-20 w-96 h-96 bg-slate-900 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-20 w-72 h-72 bg-slate-700 rounded-full blur-3xl"></div>
+    <section className="relative h-[80vh] bg-gradient-to-br from-neutral-50 via-stone-50 to-rose-50/30 flex items-center justify-center overflow-hidden">
+      {/* Elegant background elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 right-1/3 w-96 h-96 bg-rose-100/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/3 left-1/4 w-80 h-80 bg-stone-100/30 rounded-full blur-3xl"></div>
+      </div>
+      
+      {/* Main hero image */}
+      <div className="absolute right-0 top-0 w-1/2 h-full overflow-hidden">
+        <img 
+          src="/lovable-uploads/52cae70f-1233-4245-8345-ba3f7d434a46.png" 
+          alt="Professional makeup and hair styling at Impressions"
+          className="w-full h-full object-cover object-center opacity-85"
+        />
+        <div className="absolute inset-0 bg-gradient-to-l from-transparent via-white/10 to-white/80"></div>
       </div>
       
       {/* Content */}
-      <div className="relative z-10 text-center text-slate-900 px-4 max-w-4xl mx-auto">
-        {/* Primary Heading */}
-        <h1 className="text-6xl md:text-7xl font-light mb-4 tracking-tight">
-          <span className="font-extralight text-slate-600">Impressions</span>
-          <br />
-          <span className="font-normal">Hair Salon & Spa</span>
-        </h1>
-        
-        {/* Key Value Proposition */}
-        <div className="text-xl md:text-2xl mb-12 font-light text-slate-700 max-w-2xl mx-auto leading-relaxed">
-          Serving Central Jersey's diverse families since 2015 with 
-          <span className="font-medium text-slate-900"> multilingual expertise</span> and 
-          <span className="font-medium text-slate-900"> culturally respectful care</span>
+      <div className="relative z-10 text-left text-slate-900 px-8 max-w-6xl mx-auto grid grid-cols-2 gap-12 items-center">
+        <div>
+          {/* Brand Identity */}
+          <div className="mb-8">
+            <h1 className="text-5xl md:text-6xl font-light mb-2 tracking-tight leading-tight">
+              <span className="text-slate-800 font-extralight">Impressions</span>
+            </h1>
+            <p className="text-lg text-rose-600 font-medium tracking-wider uppercase">
+              Hair Salon • Makeup Studio • Med Spa
+            </p>
+          </div>
+          
+          {/* Refined Value Proposition */}
+          <div className="text-xl md:text-2xl mb-8 font-light text-slate-700 leading-relaxed">
+            Elevating beauty through 
+            <span className="font-medium text-slate-900"> expert artistry</span> and 
+            <span className="font-medium text-slate-900"> personalized care</span> since 2015
+          </div>
+          
+          {/* Key Differentiators */}
+          <div className="grid grid-cols-1 gap-4 mb-8 max-w-md">
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 bg-rose-400 rounded-full"></div>
+              <span className="text-slate-700">Multilingual team serving diverse families</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 bg-rose-400 rounded-full"></div>
+              <span className="text-slate-700">Private area for cultural preferences</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 bg-rose-400 rounded-full"></div>
+              <span className="text-slate-700">Professional makeup artistry</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 bg-rose-400 rounded-full"></div>
+              <span className="text-slate-700">Walk-ins welcome, appointments prioritized</span>
+            </div>
+          </div>
+          
+          {/* Call to Actions */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <Button 
+              size="lg" 
+              className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-3 text-base font-medium"
+            >
+              Book Appointment
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline"
+              className="border-slate-300 text-slate-700 hover:bg-slate-50 px-8 py-3 text-base font-medium"
+            >
+              (732) 613-1942
+            </Button>
+          </div>
+          
+          {/* Location & Hours */}
+          <div className="flex items-center gap-6 text-sm text-slate-600">
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4" />
+              <span>East Brunswick, NJ</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4" />
+              <span>Mon-Sat 9AM-7PM</span>
+            </div>
+          </div>
         </div>
         
-        {/* Trust Indicators - Clean Layout */}
-        <div className="flex flex-col md:flex-row justify-center items-center gap-8 mb-12 text-sm text-slate-600">
-          <div className="flex items-center gap-2">
-            <Star className="w-4 h-4 text-amber-500" fill="currentColor" />
-            <span className="font-medium">9+ Years Established</span>
-          </div>
-          <div className="hidden md:block w-px h-4 bg-slate-300"></div>
-          <div className="flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-slate-600" />
-            <span className="font-medium">East Brunswick, NJ</span>
-          </div>
-          <div className="hidden md:block w-px h-4 bg-slate-300"></div>
-          <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 text-slate-600" />
-            <span className="font-medium">Walk-ins Welcome</span>
-          </div>
-        </div>
-        
-        {/* Core USPs - Strategic Placement */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-3xl mx-auto">
-          <div className="text-center p-4">
-            <div className="text-3xl mb-2">🌍</div>
-            <h3 className="font-medium text-slate-900 mb-1">Multilingual Team</h3>
-            <p className="text-sm text-slate-600">English, Spanish, Hindi, Urdu & Arabic</p>
-          </div>
-          <div className="text-center p-4">
-            <div className="text-3xl mb-2">🤱</div>
-            <h3 className="font-medium text-slate-900 mb-1">Private Area Available</h3>
-            <p className="text-sm text-slate-600">Head covering friendly environment</p>
-          </div>
-          <div className="text-center p-4">
-            <div className="text-3xl mb-2">👨‍👩‍👧‍👦</div>
-            <h3 className="font-medium text-slate-900 mb-1">Family Focused</h3>
-            <p className="text-sm text-slate-600">All ages, from kids to grandparents</p>
-          </div>
-        </div>
-        
-        {/* Call to Actions */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-          <Button 
-            size="lg" 
-            className="bg-slate-900 hover:bg-slate-800 text-white px-12 py-4 text-base font-medium tracking-wide"
-          >
-            Book Appointment
-          </Button>
-          <Button 
-            size="lg" 
-            variant="outline"
-            className="border-slate-300 text-slate-700 hover:bg-slate-50 px-12 py-4 text-base font-medium tracking-wide"
-          >
-            Call (732) 613-1942
-          </Button>
-        </div>
-        
-        {/* Social Proof - Minimal */}
-        <div className="text-center">
-          <div className="flex justify-center items-center gap-1 mb-2">
-            {[1,2,3,4,5].map((star) => (
-              <Star key={star} className="w-4 h-4 text-amber-500" fill="currentColor" />
-            ))}
-          </div>
-          <p className="text-sm text-slate-500">4.8/5 rating from 150+ families across Central Jersey</p>
-        </div>
+        {/* Right side is for the image */}
+        <div></div>
       </div>
     </section>
   );
