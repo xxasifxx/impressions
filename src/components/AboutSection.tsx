@@ -9,7 +9,7 @@ const AboutSection = () => {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Content */}
           <div>
-            <h2 className="text-4xl font-light text-slate-900 mb-6">
+            <h2 className="text-4xl font-light text-slate-900 mb-6" style={{ fontFamily: 'Fleur De Leah, cursive' }}>
               Where Quality Meets <span className="font-medium">Excellence</span>
             </h2>
             <p className="text-lg text-slate-600 leading-relaxed mb-6">
@@ -26,7 +26,7 @@ const AboutSection = () => {
             {/* Featured Services Grid */}
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-3">
-                <h4 className="font-medium text-slate-900">Hair Excellence</h4>
+                <h4 className="font-medium text-slate-900" style={{ fontFamily: 'Fleur De Leah, cursive' }}>Hair Excellence</h4>
                 <ul className="text-slate-600 space-y-1 text-sm">
                   <li>• Precision cuts & expert styling</li>
                   <li>• Professional color artistry</li>
@@ -35,7 +35,7 @@ const AboutSection = () => {
                 </ul>
               </div>
               <div className="space-y-3">
-                <h4 className="font-medium text-slate-900">Beauty Artistry</h4>
+                <h4 className="font-medium text-slate-900" style={{ fontFamily: 'Fleur De Leah, cursive' }}>Beauty Artistry</h4>
                 <ul className="text-slate-600 space-y-1 text-sm">
                   <li>• Flawless bridal & event makeup</li>
                   <li>• Premium lash extensions</li>
@@ -67,7 +67,7 @@ const AboutSection = () => {
                 className="w-full h-48 object-cover rounded-2xl shadow-lg"
               />
               <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 text-white shadow-lg">
-                <h4 className="font-medium mb-2">Premium Packages</h4>
+                <h4 className="font-medium mb-2" style={{ fontFamily: 'Fleur De Leah, cursive' }}>Premium Packages</h4>
                 <p className="text-sm text-slate-300">Complete transformation experiences for proms, weddings, and special events with personalized attention to every detail</p>
               </div>
             </div>
@@ -80,7 +80,7 @@ const AboutSection = () => {
             <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Palette className="text-slate-600 w-8 h-8" />
             </div>
-            <h3 className="text-xl font-medium text-slate-900 mb-3">Masterful Artistry</h3>
+            <h3 className="text-xl font-medium text-slate-900 mb-3" style={{ fontFamily: 'Fleur De Leah, cursive' }}>Masterful Artistry</h3>
             <p className="text-slate-600">Our skilled professionals bring years of expertise and artistic vision to every service, ensuring exceptional results every time.</p>
           </div>
           
@@ -88,7 +88,7 @@ const AboutSection = () => {
             <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Heart className="text-slate-600 w-8 h-8" />
             </div>
-            <h3 className="text-xl font-medium text-slate-900 mb-3">Cultural Respect</h3>
+            <h3 className="text-xl font-medium text-slate-900 mb-3" style={{ fontFamily: 'Fleur De Leah, cursive' }}>Cultural Respect</h3>
             <p className="text-slate-600">We honor all traditions with multilingual service and private accommodations, celebrating the beauty of cultural diversity.</p>
           </div>
           
@@ -96,7 +96,7 @@ const AboutSection = () => {
             <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Users className="text-slate-600 w-8 h-8" />
             </div>
-            <h3 className="text-xl font-medium text-slate-900 mb-3">Quality Time</h3>
+            <h3 className="text-xl font-medium text-slate-900 mb-3" style={{ fontFamily: 'Fleur De Leah, cursive' }}>Quality Time</h3>
             <p className="text-slate-600">We believe great results require proper time and attention. Every service receives the care it deserves for lasting beauty.</p>
           </div>
         </div>

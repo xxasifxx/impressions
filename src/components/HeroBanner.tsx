@@ -42,10 +42,10 @@ const HeroBanner = () => {
           {/* Brand Identity */}
           <div className="mb-8">
             <h1 className="text-6xl md:text-7xl font-light mb-3 tracking-tight leading-tight">
-              <span className="text-slate-800 font-extralight">Impressions</span>
+              <span className="text-slate-800 font-extralight" style={{ fontFamily: 'Fleur De Leah, cursive' }}>Impressions</span>
             </h1>
             <div className="w-24 h-0.5 bg-gradient-to-r from-rose-400 to-pink-300 mb-4"></div>
-            <p className="text-xl text-slate-600 font-light tracking-wide">
+            <p className="text-xl text-slate-600 font-light tracking-wide" style={{ fontFamily: 'Fleur De Leah, cursive' }}>
               Beauty • Artistry • Excellence
             </p>
           </div>

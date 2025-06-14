@@ -39,7 +39,7 @@ const ServicesSection = () => {
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-slate-900 mb-6">Our Services</h2>
+          <h2 className="text-4xl font-bold text-slate-900 mb-6" style={{ fontFamily: 'Fleur De Leah, cursive' }}>Our Services</h2>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
             From everyday maintenance to special occasions, we offer comprehensive beauty services 
             for the whole family in a welcoming, multicultural environment.
@@ -60,7 +60,7 @@ const ServicesSection = () => {
                   <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
                     <service.icon className="w-5 h-5 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold text-white">{service.title}</h3>
+                  <h3 className="text-xl font-semibold text-white" style={{ fontFamily: 'Fleur De Leah, cursive' }}>{service.title}</h3>
                 </div>
               </div>
               <div className="p-6">
