@@ -12,36 +12,31 @@ const HairServices = () => {
       id: 'all',
       title: 'All Services',
       subtitle: 'Everything we offer',
-      icon: Star,
-      description: 'Browse our complete range of hair services'
+      icon: Star
     },
     {
       id: 'transformation',
       title: 'Transform Me',
       subtitle: 'Bold new looks',
-      icon: Palette,
-      description: 'Ready for a dramatic change? From color corrections to complete makeovers'
+      icon: Palette
     },
     {
       id: 'maintenance',
       title: 'Maintain My Look',
       subtitle: 'Keep it fresh',
-      icon: Scissors,
-      description: 'Touch-ups, trims, and treatments to keep your style perfect'
+      icon: Scissors
     },
     {
       id: 'special',
       title: 'Special Moments',
       subtitle: 'Important occasions',
-      icon: Sparkles,
-      description: 'Weddings, events, and celebrations deserve special attention'
+      icon: Sparkles
     },
     {
       id: 'comfort',
       title: 'Comfort First',
       subtitle: 'Gentle & caring',
-      icon: Heart,
-      description: 'Services designed for children, seniors, and those seeking privacy'
+      icon: Heart
     }
   ];
 
@@ -317,38 +312,37 @@ const HairServices = () => {
       {/* Main Content */}
       <div className="flex min-h-[calc(100vh-80px)]">
         {/* Left Side - Filter Navigation */}
-        <div className="w-1/3 bg-gradient-to-br from-red-50 to-stone-50 p-8 border-r border-stone-200">
+        <div className="w-1/4 bg-gradient-to-br from-red-50 to-stone-50 p-6 border-r border-stone-200">
           <div className="sticky top-8">
-            <h2 className="text-3xl font-light text-stone-800 mb-3" style={{ fontFamily: 'Imperial Script, cursive' }}>
+            <h2 className="text-2xl font-light text-stone-800 mb-2" style={{ fontFamily: 'Imperial Script, cursive' }}>
               What Are You Looking For?
             </h2>
-            <p className="text-stone-600 mb-8">
-              Choose what best describes your hair goals
+            <p className="text-stone-600 text-sm mb-6">
+              Choose your hair goal
             </p>
 
-            <div className="space-y-4">
+            <div className="space-y-3">
               {filterCategories.map((category) => (
                 <button
                   key={category.id}
                   onClick={() => setActiveFilter(category.id)}
-                  className={`w-full text-left p-4 rounded-xl transition-all duration-300 border-2 ${
+                  className={`w-full text-left p-3 rounded-lg transition-all duration-300 border ${
                     activeFilter === category.id
-                      ? 'bg-white border-red-200 shadow-lg'
-                      : 'bg-white/50 border-transparent hover:bg-white hover:shadow-md'
+                      ? 'bg-white border-red-200 shadow-md'
+                      : 'bg-white/50 border-transparent hover:bg-white hover:shadow-sm'
                   }`}
                 >
-                  <div className="flex items-start gap-3">
-                    <div className={`p-2 rounded-lg ${
+                  <div className="flex items-center gap-3">
+                    <div className={`p-2 rounded-md ${
                       activeFilter === category.id ? 'bg-red-100' : 'bg-stone-100'
                     }`}>
-                      <category.icon className={`w-5 h-5 ${
+                      <category.icon className={`w-4 h-4 ${
                         activeFilter === category.id ? 'text-red-600' : 'text-stone-600'
                       }`} />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-medium text-stone-800 mb-1">{category.title}</h3>
-                      <p className="text-sm text-stone-600 mb-2">{category.subtitle}</p>
-                      <p className="text-xs text-stone-500">{category.description}</p>
+                      <h3 className="font-medium text-stone-800">{category.title}</h3>
+                      <p className="text-xs text-stone-500">{category.subtitle}</p>
                     </div>
                   </div>
                 </button>
@@ -356,14 +350,14 @@ const HairServices = () => {
             </div>
 
             {/* CTA Section */}
-            <div className="mt-8 p-6 bg-gradient-to-r from-red-600 to-red-700 rounded-xl text-white">
-              <h3 className="text-lg font-light mb-2" style={{ fontFamily: 'Imperial Script, cursive' }}>
+            <div className="mt-8 p-4 bg-gradient-to-r from-red-600 to-red-700 rounded-lg text-white">
+              <h3 className="text-lg font-light mb-1" style={{ fontFamily: 'Imperial Script, cursive' }}>
                 Still Not Sure?
               </h3>
-              <p className="text-sm text-red-100 mb-4">
-                Book a consultation and let our experts guide you
+              <p className="text-xs text-red-100 mb-3">
+                Book a consultation
               </p>
-              <Button size="sm" className="bg-white text-red-700 hover:bg-red-50 w-full">
+              <Button size="sm" className="bg-white text-red-700 hover:bg-red-50 w-full text-sm">
                 Free Consultation
               </Button>
             </div>
@@ -376,7 +370,7 @@ const HairServices = () => {
             <h2 className="text-2xl font-light text-stone-800 mb-2" style={{ fontFamily: 'Imperial Script, cursive' }}>
               {activeFilterData?.title}
             </h2>
-            <p className="text-stone-600">{activeFilterData?.description}</p>
+            <p className="text-stone-600">{activeFilterData?.subtitle}</p>
             <p className="text-sm text-stone-500 mt-1">
               {filteredServices.length} service{filteredServices.length !== 1 ? 's' : ''} available
             </p>
