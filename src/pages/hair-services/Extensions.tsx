@@ -93,7 +93,7 @@ const Extensions = () => {
         backLink="/hair-services"
         backLinkText="Explore All Services"
         theme="bg-purple-600"
-        themeText="text-purple-200"
+        themeText="text-purple-100"
         additionalInfo="Professional extensions • Instant length & volume"
       />
     </ServicePageTemplate>

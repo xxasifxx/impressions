@@ -119,7 +119,7 @@ const ColorCorrection = () => {
         backLink="/hair-services"
         backLinkText="Explore All Services"
         theme="bg-rose-600"
-        themeText="text-rose-200"
+        themeText="text-rose-100"
         additionalInfo="* Consultation fee applied to service cost"
       />
     </ServicePageTemplate>

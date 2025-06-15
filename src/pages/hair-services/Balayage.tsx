@@ -93,7 +93,7 @@ const Balayage = () => {
         backLink="/hair-services"
         backLinkText="Explore All Services"
         theme="bg-amber-600"
-        themeText="text-amber-200"
+        themeText="text-amber-100"
         additionalInfo="Expert hand-painted highlights • 3-6 hour appointments"
       />
     </ServicePageTemplate>

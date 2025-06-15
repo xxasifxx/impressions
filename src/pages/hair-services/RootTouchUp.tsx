@@ -93,7 +93,7 @@ const RootTouchUp = () => {
         backLink="/hair-services"
         backLinkText="Explore All Services"
         theme="bg-emerald-600"
-        themeText="text-emerald-200"
+        themeText="text-emerald-100"
         additionalInfo="Professional color maintenance • Quick 45-75 minute appointments"
       />
     </ServicePageTemplate>
