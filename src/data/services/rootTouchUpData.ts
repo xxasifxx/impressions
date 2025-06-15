@@ -23,7 +23,17 @@ export const rootTouchUpData = {
       image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&h=300&fit=crop',
       price: '$65',
       duration: '45 minutes',
-      coverage: '1-2 inch regrowth'
+      details: [
+        '1-2 inch regrowth coverage',
+        'Color matching to existing shade',
+        'Professional application',
+        'Quick processing time'
+      ],
+      prefilledService: {
+        name: "Quick Root Touch-Up",
+        price: "$65",
+        duration: "45 minutes"
+      }
     },
     {
       title: 'Root & Refresh',
@@ -31,7 +41,17 @@ export const rootTouchUpData = {
       image: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=400&h=300&fit=crop',
       price: '$85',
       duration: '75 minutes',
-      coverage: 'Roots + color refresh'
+      details: [
+        'Root coverage + color refresh',
+        'Glossing treatment included',
+        'Enhanced shine and vibrancy',
+        'Professional styling finish'
+      ],
+      prefilledService: {
+        name: "Root & Refresh",
+        price: "$85",
+        duration: "75 minutes"
+      }
     },
     {
       title: 'Gray Coverage',
@@ -39,7 +59,17 @@ export const rootTouchUpData = {
       image: 'https://images.unsplash.com/photo-1594736797933-d0b22e4b7b72?w=400&h=300&fit=crop',
       price: '$75',
       duration: '60 minutes',
-      coverage: 'Complete gray coverage'
+      details: [
+        'Complete gray coverage',
+        'Specialized gray formulas',
+        'Long-lasting results',
+        'Professional color matching'
+      ],
+      prefilledService: {
+        name: "Gray Coverage Root Touch-Up",
+        price: "$75",
+        duration: "60 minutes"
+      }
     }
   ],
   processSteps: [
