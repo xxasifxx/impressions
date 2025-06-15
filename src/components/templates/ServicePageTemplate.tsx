@@ -84,15 +84,15 @@ const ServicePageTemplate = ({
     <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-stone-200">
-        <div className="container mx-auto px-4 py-6">
+        <div className="container mx-auto px-4 py-4 md:py-6">
           <div className="flex items-center justify-between">
-            <Link to={backLink} className="flex items-center gap-3 text-stone-600 hover:text-stone-800 transition-colors">
-              <ArrowLeft className="w-5 h-5" />
-              <span className="font-medium">{backText}</span>
+            <Link to={backLink} className="flex items-center gap-2 md:gap-3 text-stone-600 hover:text-stone-800 transition-colors">
+              <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
+              <span className="font-medium text-sm md:text-base">{backText}</span>
             </Link>
             
             <div className="text-center">
-              <div className="text-4xl font-light text-stone-800" style={{ fontFamily: 'Imperial Script, cursive', letterSpacing: '0.05em' }}>
+              <div className="text-2xl md:text-4xl font-light text-stone-800" style={{ fontFamily: 'Imperial Script, cursive', letterSpacing: '0.05em' }}>
                 {title}
               </div>
               <div className="text-xs text-stone-500 tracking-wide">{subtitle}</div>
@@ -100,8 +100,9 @@ const ServicePageTemplate = ({
             
             <AppointmentBookingModal
               trigger={
-                <Button size="sm" className="bg-red-700 hover:bg-red-800">
-                  {ctaText}
+                <Button size="sm" className="bg-red-700 hover:bg-red-800 text-xs md:text-sm">
+                  <span className="hidden sm:inline">{ctaText}</span>
+                  <span className="sm:hidden">Book</span>
                 </Button>
               }
               prefilledService={prefilledService}
@@ -112,7 +113,7 @@ const ServicePageTemplate = ({
       </header>
 
       {/* Hero */}
-      <section className={`py-20 bg-gradient-to-br ${themeStyles.gradient}`}>
+      <section className={`py-12 md:py-20 bg-gradient-to-br ${themeStyles.gradient}`}>
         {children}
       </section>
     </div>
