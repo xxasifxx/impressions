@@ -39,11 +39,11 @@ const ServiceGallery = ({ filteredServices, activeFilterData }: ServiceGalleryPr
   return (
     <div className="flex-1 p-8">
       <div className="mb-6">
-        <h2 className="text-3xl font-light text-stone-800 mb-2" style={{ fontFamily: 'Imperial Script, cursive', letterSpacing: '0.08em' }}>
+        <h2 className="text-4xl font-light text-stone-800 mb-2" style={{ fontFamily: 'Imperial Script, cursive', letterSpacing: '0.08em' }}>
           {activeFilterData?.title}
         </h2>
-        <p className="text-stone-600">{activeFilterData?.subtitle}</p>
-        <p className="text-sm text-stone-500 mt-1">
+        <p className="text-lg text-stone-600">{activeFilterData?.subtitle}</p>
+        <p className="text-base text-stone-500 mt-1">
           {filteredServices.length} service{filteredServices.length !== 1 ? 's' : ''} available
         </p>
       </div>

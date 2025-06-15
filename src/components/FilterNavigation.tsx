@@ -28,7 +28,7 @@ const FilterNavigation = ({ filterCategories, activeFilter, onFilterChange }: Fi
   return (
     <div className="w-1/5 bg-gradient-to-br from-red-50 to-stone-50 p-6 border-r border-stone-200">
       <div className="sticky top-8">
-        <h2 className="text-2xl font-light text-stone-800 mb-6" style={{ fontFamily: 'Imperial Script, cursive', letterSpacing: '0.08em' }}>
+        <h2 className="text-3xl font-light text-stone-800 mb-6" style={{ fontFamily: 'Imperial Script, cursive', letterSpacing: '0.08em' }}>
           What Are You Looking For?
         </h2>
 
@@ -54,8 +54,8 @@ const FilterNavigation = ({ filterCategories, activeFilter, onFilterChange }: Fi
                     }`} />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-medium text-stone-800 text-sm">{category.title}</h3>
-                    <p className="text-xs text-stone-500">{category.subtitle}</p>
+                    <h3 className="font-semibold text-stone-800 text-base" style={{ fontFamily: 'Playfair Display, serif' }}>{category.title}</h3>
+                    <p className="text-sm text-stone-500">{category.subtitle}</p>
                   </div>
                 </div>
               </button>
@@ -65,10 +65,10 @@ const FilterNavigation = ({ filterCategories, activeFilter, onFilterChange }: Fi
 
         {/* CTA Section */}
         <div className="mt-8 p-4 bg-gradient-to-r from-red-600 to-red-700 rounded-lg text-white">
-          <h3 className="text-xl font-light mb-1" style={{ fontFamily: 'Imperial Script, cursive', letterSpacing: '0.06em' }}>
+          <h3 className="text-2xl font-light mb-1" style={{ fontFamily: 'Imperial Script, cursive', letterSpacing: '0.06em' }}>
             Still Not Sure?
           </h3>
-          <p className="text-xs text-red-100 mb-3">
+          <p className="text-sm text-red-100 mb-3">
             Book a consultation
           </p>
           <Button size="sm" className="bg-white text-red-700 hover:bg-red-50 w-full text-sm">
