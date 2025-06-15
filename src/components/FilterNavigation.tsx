@@ -26,8 +26,8 @@ const iconMap = {
 
 const FilterNavigation = ({ filterCategories, activeFilter, onFilterChange }: FilterNavigationProps) => {
   return (
-    <div className="w-80 flex-shrink-0 bg-gradient-to-br from-red-50 to-stone-50 p-6 border-r border-stone-200">
-      <div className="sticky top-8">
+    <div className="w-full md:w-80 md:flex-shrink-0 bg-gradient-to-br from-red-50 to-stone-50 p-6 border-b md:border-b-0 md:border-r border-stone-200">
+      <div className="md:sticky md:top-8">
         <h2 className="text-3xl font-light text-stone-800 mb-6" style={{ fontFamily: 'Imperial Script, cursive', letterSpacing: '0.08em' }}>
           What Are You Looking For?
         </h2>

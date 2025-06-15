@@ -18,7 +18,7 @@ const HairServices = () => {
     <div className="min-h-screen bg-white">
       <HairServicesHeader />
 
-      <div className="flex min-h-[calc(100vh-80px)]">
+      <div className="flex flex-col md:flex-row min-h-[calc(100vh-80px)]">
         <FilterNavigation 
           filterCategories={filterCategories}
           activeFilter={activeFilter}

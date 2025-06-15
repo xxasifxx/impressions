@@ -37,7 +37,7 @@ interface ServiceGalleryProps {
 
 const ServiceGallery = ({ filteredServices, activeFilterData }: ServiceGalleryProps) => {
   return (
-    <div className="flex-1 p-8">
+    <div className="flex-1 p-4 md:p-8">
       <div className="mb-6">
         <h2 className="text-4xl font-light text-stone-800 mb-2" style={{ fontFamily: 'Imperial Script, cursive', letterSpacing: '0.08em' }}>
           {activeFilterData?.title}
@@ -48,7 +48,7 @@ const ServiceGallery = ({ filteredServices, activeFilterData }: ServiceGalleryPr
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {filteredServices.map((service) => (
           <ServiceCard
             key={service.id}
