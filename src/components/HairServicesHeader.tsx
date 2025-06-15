@@ -15,7 +15,7 @@ const HairServicesHeader = () => {
           </Link>
           
           <div className="text-center">
-            <h1 className="text-4xl font-light text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
+            <h1 className="text-4xl font-light text-stone-800" style={{ fontFamily: 'Imperial Script, cursive', letterSpacing: '0.1em' }}>
               Hair Services
             </h1>
           </div>
