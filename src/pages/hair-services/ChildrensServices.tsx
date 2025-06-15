@@ -75,6 +75,11 @@ const ChildrensServices = () => {
                   Book Kids Service
                 </Button>
               }
+              prefilledService={{
+                name: "Children's Hair Service",
+                price: "$25",
+                duration: "30-45 minutes"
+              }}
               sourcePage="childrens-services-header"
             />
           </div>
@@ -147,6 +152,11 @@ const ChildrensServices = () => {
                         Book This Service
                       </Button>
                     }
+                    prefilledService={{
+                      name: service.title,
+                      price: service.price,
+                      duration: service.duration
+                    }}
                     sourcePage={`childrens-services-${service.title.toLowerCase().replace(/\s+/g, '-')}`}
                   />
                 </div>
@@ -192,6 +202,11 @@ const ChildrensServices = () => {
                   Book Children's Service - $25
                 </Button>
               }
+              prefilledService={{
+                name: "Children's Hair Service",
+                price: "$25",
+                duration: "30-45 minutes"
+              }}
               sourcePage="childrens-services-cta"
             />
             <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 px-12 py-4 text-lg">

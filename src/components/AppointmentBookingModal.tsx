@@ -14,6 +14,11 @@ import { useSalonSpecialists } from '@/hooks/useSalonSpecialists';
 interface AppointmentBookingModalProps {
   trigger: React.ReactNode;
   defaultServiceId?: string;
+  prefilledService?: {
+    name: string;
+    price: string;
+    duration: string;
+  };
   sourcePage: string;
   className?: string;
 }
@@ -21,6 +26,7 @@ interface AppointmentBookingModalProps {
 const AppointmentBookingModal = ({ 
   trigger, 
   defaultServiceId, 
+  prefilledService,
   sourcePage, 
   className = "" 
 }: AppointmentBookingModalProps) => {
@@ -106,6 +112,11 @@ const AppointmentBookingModal = ({
           <DialogTitle className="flex items-center gap-2">
             <Calendar className="w-5 h-5 text-red-600" />
             Book Your Appointment
+            {prefilledService && (
+              <span className="text-sm font-normal text-stone-600">
+                - {prefilledService.name}
+              </span>
+            )}
           </DialogTitle>
         </DialogHeader>
 
@@ -149,30 +160,44 @@ const AppointmentBookingModal = ({
             </div>
           </div>
 
-          {/* Service Selection */}
-          <div>
-            <Label htmlFor="service">Service *</Label>
-            <Select 
-              value={formData.serviceId} 
-              onValueChange={(value) => setFormData(prev => ({ ...prev, serviceId: value, specialistId: '' }))}
-            >
-              <SelectTrigger className="mt-1">
-                <SelectValue placeholder="Select a service" />
-              </SelectTrigger>
-              <SelectContent>
-                {services?.map((service) => (
-                  <SelectItem key={service.id} value={service.id}>
-                    <div className="flex justify-between items-center w-full">
-                      <span>{service.name}</span>
-                      <span className="text-sm text-red-600 ml-2">
-                        ${service.base_price}
-                      </span>
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          {/* Service Selection - show prefilled or dropdown */}
+          {prefilledService ? (
+            <div className="bg-blue-50 rounded-lg p-4 space-y-2">
+              <h4 className="font-medium text-stone-800">Selected Service</h4>
+              <div className="space-y-1">
+                <div className="text-lg font-medium text-blue-700">{prefilledService.name}</div>
+                <div className="text-sm text-stone-600">Duration: {prefilledService.duration}</div>
+                <div className="text-sm text-stone-600">Price: {prefilledService.price}</div>
+              </div>
+              <div className="text-xs text-stone-500 mt-2">
+                Want a different service? Close this form and select from our services page.
+              </div>
+            </div>
+          ) : (
+            <div>
+              <Label htmlFor="service">Service *</Label>
+              <Select 
+                value={formData.serviceId} 
+                onValueChange={(value) => setFormData(prev => ({ ...prev, serviceId: value, specialistId: '' }))}
+              >
+                <SelectTrigger className="mt-1">
+                  <SelectValue placeholder="Select a service" />
+                </SelectTrigger>
+                <SelectContent>
+                  {services?.map((service) => (
+                    <SelectItem key={service.id} value={service.id}>
+                      <div className="flex justify-between items-center w-full">
+                        <span>{service.name}</span>
+                        <span className="text-sm text-red-600 ml-2">
+                          ${service.base_price}
+                        </span>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
 
           {/* Specialist Selection */}
           {availableSpecialists && availableSpecialists.length > 0 && (
@@ -239,8 +264,8 @@ const AppointmentBookingModal = ({
             </div>
           </div>
 
-          {/* Service Details */}
-          {selectedService && (
+          {/* Service Details - only show if from database */}
+          {selectedService && !prefilledService && (
             <div className="bg-stone-50 rounded-lg p-4 space-y-2">
               <h4 className="font-medium text-stone-800">Service Details</h4>
               <div className="text-sm text-stone-600 space-y-1">
@@ -269,7 +294,7 @@ const AppointmentBookingModal = ({
           <Button 
             type="submit" 
             size="lg" 
-            disabled={isSubmitting || !formData.serviceId || !formData.appointmentDate || !formData.appointmentTime}
+            disabled={isSubmitting || (!formData.serviceId && !prefilledService) || !formData.appointmentDate || !formData.appointmentTime}
             className="w-full bg-red-600 hover:bg-red-700"
           >
             {isSubmitting ? "Booking..." : "Book Appointment"}

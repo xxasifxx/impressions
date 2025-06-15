@@ -114,7 +114,11 @@ const ServiceCard = ({
                   Book Now - {price}
                 </Button>
               }
-              defaultServiceId={id}
+              prefilledService={{
+                name: title,
+                price: price,
+                duration: duration || "60 minutes"
+              }}
               sourcePage={sourcePage}
             />
             
