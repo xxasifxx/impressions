@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Shield, Users, MapPin, Heart, Clock, Star } from 'lucide-react';
+import AppointmentBookingModal from '@/components/AppointmentBookingModal';
 
 const PrivacyServices = () => {
   const privacyServices = [
@@ -68,9 +69,19 @@ const PrivacyServices = () => {
               <div className="text-xs text-stone-500 tracking-wide">Respectful Care • Complete Privacy • Cultural Understanding</div>
             </div>
             
-            <Button size="sm" className="bg-red-700 hover:bg-red-800">
-              Book Private Service
-            </Button>
+            <AppointmentBookingModal
+              trigger={
+                <Button size="sm" className="bg-red-700 hover:bg-red-800">
+                  Book Private Service
+                </Button>
+              }
+              prefilledService={{
+                name: "Private Hair Service",
+                price: "$45+",
+                duration: "45-90 minutes"
+              }}
+              sourcePage="privacy-services-header"
+            />
           </div>
         </div>
       </header>
@@ -139,9 +150,19 @@ const PrivacyServices = () => {
                       </div>
                     ))}
                   </div>
-                  <Button className="w-full bg-green-600 hover:bg-green-700">
-                    Book Private Service
-                  </Button>
+                  <AppointmentBookingModal
+                    trigger={
+                      <Button className="w-full bg-green-600 hover:bg-green-700">
+                        Book This Service
+                      </Button>
+                    }
+                    prefilledService={{
+                      name: service.title,
+                      price: service.price,
+                      duration: service.duration
+                    }}
+                    sourcePage={`privacy-services-${service.title.toLowerCase().replace(/\s+/g, '-')}`}
+                  />
                 </div>
               </div>
             ))}
@@ -195,9 +216,19 @@ const PrivacyServices = () => {
             Professional hair services with complete privacy and cultural respect
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-green-700 hover:bg-green-50 px-12 py-4 text-lg">
-              Book Private Service - Starting at $45
-            </Button>
+            <AppointmentBookingModal
+              trigger={
+                <Button size="lg" className="bg-white text-green-700 hover:bg-green-50 px-12 py-4 text-lg">
+                  Book Private Service - Starting at $45
+                </Button>
+              }
+              prefilledService={{
+                name: "Private Hair Service",
+                price: "$45+",
+                duration: "45-90 minutes"
+              }}
+              sourcePage="privacy-services-cta"
+            />
             <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 px-12 py-4 text-lg">
               Call (732) 613-1942
             </Button>

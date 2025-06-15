@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Clock, AlertTriangle, Palette, Shield } from 'lucide-react';
+import AppointmentBookingModal from '@/components/AppointmentBookingModal';
 
 const ColorCorrection = () => {
   const correctionScenarios = [
@@ -78,9 +79,19 @@ const ColorCorrection = () => {
               <div className="text-xs text-stone-500 tracking-wide">Professional Color Repair • Hair Restoration</div>
             </div>
             
-            <Button size="sm" className="bg-red-700 hover:bg-red-800">
-              Book Consultation
-            </Button>
+            <AppointmentBookingModal
+              trigger={
+                <Button size="sm" className="bg-red-700 hover:bg-red-800">
+                  Book Consultation
+                </Button>
+              }
+              prefilledService={{
+                name: "Color Correction Consultation",
+                price: "$35",
+                duration: "45 minutes"
+              }}
+              sourcePage="color-correction-header"
+            />
           </div>
         </div>
       </header>
@@ -245,9 +256,19 @@ const ColorCorrection = () => {
           <p className="text-xl mb-8 text-orange-100">
             Don't let a color mishap ruin your confidence. We're here to help.
           </p>
-          <Button size="lg" className="bg-white text-orange-700 hover:bg-orange-50 px-12 py-4 text-lg">
-            Schedule Correction Consultation - $35
-          </Button>
+          <AppointmentBookingModal
+            trigger={
+              <Button size="lg" className="bg-white text-orange-700 hover:bg-orange-50 px-12 py-4 text-lg">
+                Schedule Correction Consultation - $35
+              </Button>
+            }
+            prefilledService={{
+              name: "Color Correction Consultation",
+              price: "$35",
+              duration: "45 minutes"
+            }}
+            sourcePage="color-correction-cta"
+          />
           <p className="text-orange-200 mt-4 text-sm">
             * Consultation fee applied to service cost
           </p>

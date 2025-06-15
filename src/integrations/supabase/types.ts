@@ -9,6 +9,30 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      ai_migration_registry: {
+        Row: {
+          created_at: string
+          id: string
+          migration_description: string | null
+          migration_name: string
+          project_key: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          migration_description?: string | null
+          migration_name: string
+          project_key: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          migration_description?: string | null
+          migration_name?: string
+          project_key?: string
+        }
+        Relationships: []
+      }
       analytics_events: {
         Row: {
           event_data: Json | null
