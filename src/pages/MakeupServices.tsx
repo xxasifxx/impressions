@@ -5,6 +5,9 @@ import CTASection from "@/components/service-sections/CTASection";
 import MakeupServicesCarousel from "@/components/service-sections/MakeupServicesCarousel";
 import { occasionServices, bridalServices, innovativePackages } from "@/data/services/makeupServicesData";
 
+// Removed references to .image (fix TS error)
+// The mapping below directly passes the correct properties
+
 const allCategories = [
   { name: "Occasion & Party Glam", data: occasionServices },
   { name: "Bridal Packages", data: bridalServices },
@@ -36,22 +39,13 @@ const MakeupServices = () => {
           </p>
         </div>
 
-        {allCategories.map((cat, i) => (
+        {allCategories.map((cat) => (
           <MakeupServicesCarousel
             key={cat.name}
             category={cat.name}
-            services={cat.data.map((svc) => ({
-              before: svc.before || svc.image, // fallback to provided image if before/after split not available
-              after: svc.after || svc.image,
-              title: svc.title,
-              price: svc.price,
-              duration: svc.duration,
-              description: svc.description,
-              details: svc.details,
-            }))}
+            services={cat.data}
           />
         ))}
-
       </div>
 
       <div id="book-makeup">
@@ -71,3 +65,4 @@ const MakeupServices = () => {
 };
 
 export default MakeupServices;
+
