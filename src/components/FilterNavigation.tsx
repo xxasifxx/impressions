@@ -26,7 +26,7 @@ const iconMap = {
 
 const FilterNavigation = ({ filterCategories, activeFilter, onFilterChange }: FilterNavigationProps) => {
   return (
-    <div className="w-1/5 bg-gradient-to-br from-red-50 to-stone-50 p-6 border-r border-stone-200">
+    <div className="w-80 flex-shrink-0 bg-gradient-to-br from-red-50 to-stone-50 p-6 border-r border-stone-200">
       <div className="sticky top-8">
         <h2 className="text-3xl font-light text-stone-800 mb-6" style={{ fontFamily: 'Imperial Script, cursive', letterSpacing: '0.08em' }}>
           What Are You Looking For?
@@ -54,7 +54,7 @@ const FilterNavigation = ({ filterCategories, activeFilter, onFilterChange }: Fi
                     }`} />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-stone-800 text-base" style={{ fontFamily: 'Playfair Display, serif' }}>{category.title}</h3>
+                    <h3 className="font-medium text-stone-800 text-base" style={{ fontFamily: 'Playfair Display, serif' }}>{category.title}</h3>
                     <p className="text-sm text-stone-500">{category.subtitle}</p>
                   </div>
                 </div>
