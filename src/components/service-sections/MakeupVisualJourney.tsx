@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { Eye, Lips, GalleryHorizontal, Camera } from 'lucide-react';
+import { Eye, Smile, GalleryHorizontal, Camera } from 'lucide-react';
 
 const journeySteps = [
   {
@@ -10,7 +10,7 @@ const journeySteps = [
     description: "Mastering the art of expression with precise liners, blended shadows, and captivating lashes."
   },
   {
-    icon: <Lips className="w-12 h-12 text-rose-600" />,
+    icon: <Smile className="w-12 h-12 text-rose-600" />,
     title: "Lips: The Perfect Pout",
     description: "Defining and enhancing with rich colors and perfect finishes, from matte to high-gloss."
   },
