@@ -72,7 +72,7 @@ const MakeupCategorySection: React.FC<MakeupCategorySectionProps> = ({
           {/* Before/After Reveal: modular, accessible, animated */}
           <div className="flex-1 flex justify-center">
             <BeforeAfterReveal
-              key={activeSvc.title} // Force unmount/remount for instant swap
+              key={activeSvc.title}
               before={activeSvc.before}
               after={activeSvc.after}
               title={activeSvc.title}
@@ -80,7 +80,7 @@ const MakeupCategorySection: React.FC<MakeupCategorySectionProps> = ({
           </div>
 
           {/* Service tab switcher and info */}
-          <div className="flex-1 px-2">
+          <div className="flex-1 px-2 w-full">
             <div className="flex gap-3 mb-8 flex-wrap" role="tablist" aria-label={`${title} service selector`}>
               {services.map((svc, idx) => (
                 <button
@@ -90,11 +90,10 @@ const MakeupCategorySection: React.FC<MakeupCategorySectionProps> = ({
                   onFocus={() => setActiveIdx(idx)}
                   onClick={() => setActiveIdx(idx)}
                   onKeyDown={e => handleTabKeyDown(e, idx)}
-                  className={`px-6 py-2 rounded-full text-base font-bold transition-all shadow 
-                    ${idx === activeIdx
-                      ? "bg-gradient-to-r from-rose-600 to-purple-600 text-white scale-105"
-                      : "bg-stone-100 text-stone-600 hover:scale-110 focus:ring-2 focus:ring-rose-500"}`}
-                  style={{ fontFamily: idx === activeIdx ? 'Imperial Script, cursive' : undefined }}
+                  className={`px-6 py-2 rounded-full text-base font-semibold transition-all shadow bg-stone-100 text-stone-700 hover:bg-rose-200 hover:scale-110 focus:ring-2 focus:ring-rose-500
+                    ${idx === activeIdx ? "bg-gradient-to-r from-rose-600 to-purple-600 text-white font-bold scale-105 shadow-lg" : ""}`}
+                  // Consistent modern sans-serif font for all tabs
+                  style={{ fontFamily: "inherit" }}
                   aria-current={idx === activeIdx}
                   aria-selected={idx === activeIdx}
                   aria-controls={`panel-${title}-${idx}`}
@@ -106,6 +105,7 @@ const MakeupCategorySection: React.FC<MakeupCategorySectionProps> = ({
                 </button>
               ))}
             </div>
+            {/* Panel: mobile = concise, desktop = immersive */}
             <div
               id={`panel-${title}-${activeIdx}`}
               role="tabpanel"
@@ -113,25 +113,52 @@ const MakeupCategorySection: React.FC<MakeupCategorySectionProps> = ({
               tabIndex={0}
               className="animate-fade-in"
             >
-              <h3 className="text-2xl font-bold mb-2 text-rose-700">{activeSvc.title}</h3>
-              <p className="mb-3 text-stone-600">{activeSvc.description}</p>
-              <div className="flex gap-4 items-center text-stone-500 text-base mb-2">
-                <span className="font-semibold text-stone-800">{activeSvc.price}</span>
-                <span>•</span>
-                <span>{activeSvc.duration}</span>
-              </div>
-              {activeSvc.details && (
-                <ul className="list-disc list-inside text-stone-500 mt-3">
-                  {activeSvc.details.map((d, i) => (
-                    <li key={i}>{d}</li>
-                  ))}
-                </ul>
+              {isMobile ? (
+                <div className="bg-white bg-opacity-80 rounded-lg shadow border border-stone-100 p-4">
+                  <h3 className="text-xl font-bold mb-3 text-rose-700">{activeSvc.title}</h3>
+                  <div className="flex gap-3 items-center text-stone-600 mb-2">
+                    <span className="text-base font-semibold">{activeSvc.price}</span>
+                    <span className="text-sm opacity-60">•</span>
+                    <span className="text-base">{activeSvc.duration}</span>
+                  </div>
+                  {activeSvc.details ? (
+                    <ul className="list-disc list-inside text-sm text-stone-600 space-y-1">
+                      {activeSvc.details.map((d, i) => (
+                        <li key={i}>{d}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-stone-600">{activeSvc.description}</p>
+                  )}
+                  <a href="#book-makeup">
+                    <button className="w-full bg-rose-600 hover:bg-rose-700 text-white px-6 py-3 rounded-xl font-bold mt-5 shadow transition">
+                      Book Now
+                    </button>
+                  </a>
+                </div>
+              ) : (
+                <div>
+                  <h3 className="text-2xl font-bold mb-2 text-rose-700">{activeSvc.title}</h3>
+                  <p className="mb-3 text-stone-600">{activeSvc.description}</p>
+                  <div className="flex gap-4 items-center text-stone-500 text-base mb-2">
+                    <span className="font-semibold text-stone-800">{activeSvc.price}</span>
+                    <span>•</span>
+                    <span>{activeSvc.duration}</span>
+                  </div>
+                  {activeSvc.details && (
+                    <ul className="list-disc list-inside text-stone-500 mt-3">
+                      {activeSvc.details.map((d, i) => (
+                        <li key={i}>{d}</li>
+                      ))}
+                    </ul>
+                  )}
+                  <a href="#book-makeup">
+                    <button className="bg-rose-600 hover:bg-rose-700 text-white px-8 py-3 rounded-xl font-bold mt-7 shadow hover:scale-110 transition-transform ring-2 ring-rose-300 focus:ring-4 focus:ring-rose-500">
+                      Book Now
+                    </button>
+                  </a>
+                </div>
               )}
-              <a href="#book-makeup">
-                <button className="bg-rose-600 hover:bg-rose-700 text-white px-8 py-3 rounded-xl font-bold mt-7 shadow hover:scale-110 animate-pulse transition-transform ring-2 ring-rose-300 focus:ring-4 focus:ring-rose-500">
-                  Book Now
-                </button>
-              </a>
             </div>
           </div>
         </div>
