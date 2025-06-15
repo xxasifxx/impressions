@@ -1,10 +1,10 @@
-
 import React from 'react';
 import ServicePageTemplate from '@/components/templates/ServicePageTemplate';
 import HeroSection from '@/components/service-sections/HeroSection';
 import ServiceOptionsGrid from '@/components/service-sections/ServiceOptionsGrid';
 import CTASection from '@/components/service-sections/CTASection';
-import { Palette, Sparkles, Star, Crown, Heart, Users, Clock, Zap } from 'lucide-react';
+import MakeupVisualJourney from '@/components/service-sections/MakeupVisualJourney';
+import { Sparkles, Star, Crown, Heart } from 'lucide-react';
 
 const MakeupServices = () => {
   const occasionServices = [
@@ -326,43 +326,7 @@ const MakeupServices = () => {
         </div>
       </section>
 
-      {/* Trending Looks */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-light mb-6 text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
-              Trending Makeup Looks
-            </h2>
-            <p className="text-lg text-stone-600">Stay ahead with the latest beauty trends</p>
-          </div>
-
-          <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 text-center border border-amber-200">
-              <Zap className="w-12 h-12 text-amber-600 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-stone-800 mb-2">Clean Girl</h3>
-              <p className="text-sm text-stone-600">Effortless, dewy natural glow</p>
-            </div>
-
-            <div className="bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl p-6 text-center border border-rose-200">
-              <Sparkles className="w-12 h-12 text-rose-600 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-stone-800 mb-2">Soft Glam</h3>
-              <p className="text-sm text-stone-600">Polished elegance for any occasion</p>
-            </div>
-
-            <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-6 text-center border border-purple-200">
-              <Star className="w-12 h-12 text-purple-600 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-stone-800 mb-2">Bold Eyes</h3>
-              <p className="text-sm text-stone-600">Statement eyes with perfect precision</p>
-            </div>
-
-            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 text-center border border-emerald-200">
-              <Users className="w-12 h-12 text-emerald-600 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-stone-800 mb-2">Custom Look</h3>
-              <p className="text-sm text-stone-600">Personalized to your unique style</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <MakeupVisualJourney />
 
       <CTASection
         title="Ready for Your Transformation?"
