@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import CTASection from "./CTASection";
 
+// Service type definition
 interface TransformationService {
   before: string;
   after: string;
@@ -12,6 +13,7 @@ interface TransformationService {
   details?: string[];
 }
 
+// Props
 interface MakeupCategorySectionProps {
   title: string;
   services: TransformationService[];
@@ -25,7 +27,7 @@ interface MakeupCategorySectionProps {
     themeText: string;
     additionalInfo?: string;
   };
-  reverse?: boolean; // for zig-zag alternating
+  reverse?: boolean; // for zig-zag alignment
 }
 
 const MakeupCategorySection: React.FC<MakeupCategorySectionProps> = ({
@@ -35,7 +37,7 @@ const MakeupCategorySection: React.FC<MakeupCategorySectionProps> = ({
   reverse = false
 }) => {
   const [activeIdx, setActiveIdx] = useState(0);
-  const active = services[activeIdx];
+  const activeSvc = services[activeIdx];
 
   return (
     <section className={`py-16 ${reverse ? 'bg-rose-50/60' : ''}`}>
@@ -46,19 +48,19 @@ const MakeupCategorySection: React.FC<MakeupCategorySectionProps> = ({
           </h2>
         </div>
 
+        {/* Zig-zag row: image left/right alternating by reverse prop */}
         <div className={`flex flex-col md:flex-row items-center gap-10 md:gap-20 ${reverse ? "md:flex-row-reverse" : ""}`}>
-          {/* Before/After reveal */}
+          {/* Before/After reveal for current tab */}
           <div className="flex-1 flex justify-center">
             <div className="relative group w-80 h-96 rounded-3xl shadow-xl overflow-hidden hover-scale bg-white border border-stone-100">
               <img
-                src={active.before}
-                alt={active.title + " Before"}
+                src={activeSvc.before}
+                alt={activeSvc.title + " Before"}
                 className="w-full h-full object-cover absolute inset-0 z-10 transition-all duration-700"
               />
-              {/* After image reveals on hover/tap */}
               <img
-                src={active.after}
-                alt={active.title + " After"}
+                src={activeSvc.after}
+                alt={activeSvc.title + " After"}
                 className="w-full h-full object-cover absolute inset-0 z-20 transition-all duration-700 translate-x-full group-hover:translate-x-0 group-active:translate-x-0"
               />
               {/* Labels */}
@@ -74,9 +76,8 @@ const MakeupCategorySection: React.FC<MakeupCategorySectionProps> = ({
             </div>
           </div>
 
-          {/* Service Details & Tab Switch */}
+          {/* Service tab switcher and info */}
           <div className="flex-1 px-2">
-            {/* Service tab list */}
             <div className="flex gap-3 mb-8 flex-wrap">
               {services.map((svc, idx) => (
                 <button
@@ -95,16 +96,16 @@ const MakeupCategorySection: React.FC<MakeupCategorySectionProps> = ({
                 </button>
               ))}
             </div>
-            <h3 className="text-2xl font-bold mb-2 text-rose-700">{active.title}</h3>
-            <p className="mb-3 text-stone-600">{active.description}</p>
+            <h3 className="text-2xl font-bold mb-2 text-rose-700">{activeSvc.title}</h3>
+            <p className="mb-3 text-stone-600">{activeSvc.description}</p>
             <div className="flex gap-4 items-center text-stone-500 text-base mb-2">
-              <span className="font-semibold text-stone-800">{active.price}</span>
+              <span className="font-semibold text-stone-800">{activeSvc.price}</span>
               <span>•</span>
-              <span>{active.duration}</span>
+              <span>{activeSvc.duration}</span>
             </div>
-            {active.details && (
+            {activeSvc.details && (
               <ul className="list-disc list-inside text-stone-500 mt-3">
-                {active.details.map((d, i) => (
+                {activeSvc.details.map((d, i) => (
                   <li key={i}>{d}</li>
                 ))}
               </ul>
@@ -116,7 +117,6 @@ const MakeupCategorySection: React.FC<MakeupCategorySectionProps> = ({
             </a>
           </div>
         </div>
-
         {/* CTA */}
         <div id="book-makeup" className="mt-14">
           <CTASection {...cta} />

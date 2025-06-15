@@ -1,11 +1,42 @@
+
 import React from "react";
 import ServicePageTemplate from "@/components/templates/ServicePageTemplate";
 import MakeupCategorySection from "@/components/service-sections/MakeupCategorySection";
 import { occasionServices, bridalServices, innovativePackages } from "@/data/services/makeupServicesData";
-import { CATEGORY_CONFIG } from "@/components/service-sections/MakeupCategoryTabs";
 
-// Removed references to .image (fix TS error)
-// The mapping below directly passes the correct properties
+// Direct CTA config for each category
+const CTA_CONFIGS = {
+  Occasion: {
+    title: "Glam For Every Occasion",
+    description: "Perfect for nights out, family events, or stylish gatherings.",
+    phoneNumber: "(732) 613-1942",
+    backLink: "/services",
+    backLinkText: "Explore All Services",
+    theme: "bg-gradient-to-r from-rose-600 to-purple-600",
+    themeText: "text-rose-100",
+    additionalInfo: "Walk-ins available • Express options for parties"
+  },
+  Bridal: {
+    title: "Bridal Makeup Perfection",
+    description: "Book early for your wedding date and ensure a flawless look.",
+    phoneNumber: "(732) 613-1942",
+    backLink: "/services",
+    backLinkText: "See All Services",
+    theme: "bg-gradient-to-r from-pink-400 to-rose-500",
+    themeText: "text-pink-50",
+    additionalInfo: "Bridal previews & consultations available."
+  },
+  Innovative: {
+    title: "Level Up Your Look",
+    description: "Learn stylish techniques or try something totally new.",
+    phoneNumber: "(732) 613-1942",
+    backLink: "/services",
+    backLinkText: "Back to All Services",
+    theme: "bg-gradient-to-r from-purple-700 to-indigo-400",
+    themeText: "text-indigo-50",
+    additionalInfo: "Hands-on lessons and creative makeovers."
+  }
+};
 
 const MakeupServices = () => {
   return (
@@ -32,22 +63,21 @@ const MakeupServices = () => {
           </p>
         </div>
       </div>
-      {/* Stack the three zig-zag sections */}
       <MakeupCategorySection
-        title={CATEGORY_CONFIG.Occasion.title}
-        services={CATEGORY_CONFIG.Occasion.services}
-        cta={CATEGORY_CONFIG.Occasion.cta}
+        title="Occasion & Party Glam"
+        services={occasionServices}
+        cta={CTA_CONFIGS.Occasion}
       />
       <MakeupCategorySection
-        title={CATEGORY_CONFIG.Bridal.title}
-        services={CATEGORY_CONFIG.Bridal.services}
-        cta={CATEGORY_CONFIG.Bridal.cta}
+        title="Bridal Packages"
+        services={bridalServices}
+        cta={CTA_CONFIGS.Bridal}
         reverse
       />
       <MakeupCategorySection
-        title={CATEGORY_CONFIG.Innovative.title}
-        services={CATEGORY_CONFIG.Innovative.services}
-        cta={CATEGORY_CONFIG.Innovative.cta}
+        title="Innovative Looks & Lessons"
+        services={innovativePackages}
+        cta={CTA_CONFIGS.Innovative}
       />
     </ServicePageTemplate>
   );
