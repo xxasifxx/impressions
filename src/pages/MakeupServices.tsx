@@ -1,8 +1,8 @@
-
 import React from "react";
 import ServicePageTemplate from "@/components/templates/ServicePageTemplate";
 import CTASection from "@/components/service-sections/CTASection";
 import MakeupServicesCarousel from "@/components/service-sections/MakeupServicesCarousel";
+import MakeupCategoryTabs from "@/components/service-sections/MakeupCategoryTabs";
 import { occasionServices, bridalServices, innovativePackages } from "@/data/services/makeupServicesData";
 
 // Removed references to .image (fix TS error)
@@ -39,30 +39,11 @@ const MakeupServices = () => {
           </p>
         </div>
 
-        {allCategories.map((cat) => (
-          <MakeupServicesCarousel
-            key={cat.name}
-            category={cat.name}
-            services={cat.data}
-          />
-        ))}
-      </div>
-
-      <div id="book-makeup">
-        <CTASection
-          title="Ready for Your Transformation?"
-          description="Book your makeup session and discover your most beautiful self"
-          phoneNumber="(732) 613-1942"
-          backLink="/services"
-          backLinkText="Explore All Services"
-          theme="bg-gradient-to-r from-rose-600 to-purple-600"
-          themeText="text-rose-100"
-          additionalInfo="Same day appointments available • Free consultation with every service"
-        />
+        {/* Category tab switcher for all makeup */}
+        <MakeupCategoryTabs />
       </div>
     </ServicePageTemplate>
   );
 };
 
 export default MakeupServices;
-
