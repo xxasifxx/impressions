@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Clock, Zap, Palette, RefreshCw } from 'lucide-react';
+import AppointmentBookingModal from '@/components/AppointmentBookingModal';
 
 const RootTouchUp = () => {
   const touchUpOptions = [
@@ -102,9 +102,19 @@ const RootTouchUp = () => {
               <div className="text-xs text-stone-500 tracking-wide">Quick Color Refresh • Perfect Maintenance</div>
             </div>
             
-            <Button size="sm" className="bg-red-700 hover:bg-red-800">
-              Book Touch-Up - $65+
-            </Button>
+            <AppointmentBookingModal
+              trigger={
+                <Button size="sm" className="bg-red-700 hover:bg-red-800">
+                  Book Touch-Up - $65+
+                </Button>
+              }
+              prefilledService={{
+                name: "Root Touch-Up Service",
+                price: "$65+",
+                duration: "45-75 minutes"
+              }}
+              sourcePage="root-touch-up-header"
+            />
           </div>
         </div>
       </header>
@@ -168,9 +178,19 @@ const RootTouchUp = () => {
                       <span>{option.coverage}</span>
                     </div>
                   </div>
-                  <Button className="w-full bg-emerald-600 hover:bg-emerald-700">
-                    Book This Service
-                  </Button>
+                  <AppointmentBookingModal
+                    trigger={
+                      <Button className="w-full bg-emerald-600 hover:bg-emerald-700">
+                        Book This Service
+                      </Button>
+                    }
+                    prefilledService={{
+                      name: option.title,
+                      price: option.price,
+                      duration: option.duration
+                    }}
+                    sourcePage={`root-touch-up-${option.title.toLowerCase().replace(/\s+/g, '-')}`}
+                  />
                 </div>
               </div>
             ))}
@@ -284,18 +304,26 @@ const RootTouchUp = () => {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* CTA - Updated to be more strategic */}
       <section className="py-16 bg-emerald-600 text-white">
         <div className="container mx-auto px-4 text-center">
           <h3 className="text-4xl font-light mb-6" style={{ fontFamily: 'Imperial Script, cursive' }}>
-            Time for a Touch-Up?
+            Ready for Your Touch-Up?
           </h3>
           <p className="text-xl mb-8 text-emerald-100">
-            Keep your color looking fresh and vibrant
+            Choose from our specialized root maintenance services above, or call for a consultation
           </p>
-          <Button size="lg" className="bg-white text-emerald-700 hover:bg-emerald-50 px-12 py-4 text-lg">
-            Book Root Touch-Up - Starting at $65
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 px-12 py-4 text-lg">
+              Call (732) 613-1942
+            </Button>
+            <Link to="/hair-services">
+              <Button size="lg" className="bg-white text-emerald-700 hover:bg-emerald-50 px-12 py-4 text-lg">
+                Explore All Services
+              </Button>
+            </Link>
+          </div>
+          <p className="text-emerald-200 mt-6">Professional color maintenance • Quick 45-75 minute appointments</p>
         </div>
       </section>
     </div>
