@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from "react";
 import CTASection from "./CTASection";
 import BeforeAfterReveal from "./BeforeAfterReveal";
@@ -71,6 +72,7 @@ const MakeupCategorySection: React.FC<MakeupCategorySectionProps> = ({
           {/* Before/After Reveal: modular, accessible, animated */}
           <div className="flex-1 flex justify-center">
             <BeforeAfterReveal
+              key={activeSvc.title} // Force unmount/remount for instant swap
               before={activeSvc.before}
               after={activeSvc.after}
               title={activeSvc.title}
@@ -143,3 +145,4 @@ const MakeupCategorySection: React.FC<MakeupCategorySectionProps> = ({
 };
 
 export default MakeupCategorySection;
+
