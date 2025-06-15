@@ -34,11 +34,11 @@ const CTASection = ({
           {description}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 px-12 py-4 text-lg">
+          <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-stone-800 px-12 py-4 text-lg">
             Call {phoneNumber}
           </Button>
           <Link to={backLink}>
-            <Button size="lg" className="bg-white text-emerald-700 hover:bg-emerald-50 px-12 py-4 text-lg">
+            <Button size="lg" className="bg-white text-stone-800 hover:bg-stone-100 hover:text-stone-900 px-12 py-4 text-lg">
               {backLinkText}
             </Button>
           </Link>
