@@ -1,18 +1,11 @@
 import React from "react";
 import ServicePageTemplate from "@/components/templates/ServicePageTemplate";
-import CTASection from "@/components/service-sections/CTASection";
-import MakeupServicesCarousel from "@/components/service-sections/MakeupServicesCarousel";
-import MakeupCategoryTabs from "@/components/service-sections/MakeupCategoryTabs";
+import MakeupCategorySection from "@/components/service-sections/MakeupCategorySection";
 import { occasionServices, bridalServices, innovativePackages } from "@/data/services/makeupServicesData";
+import { CATEGORY_CONFIG } from "@/components/service-sections/MakeupCategoryTabs";
 
 // Removed references to .image (fix TS error)
 // The mapping below directly passes the correct properties
-
-const allCategories = [
-  { name: "Occasion & Party Glam", data: occasionServices },
-  { name: "Bridal Packages", data: bridalServices },
-  { name: "Innovative Looks & Lessons", data: innovativePackages }
-];
 
 const MakeupServices = () => {
   return (
@@ -35,13 +28,27 @@ const MakeupServices = () => {
             Discover The Art of Makeup
           </h1>
           <p className="text-xl text-stone-600 max-w-2xl mx-auto">
-            Every transformation at Impressions is a unique journey — explore before & afters for every occasion, event, and adventure.
+            Every transformation at Impressions is a unique journey — hover on each service to reveal before & after.
           </p>
         </div>
-
-        {/* Category tab switcher for all makeup */}
-        <MakeupCategoryTabs />
       </div>
+      {/* Stack the three zig-zag sections */}
+      <MakeupCategorySection
+        title={CATEGORY_CONFIG.Occasion.title}
+        services={CATEGORY_CONFIG.Occasion.services}
+        cta={CATEGORY_CONFIG.Occasion.cta}
+      />
+      <MakeupCategorySection
+        title={CATEGORY_CONFIG.Bridal.title}
+        services={CATEGORY_CONFIG.Bridal.services}
+        cta={CATEGORY_CONFIG.Bridal.cta}
+        reverse
+      />
+      <MakeupCategorySection
+        title={CATEGORY_CONFIG.Innovative.title}
+        services={CATEGORY_CONFIG.Innovative.services}
+        cta={CATEGORY_CONFIG.Innovative.cta}
+      />
     </ServicePageTemplate>
   );
 };
