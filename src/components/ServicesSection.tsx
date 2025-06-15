@@ -10,70 +10,77 @@ const ServicesSection = () => {
       description: "Professional cuts for all ages, from children's first haircuts to trendy adult styles. Blowouts, updos, and special occasion styling.",
       icon: Scissors,
       image: "/lovable-uploads/f41c2f8a-628b-41e1-b27c-4fab5011976b.png",
-      features: ["Kids & Adult Cuts", "Blowouts & Styling", "Special Occasion Updos", "Curls & Texture"]
+      features: ["Kids & Adult Cuts", "Blowouts & Styling", "Special Occasion Updos", "Curls & Texture"],
+      gradient: "from-blue-500 to-indigo-600"
     },
     {
       title: "Hair Coloring",
       description: "From subtle highlights to bold transformations. Root touch-ups, full color, balayage, and color corrections by experienced colorists.",
       icon: Palette,
       image: "/lovable-uploads/f41c2f8a-628b-41e1-b27c-4fab5011976b.png",
-      features: ["Highlights & Lowlights", "Full Color", "Balayage", "Color Correction"]
+      features: ["Highlights & Lowlights", "Full Color", "Balayage", "Color Correction"],
+      gradient: "from-purple-500 to-pink-600"
     },
     {
       title: "Makeup & Lashes",
       description: "Professional makeup for weddings, special events, and everyday looks. Expert lash extensions and eyebrow threading services.",
       icon: Crown,
       image: "/lovable-uploads/5b93eca0-6808-4052-af4d-cf567c69ecdf.png",
-      features: ["Bridal Makeup", "Lash Extensions", "Eyebrow Threading", "Special Events"]
+      features: ["Bridal Makeup", "Lash Extensions", "Eyebrow Threading", "Special Events"],
+      gradient: "from-rose-500 to-orange-500"
     },
     {
       title: "Specialty Services",
       description: "Unique cultural beauty services including henna tattoo artistry and specialized treatments for diverse beauty traditions.",
       icon: Sparkles,
       image: "/lovable-uploads/fbc6cbfd-042f-414f-bb0d-e91e731efe1f.png",
-      features: ["Henna Tattoo Artistry", "Cultural Beauty Services", "Eyebrow Shaping", "Special Occasion Packages"]
+      features: ["Henna Tattoo Artistry", "Cultural Beauty Services", "Eyebrow Shaping", "Special Occasion Packages"],
+      gradient: "from-emerald-500 to-teal-600"
     }
   ];
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-24 bg-gradient-to-br from-white via-stone-50 to-amber-50/30">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-stone-900 mb-6 tracking-wide" style={{ fontFamily: 'Fleur De Leah, cursive' }}>Our Services</h2>
-          <p className="text-lg text-stone-600 max-w-2xl mx-auto">
+        <div className="text-center mb-20">
+          <h2 className="text-5xl font-bold text-stone-900 mb-8 tracking-wide animate-fade-in" style={{ fontFamily: 'Fleur De Leah, cursive' }}>Our Services</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-orange-400 mx-auto mb-6 rounded-full"></div>
+          <p className="text-xl text-stone-600 max-w-3xl mx-auto leading-relaxed">
             From everyday maintenance to special occasions, we offer comprehensive beauty services 
             for the whole family in a welcoming, multicultural environment.
           </p>
         </div>
         
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-10">
           {services.map((service, index) => (
-            <div key={index} className="group bg-gradient-to-br from-amber-50 to-stone-50 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="relative overflow-hidden h-48">
+            <div key={index} className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 border border-stone-100">
+              <div className="relative overflow-hidden h-56">
                 <img 
                   src={service.image} 
                   alt={service.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 flex items-center space-x-2">
-                  <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                    <service.icon className="w-5 h-5 text-white" />
+                <div className={`absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent group-hover:from-black/70 transition-all duration-500`}></div>
+                <div className="absolute bottom-6 left-6 flex items-center space-x-3">
+                  <div className={`w-12 h-12 bg-gradient-to-r ${service.gradient} rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                    <service.icon className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold text-white tracking-wide" style={{ fontFamily: 'Fleur De Leah, cursive' }}>{service.title}</h3>
+                  <h3 className="text-2xl font-semibold text-white tracking-wide drop-shadow-lg" style={{ fontFamily: 'Fleur De Leah, cursive' }}>{service.title}</h3>
                 </div>
               </div>
-              <div className="p-6">
-                <p className="text-stone-600 mb-4">{service.description}</p>
-                <div className="space-y-2 mb-6">
+              <div className="p-8">
+                <p className="text-stone-600 mb-6 leading-relaxed text-lg">{service.description}</p>
+                <div className="space-y-3 mb-8">
                   {service.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center space-x-2">
-                      <div className="w-1.5 h-1.5 bg-amber-400 rounded-full"></div>
-                      <span className="text-sm text-stone-600">{feature}</span>
+                    <div key={idx} className="flex items-center space-x-3 group/feature hover:bg-stone-50 p-2 rounded-lg transition-colors duration-300">
+                      <div className={`w-2 h-2 bg-gradient-to-r ${service.gradient} rounded-full group-hover/feature:scale-125 transition-transform duration-300`}></div>
+                      <span className="text-stone-600 group-hover/feature:text-stone-800 transition-colors duration-300">{feature}</span>
                     </div>
                   ))}
                 </div>
-                <Button variant="outline" className="w-full border-amber-200 text-amber-700 hover:bg-amber-50 hover:text-amber-800">
+                <Button 
+                  className={`w-full bg-gradient-to-r ${service.gradient} hover:shadow-xl text-white py-3 text-lg font-medium rounded-xl transition-all duration-300 hover:scale-105`}
+                >
                   Learn More & Book
                 </Button>
               </div>
