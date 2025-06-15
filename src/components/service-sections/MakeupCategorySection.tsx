@@ -1,7 +1,7 @@
-
 import React, { useState, useRef } from "react";
 import CTASection from "./CTASection";
 import BeforeAfterReveal from "./BeforeAfterReveal";
+import AppointmentBookingModal from "@/components/AppointmentBookingModal";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 // Service type definition
@@ -28,6 +28,12 @@ interface MakeupCategorySectionProps {
     theme: string;
     themeText: string;
     additionalInfo?: string;
+    prefilledService?: {
+      name: string;
+      price: string;
+      duration: string;
+    };
+    sourcePage?: string;
   };
   reverse?: boolean; // for zig-zag alignment
 }
@@ -126,11 +132,19 @@ const MakeupCategorySection: React.FC<MakeupCategorySectionProps> = ({
                         ))}
                       </ul>
                     )}
-                    <a href="#book-makeup">
-                      <button className="w-full bg-rose-600 hover:bg-rose-700 text-white px-5 py-2.5 rounded-xl font-bold mt-4 shadow transition text-base">
-                        Book Now
-                      </button>
-                    </a>
+                    <AppointmentBookingModal
+                      trigger={
+                        <button className="w-full bg-rose-600 hover:bg-rose-700 text-white px-5 py-2.5 rounded-xl font-bold mt-4 shadow transition text-base">
+                          Book Now
+                        </button>
+                      }
+                      prefilledService={{
+                        name: activeSvc.title,
+                        price: activeSvc.price,
+                        duration: activeSvc.duration
+                      }}
+                      sourcePage={`makeup-${title.toLowerCase().replace(/\s+/g, '-')}-mobile`}
+                    />
                   </div>
                 ) : (
                   <div className="pr-2">
@@ -148,11 +162,19 @@ const MakeupCategorySection: React.FC<MakeupCategorySectionProps> = ({
                         ))}
                       </ul>
                     )}
-                    <a href="#book-makeup">
-                      <button className="bg-rose-600 hover:bg-rose-700 text-white px-8 py-3 rounded-xl font-bold mt-5 shadow hover:scale-105 transition-transform ring-2 ring-rose-300 focus:ring-4 focus:ring-rose-500 text-lg">
-                        Book Now
-                      </button>
-                    </a>
+                    <AppointmentBookingModal
+                      trigger={
+                        <button className="bg-rose-600 hover:bg-rose-700 text-white px-8 py-3 rounded-xl font-bold mt-5 shadow hover:scale-105 transition-transform ring-2 ring-rose-300 focus:ring-4 focus:ring-rose-500 text-lg">
+                          Book Now
+                        </button>
+                      }
+                      prefilledService={{
+                        name: activeSvc.title,
+                        price: activeSvc.price,
+                        duration: activeSvc.duration
+                      }}
+                      sourcePage={`makeup-${title.toLowerCase().replace(/\s+/g, '-')}-desktop`}
+                    />
                   </div>
                 )}
               </div>
@@ -168,4 +190,3 @@ const MakeupCategorySection: React.FC<MakeupCategorySectionProps> = ({
 };
 
 export default MakeupCategorySection;
-
