@@ -1,55 +1,48 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Phone, Scissors, Palette, Sparkles, Droplets, Heart } from 'lucide-react';
+import { ArrowLeft, Phone, Heart, Shield, Sparkles, Palette, Scissors, Clock, Star } from 'lucide-react';
 import ServiceCard from '@/components/ServiceCard';
-import ServiceCategoryCard from '@/components/ServiceCategoryCard';
 
 const HairServices = () => {
-  const serviceCategories = [
+  const [activeFilter, setActiveFilter] = useState('all');
+
+  const filterCategories = [
     {
-      id: 'cutting',
-      title: 'Cutting & Styling',
-      description: 'Expert cuts, blowouts, and elegant styling for any occasion.',
-      icon: Scissors,
-      link: '/hair-services/precision-cuts',
+      id: 'all',
+      title: 'All Services',
+      subtitle: 'Everything we offer',
+      icon: Star,
+      description: 'Browse our complete range of hair services'
     },
     {
-      id: 'coloring',
-      title: 'Color & Highlights',
-      description: 'From root touch-ups to balayage and bold transformations.',
+      id: 'transformation',
+      title: 'Transform Me',
+      subtitle: 'Bold new looks',
       icon: Palette,
-      link: '/hair-services/balayage',
+      description: 'Ready for a dramatic change? From color corrections to complete makeovers'
     },
     {
-      id: 'treatments',
-      title: 'Hair Treatments',
-      description: 'Nourish and revitalize your hair with our professional treatments.',
-      icon: Droplets,
-      link: '/hair-services/hair-treatments',
-    },
-    {
-      id: 'extensions',
-      title: 'Hair Extensions',
-      description: 'Add instant length and volume with our premium extensions.',
-      icon: Heart,
-      link: '/hair-services/extensions',
+      id: 'maintenance',
+      title: 'Maintain My Look',
+      subtitle: 'Keep it fresh',
+      icon: Scissors,
+      description: 'Touch-ups, trims, and treatments to keep your style perfect'
     },
     {
       id: 'special',
-      title: 'Special Occasions',
-      description: 'Stunning updos and styling for weddings, proms, and events.',
+      title: 'Special Moments',
+      subtitle: 'Important occasions',
       icon: Sparkles,
-      link: '/hair-services/styling-services',
+      description: 'Weddings, events, and celebrations deserve special attention'
     },
-     {
-      id: 'chemical',
-      title: 'Chemical Services',
-      description: 'Perms, relaxers, and other texture-altering services.',
-      icon: Sparkles, // Using sparkles as a placeholder
-      link: '/hair-services/chemical-services',
-    },
+    {
+      id: 'comfort',
+      title: 'Comfort First',
+      subtitle: 'Gentle & caring',
+      icon: Heart,
+      description: 'Services designed for children, seniors, and those seeking privacy'
+    }
   ];
 
   const allServices = [
@@ -290,89 +283,107 @@ const HairServices = () => {
     }
   ];
 
+  const filteredServices = activeFilter === 'all' 
+    ? allServices 
+    : allServices.filter(service => service.categories.includes(activeFilter));
+
+  const activeFilterData = filterCategories.find(cat => cat.id === activeFilter);
+
   return (
-    <div className="min-h-screen bg-stone-50">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-stone-200 sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-2 text-stone-600 hover:text-stone-800">
               <ArrowLeft className="w-4 h-4" />
-              <span className="text-sm font-medium">Back to Home</span>
+              <span className="text-sm font-medium">Back</span>
             </Link>
             
             <div className="text-center">
-              <h1 className="text-3xl font-light text-red-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
+              <h1 className="text-2xl font-light text-stone-800" style={{ fontFamily: 'Imperial Script, cursive' }}>
                 Hair Services
               </h1>
             </div>
             
             <Button size="sm" className="bg-red-700 hover:bg-red-800">
-              <Phone className="w-4 h-4 mr-2" />
-              Book Now
+              <Phone className="w-4 h-4 mr-1" />
+              Call Now
             </Button>
           </div>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-red-50 via-white to-stone-100 text-center">
-        <div className="container mx-auto px-4">
-          <h2 className="text-5xl md:text-6xl font-light text-stone-800 mb-4" style={{ fontFamily: 'Imperial Script, cursive' }}>
-            Your Best Hair Awaits
-          </h2>
-          <p className="text-lg text-stone-600 max-w-3xl mx-auto mb-8">
-            Welcome to Impressions Hair Salon. We are a family-owned salon dedicated to providing exceptional hair care for everyone. Explore our services below to find your perfect look.
-          </p>
-          <div className="flex justify-center gap-4">
-            <Button size="lg" className="bg-stone-800 hover:bg-stone-900">
-              Book a Consultation
-            </Button>
-            <Button size="lg" variant="outline" className="border-stone-400 text-stone-700 hover:bg-stone-100">
-              View All Services
-            </Button>
-          </div>
-        </div>
-      </section>
+      {/* Main Content */}
+      <div className="flex min-h-[calc(100vh-80px)]">
+        {/* Left Side - Filter Navigation */}
+        <div className="w-1/3 bg-gradient-to-br from-red-50 to-stone-50 p-8 border-r border-stone-200">
+          <div className="sticky top-8">
+            <h2 className="text-3xl font-light text-stone-800 mb-3" style={{ fontFamily: 'Imperial Script, cursive' }}>
+              What Are You Looking For?
+            </h2>
+            <p className="text-stone-600 mb-8">
+              Choose what best describes your hair goals
+            </p>
 
-      {/* Service Categories */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h3 className="text-4xl font-light text-stone-800 mb-3" style={{ fontFamily: 'Imperial Script, cursive' }}>
-              Our Hair Services
-            </h3>
-            <p className="text-lg text-stone-600">
-              Find the service that's right for you.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {serviceCategories.map((category) => (
-              <ServiceCategoryCard
-                key={category.id}
-                icon={category.icon}
-                title={category.title}
-                description={category.description}
-                link={category.link}
-              />
-            ))}
+            <div className="space-y-4">
+              {filterCategories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setActiveFilter(category.id)}
+                  className={`w-full text-left p-4 rounded-xl transition-all duration-300 border-2 ${
+                    activeFilter === category.id
+                      ? 'bg-white border-red-200 shadow-lg'
+                      : 'bg-white/50 border-transparent hover:bg-white hover:shadow-md'
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className={`p-2 rounded-lg ${
+                      activeFilter === category.id ? 'bg-red-100' : 'bg-stone-100'
+                    }`}>
+                      <category.icon className={`w-5 h-5 ${
+                        activeFilter === category.id ? 'text-red-600' : 'text-stone-600'
+                      }`} />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-medium text-stone-800 mb-1">{category.title}</h3>
+                      <p className="text-sm text-stone-600 mb-2">{category.subtitle}</p>
+                      <p className="text-xs text-stone-500">{category.description}</p>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            {/* CTA Section */}
+            <div className="mt-8 p-6 bg-gradient-to-r from-red-600 to-red-700 rounded-xl text-white">
+              <h3 className="text-lg font-light mb-2" style={{ fontFamily: 'Imperial Script, cursive' }}>
+                Still Not Sure?
+              </h3>
+              <p className="text-sm text-red-100 mb-4">
+                Book a consultation and let our experts guide you
+              </p>
+              <Button size="sm" className="bg-white text-red-700 hover:bg-red-50 w-full">
+                Free Consultation
+              </Button>
+            </div>
           </div>
         </div>
-      </section>
-      
-      {/* All Services Showcase */}
-      <section className="py-20 bg-stone-100">
-        <div className="container mx-auto px-4">
-           <div className="text-center mb-16">
-            <h3 className="text-4xl font-light text-stone-800 mb-3" style={{ fontFamily: 'Imperial Script, cursive' }}>
-              Explore All Services
-            </h3>
-            <p className="text-lg text-stone-600">
-              A complete list of our professional hair services.
+
+        {/* Right Side - Service Gallery */}
+        <div className="flex-1 p-8">
+          <div className="mb-6">
+            <h2 className="text-2xl font-light text-stone-800 mb-2" style={{ fontFamily: 'Imperial Script, cursive' }}>
+              {activeFilterData?.title}
+            </h2>
+            <p className="text-stone-600">{activeFilterData?.description}</p>
+            <p className="text-sm text-stone-500 mt-1">
+              {filteredServices.length} service{filteredServices.length !== 1 ? 's' : ''} available
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {allServices.map((service) => (
+
+          <div className="grid grid-cols-2 gap-6">
+            {filteredServices.map((service) => (
               <ServiceCard
                 key={service.id}
                 id={service.id}
@@ -388,8 +399,14 @@ const HairServices = () => {
               />
             ))}
           </div>
+
+          {filteredServices.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-stone-500">No services match your current selection.</p>
+            </div>
+          )}
         </div>
-      </section>
+      </div>
     </div>
   );
 };
