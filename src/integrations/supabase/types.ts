@@ -83,6 +83,113 @@ export type Database = {
           },
         ]
       }
+      appointment_notifications: {
+        Row: {
+          appointment_id: string
+          created_at: string
+          id: string
+          notification_type: string
+          sent_at: string | null
+          status: string
+        }
+        Insert: {
+          appointment_id: string
+          created_at?: string
+          id?: string
+          notification_type: string
+          sent_at?: string | null
+          status?: string
+        }
+        Update: {
+          appointment_id?: string
+          created_at?: string
+          id?: string
+          notification_type?: string
+          sent_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointment_notifications_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      appointments: {
+        Row: {
+          appointment_date: string
+          appointment_time: string
+          client_email: string
+          client_name: string
+          client_phone: string | null
+          created_at: string
+          duration_minutes: number
+          google_calendar_event_id: string | null
+          id: string
+          notes: string | null
+          service_id: string | null
+          source_page: string | null
+          specialist_id: string | null
+          status: string
+          total_price: number | null
+          updated_at: string
+        }
+        Insert: {
+          appointment_date: string
+          appointment_time: string
+          client_email: string
+          client_name: string
+          client_phone?: string | null
+          created_at?: string
+          duration_minutes?: number
+          google_calendar_event_id?: string | null
+          id?: string
+          notes?: string | null
+          service_id?: string | null
+          source_page?: string | null
+          specialist_id?: string | null
+          status?: string
+          total_price?: number | null
+          updated_at?: string
+        }
+        Update: {
+          appointment_date?: string
+          appointment_time?: string
+          client_email?: string
+          client_name?: string
+          client_phone?: string | null
+          created_at?: string
+          duration_minutes?: number
+          google_calendar_event_id?: string | null
+          id?: string
+          notes?: string | null
+          service_id?: string | null
+          source_page?: string | null
+          specialist_id?: string | null
+          status?: string
+          total_price?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointments_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "salon_services"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_specialist_id_fkey"
+            columns: ["specialist_id"]
+            isOneToOne: false
+            referencedRelation: "salon_specialists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       companies: {
         Row: {
           created_at: string | null
@@ -1033,6 +1140,233 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      salon_clients: {
+        Row: {
+          allergies: string[] | null
+          created_at: string | null
+          email: string
+          first_name: string
+          hair_type: string | null
+          id: string
+          last_name: string
+          phone: string | null
+          preferences: Json | null
+          previous_services: string[] | null
+          updated_at: string | null
+        }
+        Insert: {
+          allergies?: string[] | null
+          created_at?: string | null
+          email: string
+          first_name: string
+          hair_type?: string | null
+          id?: string
+          last_name: string
+          phone?: string | null
+          preferences?: Json | null
+          previous_services?: string[] | null
+          updated_at?: string | null
+        }
+        Update: {
+          allergies?: string[] | null
+          created_at?: string | null
+          email?: string
+          first_name?: string
+          hair_type?: string | null
+          id?: string
+          last_name?: string
+          phone?: string | null
+          preferences?: Json | null
+          previous_services?: string[] | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      salon_services: {
+        Row: {
+          base_price: number | null
+          category: string
+          created_at: string | null
+          description: string | null
+          difficulty_level: string | null
+          duration_max: number | null
+          duration_min: number | null
+          id: string
+          is_active: boolean | null
+          name: string
+          specialist_requirements: string[] | null
+          updated_at: string | null
+        }
+        Insert: {
+          base_price?: number | null
+          category: string
+          created_at?: string | null
+          description?: string | null
+          difficulty_level?: string | null
+          duration_max?: number | null
+          duration_min?: number | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          specialist_requirements?: string[] | null
+          updated_at?: string | null
+        }
+        Update: {
+          base_price?: number | null
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          difficulty_level?: string | null
+          duration_max?: number | null
+          duration_min?: number | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          specialist_requirements?: string[] | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      salon_specialists: {
+        Row: {
+          availability_schedule: Json | null
+          avatar_url: string | null
+          bio: string | null
+          created_at: string | null
+          hourly_rate: number | null
+          id: string
+          is_active: boolean | null
+          name: string
+          specialties: string[] | null
+          updated_at: string | null
+          years_experience: number | null
+        }
+        Insert: {
+          availability_schedule?: Json | null
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          hourly_rate?: number | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          specialties?: string[] | null
+          updated_at?: string | null
+          years_experience?: number | null
+        }
+        Update: {
+          availability_schedule?: Json | null
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          hourly_rate?: number | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          specialties?: string[] | null
+          updated_at?: string | null
+          years_experience?: number | null
+        }
+        Relationships: []
+      }
+      salon_testimonials: {
+        Row: {
+          client_name: string
+          created_at: string | null
+          id: string
+          quote: string
+          rating: number | null
+          service_id: string | null
+          transformation_id: string | null
+          verified: boolean | null
+        }
+        Insert: {
+          client_name: string
+          created_at?: string | null
+          id?: string
+          quote: string
+          rating?: number | null
+          service_id?: string | null
+          transformation_id?: string | null
+          verified?: boolean | null
+        }
+        Update: {
+          client_name?: string
+          created_at?: string | null
+          id?: string
+          quote?: string
+          rating?: number | null
+          service_id?: string | null
+          transformation_id?: string | null
+          verified?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "salon_testimonials_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "salon_services"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "salon_testimonials_transformation_id_fkey"
+            columns: ["transformation_id"]
+            isOneToOne: false
+            referencedRelation: "salon_transformations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      salon_transformations: {
+        Row: {
+          after_image_url: string
+          before_image_url: string
+          client_consent: boolean | null
+          created_at: string | null
+          description: string | null
+          display_order: number | null
+          featured: boolean | null
+          id: string
+          service_id: string | null
+          timeframe: string | null
+          title: string
+        }
+        Insert: {
+          after_image_url: string
+          before_image_url: string
+          client_consent?: boolean | null
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          featured?: boolean | null
+          id?: string
+          service_id?: string | null
+          timeframe?: string | null
+          title: string
+        }
+        Update: {
+          after_image_url?: string
+          before_image_url?: string
+          client_consent?: boolean | null
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          featured?: boolean | null
+          id?: string
+          service_id?: string | null
+          timeframe?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "salon_transformations_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "salon_services"
             referencedColumns: ["id"]
           },
         ]

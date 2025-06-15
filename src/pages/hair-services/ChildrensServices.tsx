@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Scissors, Heart, Star, Gift, Camera, Users } from 'lucide-react';
+import AppointmentBookingModal from '@/components/AppointmentBookingModal';
 
 const ChildrensServices = () => {
   const childrenServices = [
@@ -68,9 +69,14 @@ const ChildrensServices = () => {
               <div className="text-xs text-stone-500 tracking-wide">Gentle Care • Fun Experience • Memory Making</div>
             </div>
             
-            <Button size="sm" className="bg-red-700 hover:bg-red-800">
-              Book Kids Service
-            </Button>
+            <AppointmentBookingModal
+              trigger={
+                <Button size="sm" className="bg-red-700 hover:bg-red-800">
+                  Book Kids Service
+                </Button>
+              }
+              sourcePage="childrens-services-header"
+            />
           </div>
         </div>
       </header>
@@ -135,9 +141,14 @@ const ChildrensServices = () => {
                       </div>
                     ))}
                   </div>
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                    Book This Service
-                  </Button>
+                  <AppointmentBookingModal
+                    trigger={
+                      <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                        Book This Service
+                      </Button>
+                    }
+                    sourcePage={`childrens-services-${service.title.toLowerCase().replace(/\s+/g, '-')}`}
+                  />
                 </div>
               </div>
             ))}
@@ -175,9 +186,14 @@ const ChildrensServices = () => {
             Create magical memories with gentle, patient care
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-blue-700 hover:bg-blue-50 px-12 py-4 text-lg">
-              Book Children's Service - $25
-            </Button>
+            <AppointmentBookingModal
+              trigger={
+                <Button size="lg" className="bg-white text-blue-700 hover:bg-blue-50 px-12 py-4 text-lg">
+                  Book Children's Service - $25
+                </Button>
+              }
+              sourcePage="childrens-services-cta"
+            />
             <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 px-12 py-4 text-lg">
               Call (732) 613-1942
             </Button>

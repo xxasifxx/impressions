@@ -3,6 +3,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Clock, Star, Users } from 'lucide-react';
 import BeforeAfterGallery from './BeforeAfterGallery';
+import AppointmentBookingModal from './AppointmentBookingModal';
+import { Button } from '@/components/ui/button';
 
 interface ServiceCardProps {
   id: string;
@@ -24,6 +26,7 @@ interface ServiceCardProps {
     rating: number;
   };
   specialist?: string;
+  sourcePage?: string;
 }
 
 const ServiceCard = ({
@@ -36,7 +39,8 @@ const ServiceCard = ({
   difficulty,
   duration,
   clientStory,
-  specialist
+  specialist,
+  sourcePage = 'service-card'
 }: ServiceCardProps) => {
   const difficultyColors = {
     Easy: 'bg-green-100 text-green-700',
@@ -45,7 +49,7 @@ const ServiceCard = ({
   };
 
   return (
-    <Link to={link} className="group block">
+    <div className="group block">
       <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-2">
         {/* Before/After Gallery */}
         <BeforeAfterGallery transformations={transformations} />
@@ -102,16 +106,27 @@ const ServiceCard = ({
             </div>
           )}
 
-          {/* CTA */}
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-stone-500">Starting at {price}</span>
-            <div className="text-red-600 group-hover:text-red-700 transition-colors">
-              <span className="text-sm font-medium">View Details →</span>
-            </div>
+          {/* CTAs */}
+          <div className="space-y-3">
+            <AppointmentBookingModal
+              trigger={
+                <Button className="w-full bg-red-600 hover:bg-red-700 text-white">
+                  Book Now - {price}
+                </Button>
+              }
+              defaultServiceId={id}
+              sourcePage={sourcePage}
+            />
+            
+            <Link to={link} className="block">
+              <div className="text-center text-red-600 hover:text-red-700 transition-colors">
+                <span className="text-sm font-medium">View Details →</span>
+              </div>
+            </Link>
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
