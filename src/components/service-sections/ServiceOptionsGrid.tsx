@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Clock, RefreshCw } from 'lucide-react';
+import { Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AppointmentBookingModal from '@/components/AppointmentBookingModal';
 
@@ -10,7 +10,12 @@ interface ServiceOption {
   image: string;
   price: string;
   duration: string;
-  coverage: string;
+  details: string[];
+  prefilledService: {
+    name: string;
+    price: string;
+    duration: string;
+  };
 }
 
 interface ServiceOptionsGridProps {
@@ -44,15 +49,17 @@ const ServiceOptionsGrid = ({ title, description, options, theme, buttonClass }:
                   <span className="text-lg font-bold text-emerald-600">{option.price}</span>
                 </div>
                 <p className="text-stone-600 mb-4">{option.description}</p>
-                <div className="space-y-2 mb-6">
-                  <div className="flex items-center gap-2 text-sm text-stone-500">
-                    <Clock className="w-4 h-4" />
-                    <span>{option.duration}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-stone-500">
-                    <RefreshCw className="w-4 h-4" />
-                    <span>{option.coverage}</span>
-                  </div>
+                <div className="flex items-center gap-2 text-sm text-stone-500 mb-4">
+                  <Clock className="w-4 h-4" />
+                  <span>{option.duration}</span>
+                </div>
+                <div className="space-y-1 mb-6">
+                  {option.details.map((detail, detailIndex) => (
+                    <div key={detailIndex} className="flex items-center gap-2 text-sm text-stone-600">
+                      <div className="w-1.5 h-1.5 bg-emerald-600 rounded-full"></div>
+                      <span>{detail}</span>
+                    </div>
+                  ))}
                 </div>
                 <AppointmentBookingModal
                   trigger={
@@ -60,12 +67,8 @@ const ServiceOptionsGrid = ({ title, description, options, theme, buttonClass }:
                       Book This Service
                     </Button>
                   }
-                  prefilledService={{
-                    name: option.title,
-                    price: option.price,
-                    duration: option.duration
-                  }}
-                  sourcePage={`service-option-${option.title.toLowerCase().replace(/\s+/g, '-')}`}
+                  prefilledService={option.prefilledService}
+                  sourcePage={`${option.title.toLowerCase().replace(/\s+/g, '-')}`}
                 />
               </div>
             </div>
