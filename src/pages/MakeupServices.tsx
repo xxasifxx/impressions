@@ -1,4 +1,3 @@
-
 import React from "react";
 import ServicePageTemplate from "@/components/templates/ServicePageTemplate";
 import MakeupCategorySection from "@/components/service-sections/MakeupCategorySection";
@@ -66,18 +65,42 @@ const MakeupServices = () => {
       <MakeupCategorySection
         title="Occasion & Party Glam"
         services={occasionServices}
-        cta={CTA_CONFIGS.Occasion}
+        cta={{
+          ...CTA_CONFIGS.Occasion,
+          prefilledService: {
+            name: "Occasion & Party Glam",
+            price: "Starting at $55",
+            duration: "45-90 minutes"
+          },
+          sourcePage: "makeup-occasion-cta"
+        }}
       />
       <MakeupCategorySection
         title="Bridal Packages"
         services={bridalServices}
-        cta={CTA_CONFIGS.Bridal}
+        cta={{
+          ...CTA_CONFIGS.Bridal,
+          prefilledService: {
+            name: "Bridal Packages",
+            price: "Starting at $125",
+            duration: "90-150 minutes"
+          },
+          sourcePage: "makeup-bridal-cta"
+        }}
         reverse
       />
       <MakeupCategorySection
         title="Innovative Looks & Lessons"
         services={innovativePackages}
-        cta={CTA_CONFIGS.Innovative}
+        cta={{
+          ...CTA_CONFIGS.Innovative,
+          prefilledService: {
+            name: "Innovative Looks & Lessons",
+            price: "Starting at $65",
+            duration: "60-120 minutes"
+          },
+          sourcePage: "makeup-innovative-cta"
+        }}
       />
     </ServicePageTemplate>
   );
