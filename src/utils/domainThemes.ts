@@ -103,7 +103,10 @@ export const domainThemes: Record<DomainType, DomainTheme> = {
       card: 'from-emerald-50/40 to-teal-50/30',
       cta: 'from-emerald-600 to-teal-600'
     },
-    backgroundImage: 'linear-gradient(rgba(236,253,245,0.9), rgba(240,253,250,0.8))',
+    backgroundImage: `
+      linear-gradient(rgba(236,253,245,0.85), rgba(240,253,250,0.85)),
+      url("https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=1200&q=30&blur=1") center/cover no-repeat
+    `,
     buttonStyles: 'bg-emerald-600 hover:bg-emerald-700 text-white',
     cardStyles: 'border-emerald-100 hover:border-emerald-200 shadow-emerald-50'
   }
