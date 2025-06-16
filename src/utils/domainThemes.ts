@@ -34,9 +34,9 @@ export const domainThemes: Record<DomainType, DomainTheme> = {
     name: 'Hair Salon',
     tagline: 'Professional cuts, color & styling since 2010',
     fonts: {
-      heading: 'Imperial Script, cursive',
-      body: 'system-ui, sans-serif',
-      accent: 'serif'
+      heading: 'Playfair Display, serif',
+      body: 'Inter, system-ui, sans-serif',
+      accent: 'Crimson Text, serif'
     },
     colors: {
       primary: '#dc2626', // red-600
@@ -51,7 +51,10 @@ export const domainThemes: Record<DomainType, DomainTheme> = {
       card: 'from-red-50/30 to-stone-50',
       cta: 'from-red-600 to-red-700'
     },
-    backgroundImage: 'linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.8))',
+    backgroundImage: `
+      linear-gradient(rgba(250,245,245,0.9), rgba(255,251,251,0.85)),
+      url("https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=1200&q=20&blur=2") center/cover no-repeat
+    `,
     buttonStyles: 'bg-red-600 hover:bg-red-700 text-white',
     cardStyles: 'border-red-100 hover:border-red-200 shadow-red-50'
   },
@@ -60,9 +63,9 @@ export const domainThemes: Record<DomainType, DomainTheme> = {
     name: 'Makeup Studio',
     tagline: 'Prom, events & everyday glam',
     fonts: {
-      heading: 'Imperial Script, cursive',
-      body: 'system-ui, sans-serif',
-      accent: 'italic'
+      heading: 'Dancing Script, cursive',
+      body: 'Poppins, system-ui, sans-serif',
+      accent: 'Great Vibes, cursive'
     },
     colors: {
       primary: '#ec4899', // pink-500
@@ -77,7 +80,10 @@ export const domainThemes: Record<DomainType, DomainTheme> = {
       card: 'from-pink-50/40 to-purple-50/30',
       cta: 'from-pink-500 to-purple-600'
     },
-    backgroundImage: 'linear-gradient(rgba(253,242,248,0.9), rgba(250,245,255,0.8))',
+    backgroundImage: `
+      linear-gradient(rgba(253,242,248,0.9), rgba(250,245,255,0.85)),
+      url("https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1200&q=20&blur=1") center/cover no-repeat
+    `,
     buttonStyles: 'bg-pink-500 hover:bg-pink-600 text-white',
     cardStyles: 'border-pink-100 hover:border-pink-200 shadow-pink-50'
   },
@@ -86,9 +92,9 @@ export const domainThemes: Record<DomainType, DomainTheme> = {
     name: 'Med Spa',
     tagline: 'Advanced analysis & natural healing',
     fonts: {
-      heading: 'Imperial Script, cursive',
-      body: 'system-ui, sans-serif',
-      accent: 'sans-serif'
+      heading: 'Cormorant Garamond, serif',
+      body: 'Source Sans Pro, system-ui, sans-serif',
+      accent: 'Libre Baskerville, serif'
     },
     colors: {
       primary: '#059669', // emerald-600
@@ -105,7 +111,7 @@ export const domainThemes: Record<DomainType, DomainTheme> = {
     },
     backgroundImage: `
       linear-gradient(rgba(236,253,245,0.85), rgba(240,253,250,0.85)),
-      url("https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=1200&q=30&blur=1") center/cover no-repeat
+      url("https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1200&q=25&blur=1") center/cover no-repeat
     `,
     buttonStyles: 'bg-emerald-600 hover:bg-emerald-700 text-white',
     cardStyles: 'border-emerald-100 hover:border-emerald-200 shadow-emerald-50'
