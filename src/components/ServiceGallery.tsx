@@ -1,48 +1,28 @@
 
 import React from 'react';
 import ServiceCard from '@/components/ServiceCard';
-
-interface Service {
-  id: string;
-  title: string;
-  description: string;
-  price: string;
-  link: string;
-  transformations: Array<{
-    before: string;
-    after: string;
-    title: string;
-    timeframe?: string;
-  }>;
-  difficulty?: 'Easy' | 'Moderate' | 'Complex';
-  duration?: string;
-  clientStory?: {
-    name: string;
-    quote: string;
-    rating: number;
-  };
-  specialist?: string;
-}
-
-interface FilterCategory {
-  id: string;
-  title: string;
-  subtitle: string;
-}
+import { UnifiedService } from '@/data/unifiedServicesData';
 
 interface ServiceGalleryProps {
-  filteredServices: Service[];
-  activeFilterData: FilterCategory | undefined;
+  filteredServices: UnifiedService[];
+  onServiceClick: (service: UnifiedService) => void;
+  activeFilterTitle?: string;
+  activeFilterSubtitle?: string;
 }
 
-const ServiceGallery = ({ filteredServices, activeFilterData }: ServiceGalleryProps) => {
+const ServiceGallery = ({ 
+  filteredServices, 
+  onServiceClick,
+  activeFilterTitle,
+  activeFilterSubtitle 
+}: ServiceGalleryProps) => {
   return (
     <div className="flex-1 p-4 md:p-8">
       <div className="mb-6">
         <h2 className="text-4xl font-light text-stone-800 mb-2" style={{ fontFamily: 'Imperial Script, cursive', letterSpacing: '0.08em' }}>
-          {activeFilterData?.title}
+          {activeFilterTitle || 'All Services'}
         </h2>
-        <p className="text-lg text-stone-600">{activeFilterData?.subtitle}</p>
+        <p className="text-lg text-stone-600">{activeFilterSubtitle || 'Browse our complete service menu'}</p>
         <p className="text-base text-stone-500 mt-1">
           {filteredServices.length} service{filteredServices.length !== 1 ? 's' : ''} available
         </p>
@@ -52,16 +32,8 @@ const ServiceGallery = ({ filteredServices, activeFilterData }: ServiceGalleryPr
         {filteredServices.map((service) => (
           <ServiceCard
             key={service.id}
-            id={service.id}
-            title={service.title}
-            description={service.description}
-            price={service.price}
-            link={service.link}
-            transformations={service.transformations}
-            difficulty={service.difficulty}
-            duration={service.duration}
-            clientStory={service.clientStory}
-            specialist={service.specialist}
+            service={service}
+            onDetailsClick={onServiceClick}
           />
         ))}
       </div>

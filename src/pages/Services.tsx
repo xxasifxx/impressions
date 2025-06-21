@@ -3,9 +3,11 @@ import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Search } from 'lucide-react';
 import { DomainThemeProvider, useDomainTheme } from '@/contexts/DomainThemeContext';
+import { ServiceCartProvider } from '@/contexts/ServiceCartContext';
 import DomainTabs from '@/components/DomainTabs';
 import ServiceDetailModal from '@/components/ServiceDetailModal';
 import ServiceCard from '@/components/ServiceCard';
+import ServiceCart from '@/components/ServiceCart';
 import UserJourneyFilter from '@/components/UserJourneyFilter';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -25,29 +27,43 @@ const ServicesContent = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedJourney, setSelectedJourney] = useState<string | null>(null);
+  const [searchAllDomains, setSearchAllDomains] = useState(false);
 
   const domainServices = getServicesByDomain(currentDomain);
   const categories = getServiceCategories(currentDomain);
 
   const filteredServices = useMemo(() => {
-    let services = selectedJourney 
-      ? getServicesByUserJourney(currentDomain, selectedJourney)
-      : domainServices;
+    // Base services - either domain-specific or all services if searching across domains
+    let services = searchAllDomains ? allUnifiedServices : domainServices;
 
+    // Apply journey filter only if not searching all domains
+    if (selectedJourney && !searchAllDomains) {
+      services = getServicesByUserJourney(currentDomain, selectedJourney);
+    }
+
+    // Apply search filter
     if (searchTerm) {
       services = services.filter(service =>
         service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         service.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        service.category.toLowerCase().includes(searchTerm.toLowerCase())
+        service.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        service.domain.toLowerCase().includes(searchTerm.toLowerCase())
       );
+      // Auto-enable cross-domain search if searching
+      if (!searchAllDomains) {
+        setSearchAllDomains(true);
+      }
+    } else {
+      setSearchAllDomains(false);
     }
 
-    if (selectedCategory !== 'all') {
+    // Apply category filter (only for domain-specific view)
+    if (selectedCategory !== 'all' && !searchAllDomains) {
       services = services.filter(service => service.category === selectedCategory);
     }
 
     return services;
-  }, [domainServices, searchTerm, selectedCategory, selectedJourney, currentDomain]);
+  }, [domainServices, searchTerm, selectedCategory, selectedJourney, currentDomain, searchAllDomains]);
 
   const handleServiceClick = (service: UnifiedService) => {
     setSelectedService(service);
@@ -61,7 +77,9 @@ const ServicesContent = () => {
 
   const handleJourneySelect = (journeyId: string | null) => {
     setSelectedJourney(journeyId);
-    setSelectedCategory('all'); // Reset category filter when selecting journey
+    setSelectedCategory('all');
+    setSearchTerm(''); // Clear search when selecting journey
+    setSearchAllDomains(false);
   };
 
   // Add Google Fonts for the domain-specific fonts
@@ -75,7 +93,8 @@ const ServicesContent = () => {
       'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap',
       'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap',
       'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap',
-      'https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600&display=swap'
+      'https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600&display=swap',
+      'https://fonts.googleapis.com/css2?family=Fleur+De+Leah&display=swap'
     ];
 
     fontLinks.forEach(href => {
@@ -115,7 +134,7 @@ const ServicesContent = () => {
                   color: currentTheme.colors.primary 
                 }}
               >
-                {currentTheme.name}
+                Service Marketplace
               </h1>
               <p 
                 className="text-sm mt-1 transition-all duration-700"
@@ -124,7 +143,7 @@ const ServicesContent = () => {
                   fontFamily: currentTheme.fonts.accent
                 }}
               >
-                {currentTheme.tagline}
+                Book multiple services, get package deals
               </p>
             </div>
             
@@ -149,11 +168,13 @@ const ServicesContent = () => {
         {/* Domain Tabs */}
         <DomainTabs />
         
-        {/* User Journey Filter */}
-        <UserJourneyFilter 
-          selectedJourney={selectedJourney}
-          onJourneySelect={handleJourneySelect}
-        />
+        {/* User Journey Filter - only show if not searching all domains */}
+        {!searchAllDomains && (
+          <UserJourneyFilter 
+            selectedJourney={selectedJourney}
+            onJourneySelect={handleJourneySelect}
+          />
+        )}
         
         {/* Search and Category Filters */}
         <div className="max-w-4xl mx-auto mb-8">
@@ -161,7 +182,7 @@ const ServicesContent = () => {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input
-                placeholder={`Search ${currentTheme.name.toLowerCase()} services...`}
+                placeholder={searchAllDomains ? "Search all services..." : `Search ${currentTheme.name.toLowerCase()} services...`}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 bg-white/90 backdrop-blur-sm border-white/50"
@@ -169,8 +190,24 @@ const ServicesContent = () => {
             </div>
           </div>
 
-          {/* Category Tags */}
-          {!selectedJourney && (
+          {/* Search indicator */}
+          {searchAllDomains && (
+            <div className="mb-4 text-center">
+              <Badge 
+                variant="outline"
+                className="text-sm px-4 py-2"
+                style={{ 
+                  borderColor: currentTheme.colors.primary,
+                  color: currentTheme.colors.primary
+                }}
+              >
+                Searching across all service categories
+              </Badge>
+            </div>
+          )}
+
+          {/* Category Tags - only show for domain-specific view */}
+          {!selectedJourney && !searchAllDomains && (
             <div className="flex flex-wrap gap-2 mb-8">
               <Badge
                 variant={selectedCategory === 'all' ? 'default' : 'outline'}
@@ -220,6 +257,7 @@ const ServicesContent = () => {
                   }}
                 >
                   {filteredServices.length} service{filteredServices.length !== 1 ? 's' : ''} available
+                  {searchAllDomains && ' across all categories'}
                 </p>
               </div>
               
@@ -258,6 +296,7 @@ const ServicesContent = () => {
                   setSearchTerm('');
                   setSelectedCategory('all');
                   setSelectedJourney(null);
+                  setSearchAllDomains(false);
                 }}
                 style={{ 
                   backgroundColor: currentTheme.colors.primary,
@@ -276,6 +315,8 @@ const ServicesContent = () => {
         isOpen={isModalOpen}
         onClose={handleModalClose}
       />
+
+      <ServiceCart />
     </div>
   );
 };
@@ -283,7 +324,9 @@ const ServicesContent = () => {
 const Services = () => {
   return (
     <DomainThemeProvider>
-      <ServicesContent />
+      <ServiceCartProvider>
+        <ServicesContent />
+      </ServiceCartProvider>
     </DomainThemeProvider>
   );
 };

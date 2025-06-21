@@ -1,10 +1,11 @@
 
 import React from 'react';
-import { Clock, Star, Users, Award } from 'lucide-react';
+import { Clock, Star, Users, Award, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { UnifiedService } from '@/data/unifiedServicesData';
 import { useDomainTheme } from '@/contexts/DomainThemeContext';
+import { useServiceCart } from '@/contexts/ServiceCartContext';
 import AppointmentBookingModal from './AppointmentBookingModal';
 
 interface ServiceCardProps {
@@ -14,11 +15,22 @@ interface ServiceCardProps {
 
 const ServiceCard = ({ service, onDetailsClick }: ServiceCardProps) => {
   const { currentTheme } = useDomainTheme();
+  const { addToCart } = useServiceCart();
 
   const difficultyColors = {
     Easy: 'bg-green-100 text-green-700 border-green-200',
     Moderate: 'bg-yellow-100 text-yellow-700 border-yellow-200',
     Advanced: 'bg-red-100 text-red-700 border-red-200'
+  };
+
+  // Get domain badge color
+  const getDomainColor = (domain: string) => {
+    switch (domain) {
+      case 'hair-salon': return 'bg-red-100 text-red-700 border-red-200';
+      case 'makeup-studio': return 'bg-pink-100 text-pink-700 border-pink-200';
+      case 'med-spa': return 'bg-emerald-100 text-emerald-700 border-emerald-200';
+      default: return 'bg-gray-100 text-gray-700 border-gray-200';
+    }
   };
 
   return (
@@ -30,18 +42,24 @@ const ServiceCard = ({ service, onDetailsClick }: ServiceCardProps) => {
           alt={service.name}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
-        {service.featured && (
-          <Badge 
-            className="absolute top-3 left-3"
-            style={{ 
-              backgroundColor: currentTheme.colors.accent,
-              color: 'white'
-            }}
-          >
-            <Award className="w-3 h-3 mr-1" />
-            Featured
+        
+        {/* Badges */}
+        <div className="absolute top-3 left-3 flex flex-col gap-2">
+          {service.featured && (
+            <Badge 
+              className="bg-yellow-500 text-white border-0"
+            >
+              <Award className="w-3 h-3 mr-1" />
+              Featured
+            </Badge>
+          )}
+          
+          {/* Domain Badge */}
+          <Badge className={getDomainColor(service.domain)}>
+            {service.domain.replace('-', ' ')}
           </Badge>
-        )}
+        </div>
+
         {service.difficulty && (
           <Badge 
             className={`absolute top-3 right-3 ${difficultyColors[service.difficulty]}`}
@@ -123,6 +141,21 @@ const ServiceCard = ({ service, onDetailsClick }: ServiceCardProps) => {
 
         {/* CTAs */}
         <div className="space-y-3">
+          {/* Quick Add to Cart */}
+          <Button
+            onClick={() => addToCart(service)}
+            variant="outline"
+            className="w-full"
+            style={{ 
+              borderColor: currentTheme.colors.primary,
+              color: currentTheme.colors.primary
+            }}
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add to Cart - {service.price}
+          </Button>
+
+          {/* Book Single Service */}
           <AppointmentBookingModal
             trigger={
               <Button 
@@ -132,7 +165,7 @@ const ServiceCard = ({ service, onDetailsClick }: ServiceCardProps) => {
                   color: 'white'
                 }}
               >
-                Book {service.name} - {service.price}
+                Book Now - {service.price}
               </Button>
             }
             prefilledService={{
@@ -144,11 +177,10 @@ const ServiceCard = ({ service, onDetailsClick }: ServiceCardProps) => {
           />
           
           <Button
-            variant="outline"
-            className="w-full"
+            variant="ghost"
+            className="w-full text-sm"
             onClick={() => onDetailsClick(service)}
             style={{ 
-              borderColor: currentTheme.colors.primary,
               color: currentTheme.colors.primary
             }}
           >

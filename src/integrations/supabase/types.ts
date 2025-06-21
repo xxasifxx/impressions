@@ -214,6 +214,161 @@ export type Database = {
           },
         ]
       }
+      client_galleries: {
+        Row: {
+          access_code: string | null
+          booking_id: string | null
+          created_at: string | null
+          download_count: number | null
+          download_enabled: boolean | null
+          expiry_date: string | null
+          gallery_name: string
+          id: string
+          is_active: boolean | null
+          updated_at: string | null
+          view_count: number | null
+          watermark_enabled: boolean | null
+        }
+        Insert: {
+          access_code?: string | null
+          booking_id?: string | null
+          created_at?: string | null
+          download_count?: number | null
+          download_enabled?: boolean | null
+          expiry_date?: string | null
+          gallery_name: string
+          id?: string
+          is_active?: boolean | null
+          updated_at?: string | null
+          view_count?: number | null
+          watermark_enabled?: boolean | null
+        }
+        Update: {
+          access_code?: string | null
+          booking_id?: string | null
+          created_at?: string | null
+          download_count?: number | null
+          download_enabled?: boolean | null
+          expiry_date?: string | null
+          gallery_name?: string
+          id?: string
+          is_active?: boolean | null
+          updated_at?: string | null
+          view_count?: number | null
+          watermark_enabled?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_galleries_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "photography_bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      client_gallery_images: {
+        Row: {
+          client_favorite: boolean | null
+          created_at: string | null
+          gallery_id: string | null
+          id: string
+          image_id: string | null
+          is_selected: boolean | null
+        }
+        Insert: {
+          client_favorite?: boolean | null
+          created_at?: string | null
+          gallery_id?: string | null
+          id?: string
+          image_id?: string | null
+          is_selected?: boolean | null
+        }
+        Update: {
+          client_favorite?: boolean | null
+          created_at?: string | null
+          gallery_id?: string | null
+          id?: string
+          image_id?: string | null
+          is_selected?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_gallery_images_gallery_id_fkey"
+            columns: ["gallery_id"]
+            isOneToOne: false
+            referencedRelation: "client_galleries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "client_gallery_images_image_id_fkey"
+            columns: ["image_id"]
+            isOneToOne: false
+            referencedRelation: "photography_images"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      communication_log: {
+        Row: {
+          booking_id: string | null
+          channel: string | null
+          created_at: string | null
+          id: string
+          inquiry_id: string | null
+          message: string
+          metadata: Json | null
+          sent_by: string | null
+          sent_to: string | null
+          status: string | null
+          subject: string | null
+          type: string
+        }
+        Insert: {
+          booking_id?: string | null
+          channel?: string | null
+          created_at?: string | null
+          id?: string
+          inquiry_id?: string | null
+          message: string
+          metadata?: Json | null
+          sent_by?: string | null
+          sent_to?: string | null
+          status?: string | null
+          subject?: string | null
+          type: string
+        }
+        Update: {
+          booking_id?: string | null
+          channel?: string | null
+          created_at?: string | null
+          id?: string
+          inquiry_id?: string | null
+          message?: string
+          metadata?: Json | null
+          sent_by?: string | null
+          sent_to?: string | null
+          status?: string | null
+          subject?: string | null
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communication_log_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "photography_bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "communication_log_inquiry_id_fkey"
+            columns: ["inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "photography_inquiries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       companies: {
         Row: {
           created_at: string | null
@@ -695,6 +850,41 @@ export type Database = {
           },
         ]
       }
+      file_categories: {
+        Row: {
+          color_code: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string
+          parent_category_id: string | null
+        }
+        Insert: {
+          color_code?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          parent_category_id?: string | null
+        }
+        Update: {
+          color_code?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          parent_category_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "file_categories_parent_category_id_fkey"
+            columns: ["parent_category_id"]
+            isOneToOne: false
+            referencedRelation: "file_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       interview_slots: {
         Row: {
           buffer_minutes: number | null
@@ -1124,6 +1314,299 @@ export type Database = {
           },
         ]
       }
+      photography_albums: {
+        Row: {
+          category: string
+          client_name: string | null
+          cover_image_url: string | null
+          created_at: string | null
+          description: string | null
+          display_order: number | null
+          event_date: string | null
+          id: string
+          is_featured: boolean | null
+          is_published: boolean | null
+          metadata: Json | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          client_name?: string | null
+          cover_image_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          event_date?: string | null
+          id?: string
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          metadata?: Json | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          client_name?: string | null
+          cover_image_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          event_date?: string | null
+          id?: string
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          metadata?: Json | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      photography_bookings: {
+        Row: {
+          client_email: string
+          client_name: string
+          client_phone: string | null
+          contract_signed: boolean | null
+          created_at: string | null
+          deposit_amount: number | null
+          deposit_paid: boolean | null
+          event_date: string
+          event_location: string | null
+          event_time: string | null
+          event_type: string
+          final_payment_paid: boolean | null
+          guest_count: number | null
+          id: string
+          inquiry_id: string | null
+          package_id: string | null
+          special_requests: string | null
+          status: string | null
+          total_amount: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          client_email: string
+          client_name: string
+          client_phone?: string | null
+          contract_signed?: boolean | null
+          created_at?: string | null
+          deposit_amount?: number | null
+          deposit_paid?: boolean | null
+          event_date: string
+          event_location?: string | null
+          event_time?: string | null
+          event_type: string
+          final_payment_paid?: boolean | null
+          guest_count?: number | null
+          id?: string
+          inquiry_id?: string | null
+          package_id?: string | null
+          special_requests?: string | null
+          status?: string | null
+          total_amount?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          client_email?: string
+          client_name?: string
+          client_phone?: string | null
+          contract_signed?: boolean | null
+          created_at?: string | null
+          deposit_amount?: number | null
+          deposit_paid?: boolean | null
+          event_date?: string
+          event_location?: string | null
+          event_time?: string | null
+          event_type?: string
+          final_payment_paid?: boolean | null
+          guest_count?: number | null
+          id?: string
+          inquiry_id?: string | null
+          package_id?: string | null
+          special_requests?: string | null
+          status?: string | null
+          total_amount?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "photography_bookings_inquiry_id_fkey"
+            columns: ["inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "photography_inquiries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "photography_bookings_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "photography_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      photography_images: {
+        Row: {
+          album_id: string | null
+          alt_text: string | null
+          created_at: string | null
+          description: string | null
+          display_order: number | null
+          file_name: string
+          file_path: string
+          file_size: number | null
+          file_url: string | null
+          height: number | null
+          id: string
+          is_cover_image: boolean | null
+          metadata: Json | null
+          tags: string[] | null
+          title: string | null
+          updated_at: string | null
+          width: number | null
+        }
+        Insert: {
+          album_id?: string | null
+          alt_text?: string | null
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          file_name: string
+          file_path: string
+          file_size?: number | null
+          file_url?: string | null
+          height?: number | null
+          id?: string
+          is_cover_image?: boolean | null
+          metadata?: Json | null
+          tags?: string[] | null
+          title?: string | null
+          updated_at?: string | null
+          width?: number | null
+        }
+        Update: {
+          album_id?: string | null
+          alt_text?: string | null
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          file_name?: string
+          file_path?: string
+          file_size?: number | null
+          file_url?: string | null
+          height?: number | null
+          id?: string
+          is_cover_image?: boolean | null
+          metadata?: Json | null
+          tags?: string[] | null
+          title?: string | null
+          updated_at?: string | null
+          width?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "photography_images_album_id_fkey"
+            columns: ["album_id"]
+            isOneToOne: false
+            referencedRelation: "photography_albums"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      photography_inquiries: {
+        Row: {
+          budget_range: string | null
+          created_at: string | null
+          email: string
+          event_date: string | null
+          event_type: string | null
+          guest_count: number | null
+          id: string
+          message: string | null
+          name: string
+          phone: string | null
+          priority: string | null
+          source: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          budget_range?: string | null
+          created_at?: string | null
+          email: string
+          event_date?: string | null
+          event_type?: string | null
+          guest_count?: number | null
+          id?: string
+          message?: string | null
+          name: string
+          phone?: string | null
+          priority?: string | null
+          source?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          budget_range?: string | null
+          created_at?: string | null
+          email?: string
+          event_date?: string | null
+          event_type?: string | null
+          guest_count?: number | null
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string | null
+          priority?: string | null
+          source?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      photography_packages: {
+        Row: {
+          base_price: number
+          category: string
+          created_at: string | null
+          description: string | null
+          display_order: number | null
+          duration_hours: number | null
+          id: string
+          included_features: string[] | null
+          is_active: boolean | null
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          base_price: number
+          category: string
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          duration_hours?: number | null
+          id?: string
+          included_features?: string[] | null
+          is_active?: boolean | null
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          base_price?: number
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          duration_hours?: number | null
+          id?: string
+          included_features?: string[] | null
+          is_active?: boolean | null
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       resumes: {
         Row: {
           analysis_score: number | null
@@ -1457,6 +1940,62 @@ export type Database = {
           name?: string
         }
         Relationships: []
+      }
+      social_media_posts: {
+        Row: {
+          album_id: string | null
+          content: string
+          created_at: string | null
+          engagement_stats: Json | null
+          hashtags: string[] | null
+          id: string
+          image_urls: string[] | null
+          platform: string
+          platform_post_id: string | null
+          posted_at: string | null
+          scheduled_for: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          album_id?: string | null
+          content: string
+          created_at?: string | null
+          engagement_stats?: Json | null
+          hashtags?: string[] | null
+          id?: string
+          image_urls?: string[] | null
+          platform: string
+          platform_post_id?: string | null
+          posted_at?: string | null
+          scheduled_for?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          album_id?: string | null
+          content?: string
+          created_at?: string | null
+          engagement_stats?: Json | null
+          hashtags?: string[] | null
+          id?: string
+          image_urls?: string[] | null
+          platform?: string
+          platform_post_id?: string | null
+          posted_at?: string | null
+          scheduled_for?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "social_media_posts_album_id_fkey"
+            columns: ["album_id"]
+            isOneToOne: false
+            referencedRelation: "photography_albums"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_activity: {
         Row: {

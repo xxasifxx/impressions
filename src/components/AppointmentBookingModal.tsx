@@ -6,10 +6,17 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Calendar, Clock, User } from 'lucide-react';
+import { Calendar, Clock, User, Package } from 'lucide-react';
 import { useAppointmentBooking } from '@/hooks/useAppointmentBooking';
 import { useSalonServices } from '@/hooks/useSalonServices';
 import { useSalonSpecialists } from '@/hooks/useSalonSpecialists';
+
+interface CartItem {
+  service: any;
+  quantity: number;
+  actualDuration: number;
+  notes?: string;
+}
 
 interface AppointmentBookingModalProps {
   trigger: React.ReactNode;
@@ -19,16 +26,26 @@ interface AppointmentBookingModalProps {
     price: string;
     duration: string;
   };
+  cartItems?: CartItem[];
+  totalDuration?: number;
+  totalPrice?: number;
+  appliedDiscount?: any;
   sourcePage: string;
   className?: string;
+  onBookingComplete?: () => void;
 }
 
 const AppointmentBookingModal = ({ 
   trigger, 
   defaultServiceId, 
   prefilledService,
+  cartItems,
+  totalDuration,
+  totalPrice,
+  appliedDiscount,
   sourcePage, 
-  className = "" 
+  className = "",
+  onBookingComplete
 }: AppointmentBookingModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -52,6 +69,9 @@ const AppointmentBookingModal = ({
     selectedService.specialist_requirements.some(req => spec.specialties.includes(req))
   );
 
+  const isCartBooking = !!cartItems;
+  const serviceDuration = isCartBooking ? totalDuration : (selectedService?.duration_min || 60);
+
   const generateTimeSlots = () => {
     const slots = [];
     for (let hour = 9; hour <= 18; hour++) {
@@ -71,17 +91,34 @@ const AppointmentBookingModal = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    let notes = formData.notes;
+    
+    // Add cart details to notes if booking multiple services
+    if (isCartBooking && cartItems) {
+      const servicesList = cartItems.map(item => 
+        `${item.service.name} (${item.quantity}x - ${item.actualDuration * item.quantity}min)`
+      ).join(', ');
+      
+      notes = `Multi-service booking: ${servicesList}`;
+      if (appliedDiscount) {
+        notes += `. Applied discount: ${appliedDiscount.name} (${appliedDiscount.couponCode})`;
+      }
+      if (formData.notes) {
+        notes += `. Additional notes: ${formData.notes}`;
+      }
+    }
+    
     const result = await bookAppointment({
       clientName: formData.clientName,
       clientEmail: formData.clientEmail,
       clientPhone: formData.clientPhone,
-      serviceId: formData.serviceId,
+      serviceId: formData.serviceId || 'multi-service',
       specialistId: formData.specialistId || undefined,
       appointmentDate: formData.appointmentDate,
       appointmentTime: formData.appointmentTime,
-      durationMinutes: selectedService?.duration_min || 60,
-      totalPrice: selectedService?.base_price ? Number(selectedService.base_price) : undefined,
-      notes: formData.notes,
+      durationMinutes: serviceDuration!,
+      totalPrice: isCartBooking ? totalPrice : (selectedService?.base_price ? Number(selectedService.base_price) : undefined),
+      notes,
       sourcePage
     });
 
@@ -97,6 +134,7 @@ const AppointmentBookingModal = ({
         appointmentTime: '',
         notes: ''
       });
+      onBookingComplete?.();
     }
   };
 
@@ -112,7 +150,12 @@ const AppointmentBookingModal = ({
           <DialogTitle className="flex items-center gap-2">
             <Calendar className="w-5 h-5 text-red-600" />
             Book Your Appointment
-            {prefilledService && (
+            {isCartBooking && (
+              <span className="text-sm font-normal text-stone-600">
+                - Multiple Services
+              </span>
+            )}
+            {prefilledService && !isCartBooking && (
               <span className="text-sm font-normal text-stone-600">
                 - {prefilledService.name}
               </span>
@@ -160,17 +203,46 @@ const AppointmentBookingModal = ({
             </div>
           </div>
 
-          {/* Service Selection - show prefilled or dropdown */}
-          {prefilledService ? (
+          {/* Service Selection */}
+          {isCartBooking ? (
+            <div className="bg-blue-50 rounded-lg p-4 space-y-3">
+              <div className="flex items-center gap-2 mb-2">
+                <Package className="w-4 h-4 text-blue-600" />
+                <h4 className="font-medium text-stone-800">Selected Services</h4>
+              </div>
+              {cartItems?.map((item, index) => (
+                <div key={index} className="flex justify-between items-center py-2 border-b border-blue-200 last:border-0">
+                  <div>
+                    <div className="font-medium text-blue-700">{item.service.name}</div>
+                    <div className="text-sm text-stone-600">
+                      {item.quantity}x • {item.actualDuration * item.quantity} minutes
+                    </div>
+                  </div>
+                  <div className="text-sm font-medium text-blue-700">
+                    ${(parseFloat(item.service.price.replace(/[^0-9.]/g, '')) * item.quantity).toFixed(0)}
+                  </div>
+                </div>
+              ))}
+              
+              {appliedDiscount && (
+                <div className="mt-3 p-2 bg-green-100 rounded border border-green-200">
+                  <div className="text-sm font-medium text-green-700">{appliedDiscount.name}</div>
+                  <div className="text-xs text-green-600">Code: {appliedDiscount.couponCode}</div>
+                </div>
+              )}
+              
+              <div className="flex justify-between items-center pt-2 border-t border-blue-300 font-bold text-blue-800">
+                <span>Total: {Math.ceil((totalDuration || 0) / 60)}h {(totalDuration || 0) % 60}min</span>
+                <span>${(totalPrice || 0).toFixed(2)}</span>
+              </div>
+            </div>
+          ) : prefilledService ? (
             <div className="bg-blue-50 rounded-lg p-4 space-y-2">
               <h4 className="font-medium text-stone-800">Selected Service</h4>
               <div className="space-y-1">
                 <div className="text-lg font-medium text-blue-700">{prefilledService.name}</div>
                 <div className="text-sm text-stone-600">Duration: {prefilledService.duration}</div>
                 <div className="text-sm text-stone-600">Price: {prefilledService.price}</div>
-              </div>
-              <div className="text-xs text-stone-500 mt-2">
-                Want a different service? Close this form and select from our services page.
               </div>
             </div>
           ) : (
@@ -200,7 +272,7 @@ const AppointmentBookingModal = ({
           )}
 
           {/* Specialist Selection */}
-          {availableSpecialists && availableSpecialists.length > 0 && (
+          {availableSpecialists && availableSpecialists.length > 0 && !isCartBooking && (
             <div>
               <Label htmlFor="specialist">Preferred Specialist</Label>
               <Select 
@@ -264,8 +336,8 @@ const AppointmentBookingModal = ({
             </div>
           </div>
 
-          {/* Service Details - only show if from database */}
-          {selectedService && !prefilledService && (
+          {/* Service Details */}
+          {selectedService && !prefilledService && !isCartBooking && (
             <div className="bg-stone-50 rounded-lg p-4 space-y-2">
               <h4 className="font-medium text-stone-800">Service Details</h4>
               <div className="text-sm text-stone-600 space-y-1">
@@ -294,10 +366,10 @@ const AppointmentBookingModal = ({
           <Button 
             type="submit" 
             size="lg" 
-            disabled={isSubmitting || (!formData.serviceId && !prefilledService) || !formData.appointmentDate || !formData.appointmentTime}
+            disabled={isSubmitting || (!formData.serviceId && !prefilledService && !isCartBooking) || !formData.appointmentDate || !formData.appointmentTime}
             className="w-full bg-red-600 hover:bg-red-700"
           >
-            {isSubmitting ? "Booking..." : "Book Appointment"}
+            {isSubmitting ? "Booking..." : `Book Appointment${isCartBooking ? 's' : ''}`}
           </Button>
         </form>
       </DialogContent>
