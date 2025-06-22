@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Sparkles, Star, Leaf } from 'lucide-react';
@@ -46,7 +45,7 @@ const MedSpaLanding = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/services" className="inline-block">
+            <Link to="/services?domain=med-spa" className="inline-block">
               <Button className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 text-lg">
                 Browse All Services
                 <ArrowRight className="w-5 h-5 ml-2" />
@@ -142,7 +141,7 @@ const MedSpaLanding = () => {
             <Button className="bg-white text-emerald-600 hover:bg-gray-100 px-8 py-3 text-lg">
               Call (732) 613-1942
             </Button>
-            <Link to="/services" className="inline-block">
+            <Link to="/services?domain=med-spa" className="inline-block">
               <Button variant="outline" className="border-white text-white hover:bg-white/10 px-8 py-3 text-lg">
                 View All Services
               </Button>
