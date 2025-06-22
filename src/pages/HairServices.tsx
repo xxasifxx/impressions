@@ -3,16 +3,25 @@ import React, { useState } from 'react';
 import HairServicesHeader from '@/components/HairServicesHeader';
 import FilterNavigation from '@/components/FilterNavigation';
 import ServiceGallery from '@/components/ServiceGallery';
-import { filterCategories, allServices } from '@/data/hairServicesData';
+import { filterCategories } from '@/data/hairServicesData';
+import { getServicesByDomain } from '@/data/unifiedServicesData';
 
 const HairServices = () => {
   const [activeFilter, setActiveFilter] = useState('all');
 
+  // Get hair salon services from unified data
+  const allHairServices = getServicesByDomain('hair-salon');
+  
   const filteredServices = activeFilter === 'all' 
-    ? allServices 
-    : allServices.filter(service => service.categories.includes(activeFilter));
+    ? allHairServices 
+    : allHairServices.filter(service => service.category === activeFilter);
 
   const activeFilterData = filterCategories.find(cat => cat.id === activeFilter);
+
+  const handleServiceClick = (service: any) => {
+    console.log('Service clicked:', service);
+    // Handle service click - could open modal or navigate
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -27,7 +36,9 @@ const HairServices = () => {
         
         <ServiceGallery 
           filteredServices={filteredServices}
-          activeFilterData={activeFilterData}
+          onServiceClick={handleServiceClick}
+          activeFilterTitle={activeFilterData?.title}
+          activeFilterSubtitle={activeFilterData?.subtitle}
         />
       </div>
     </div>
