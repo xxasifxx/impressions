@@ -27,17 +27,15 @@ const ServicesContent = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedJourney, setSelectedJourney] = useState<string | null>(null);
-  const [searchAllDomains, setSearchAllDomains] = useState(false);
 
   const domainServices = getServicesByDomain(currentDomain);
   const categories = getServiceCategories(currentDomain);
 
   const filteredServices = useMemo(() => {
-    // Base services - either domain-specific or all services if searching across domains
-    let services = searchAllDomains ? allUnifiedServices : domainServices;
+    let services = allUnifiedServices; // Always search across all domains
 
-    // Apply journey filter only if not searching all domains
-    if (selectedJourney && !searchAllDomains) {
+    // Apply journey filter only when one is selected
+    if (selectedJourney) {
       services = getServicesByUserJourney(currentDomain, selectedJourney);
     }
 
@@ -49,21 +47,15 @@ const ServicesContent = () => {
         service.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
         service.domain.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      // Auto-enable cross-domain search if searching
-      if (!searchAllDomains) {
-        setSearchAllDomains(true);
-      }
-    } else {
-      setSearchAllDomains(false);
     }
 
-    // Apply category filter (only for domain-specific view)
-    if (selectedCategory !== 'all' && !searchAllDomains) {
-      services = services.filter(service => service.category === selectedCategory);
+    // Apply category filter only for domain-specific view when no search
+    if (selectedCategory !== 'all' && !searchTerm && !selectedJourney) {
+      services = domainServices.filter(service => service.category === selectedCategory);
     }
 
     return services;
-  }, [domainServices, searchTerm, selectedCategory, selectedJourney, currentDomain, searchAllDomains]);
+  }, [domainServices, searchTerm, selectedCategory, selectedJourney, currentDomain, allUnifiedServices]);
 
   const handleServiceClick = (service: UnifiedService) => {
     setSelectedService(service);
@@ -78,8 +70,15 @@ const ServicesContent = () => {
   const handleJourneySelect = (journeyId: string | null) => {
     setSelectedJourney(journeyId);
     setSelectedCategory('all');
-    setSearchTerm(''); // Clear search when selecting journey
-    setSearchAllDomains(false);
+    setSearchTerm('');
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    if (e.target.value) {
+      setSelectedJourney(null);
+      setSelectedCategory('all');
+    }
   };
 
   // Add Google Fonts for the domain-specific fonts
@@ -168,8 +167,8 @@ const ServicesContent = () => {
         {/* Domain Tabs */}
         <DomainTabs />
         
-        {/* User Journey Filter - only show if not searching all domains */}
-        {!searchAllDomains && (
+        {/* User Journey Filter - only show if not searching */}
+        {!searchTerm && (
           <UserJourneyFilter 
             selectedJourney={selectedJourney}
             onJourneySelect={handleJourneySelect}
@@ -182,16 +181,16 @@ const ServicesContent = () => {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input
-                placeholder={searchAllDomains ? "Search all services..." : `Search ${currentTheme.name.toLowerCase()} services...`}
+                placeholder="Search all services across all categories..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={handleSearchChange}
                 className="pl-10 bg-white/90 backdrop-blur-sm border-white/50"
               />
             </div>
           </div>
 
           {/* Search indicator */}
-          {searchAllDomains && (
+          {searchTerm && (
             <div className="mb-4 text-center">
               <Badge 
                 variant="outline"
@@ -206,8 +205,8 @@ const ServicesContent = () => {
             </div>
           )}
 
-          {/* Category Tags - only show for domain-specific view */}
-          {!selectedJourney && !searchAllDomains && (
+          {/* Category Tags - only show for domain-specific view when no search or journey */}
+          {!selectedJourney && !searchTerm && (
             <div className="flex flex-wrap gap-2 mb-8">
               <Badge
                 variant={selectedCategory === 'all' ? 'default' : 'outline'}
@@ -257,7 +256,7 @@ const ServicesContent = () => {
                   }}
                 >
                   {filteredServices.length} service{filteredServices.length !== 1 ? 's' : ''} available
-                  {searchAllDomains && ' across all categories'}
+                  {searchTerm && ' across all categories'}
                 </p>
               </div>
               
@@ -296,7 +295,6 @@ const ServicesContent = () => {
                   setSearchTerm('');
                   setSelectedCategory('all');
                   setSelectedJourney(null);
-                  setSearchAllDomains(false);
                 }}
                 style={{ 
                   backgroundColor: currentTheme.colors.primary,
