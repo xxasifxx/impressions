@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Scissors, Star, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ConsultationEntry from '@/components/ConsultationEntry';
 
 const HairSalonLanding = () => {
   return (
@@ -131,21 +132,27 @@ const HairSalonLanding = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Consultation CTA Section */}
       <section className="py-16 bg-red-600 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h3 className="text-4xl font-light mb-4">Ready for Your Transformation?</h3>
-          <p className="text-xl mb-8 opacity-90">Book your appointment today and discover your new look</p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-white text-red-600 hover:bg-gray-100 px-8 py-3 text-lg">
-              Call (732) 613-1942
-            </Button>
-            <Link to="/services?domain=hair-salon" className="inline-block">
-              <Button variant="outline" className="border-white text-white hover:bg-white/10 px-8 py-3 text-lg">
-                View All Services
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h3 className="text-4xl font-light mb-4">Ready for Your Transformation?</h3>
+              <p className="text-xl opacity-90">Let our expert stylists guide you to your perfect look</p>
+            </div>
+            
+            {/* Consultation Entry Component */}
+            <ConsultationEntry domain="hair-salon" />
+            
+            {/* Phone CTA */}
+            <div className="text-center mt-12 pt-8 border-t border-white/20">
+              <p className="text-white/80 text-sm mb-4">
+                Prefer to speak with someone directly?
+              </p>
+              <Button className="bg-white text-red-600 hover:bg-gray-100 px-8 py-3 text-lg">
+                Call (732) 613-1942
               </Button>
-            </Link>
+            </div>
           </div>
         </div>
       </section>
