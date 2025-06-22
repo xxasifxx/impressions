@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ConsultationFlow, ConsultationQuestion, getConsultationFlow } from '@/data/consultationQuestions';
+import { generateRecommendations, RecommendationResult } from '@/utils/recommendationEngine';
 
 export interface ConsultationResponse {
   questionId: string;
@@ -15,6 +16,7 @@ export interface ConsultationState {
   responses: ConsultationResponse[];
   isComplete: boolean;
   flow: ConsultationFlow | null;
+  recommendations: RecommendationResult | null;
 }
 
 export const useConsultation = () => {
@@ -47,7 +49,8 @@ export const useConsultation = () => {
       currentQuestionIndex,
       responses,
       isComplete: false,
-      flow
+      flow,
+      recommendations: null
     };
   }, [searchParams]);
 
@@ -81,7 +84,8 @@ export const useConsultation = () => {
       currentQuestionIndex: 0,
       responses: [],
       isComplete: false,
-      flow
+      flow,
+      recommendations: null
     };
 
     setConsultationState(newState);
@@ -113,8 +117,19 @@ export const useConsultation = () => {
   const nextQuestion = useCallback(() => {
     setConsultationState(prevState => {
       if (!prevState.flow || prevState.currentQuestionIndex >= prevState.flow.questions.length - 1) {
-        // Consultation is complete
-        const newState = { ...prevState, isComplete: true };
+        // Consultation is complete - generate recommendations
+        const recommendations = generateRecommendations(
+          prevState.domain,
+          prevState.journey,
+          prevState.responses
+        );
+        
+        const newState = { 
+          ...prevState, 
+          isComplete: true,
+          recommendations
+        };
+        
         navigate(`/consultation/${prevState.domain}/${prevState.journey}/results`);
         return newState;
       }
@@ -184,7 +199,8 @@ export const useConsultation = () => {
       currentQuestionIndex: 0,
       responses: [],
       isComplete: false,
-      flow: null
+      flow: null,
+      recommendations: null
     };
     
     setConsultationState(newState);
@@ -208,4 +224,3 @@ export const useConsultation = () => {
     resetConsultation
   };
 };
-

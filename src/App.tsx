@@ -12,6 +12,7 @@ import HairSalonLanding from '@/pages/HairSalonLanding';
 import MakeupStudioLanding from '@/pages/MakeupStudioLanding';
 import MedSpaLanding from '@/pages/MedSpaLanding';
 import ConsultationFlow from '@/components/ConsultationFlow';
+import ConsultationResults from '@/pages/ConsultationResults';
 import { ServiceCartProvider } from '@/contexts/ServiceCartContext';
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ function App() {
               <Route path="/makeup-studio" element={<MakeupStudioLanding />} />
               <Route path="/med-spa" element={<MedSpaLanding />} />
               <Route path="/consultation/:domain/:journey" element={<ConsultationFlow />} />
+            <Route path="/consultation/:domain/:journey/results" element={<ConsultationResults />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />
