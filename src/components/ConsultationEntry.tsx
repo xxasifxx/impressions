@@ -1,8 +1,9 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useDomainTheme } from '@/contexts/DomainThemeContext';
 import { userJourneys } from '@/data/unifiedServicesData';
+import { useConsultation } from '@/hooks/useConsultation';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
 interface ConsultationEntryProps {
@@ -12,14 +13,12 @@ interface ConsultationEntryProps {
 
 const ConsultationEntry = ({ domain, className = "" }: ConsultationEntryProps) => {
   const { currentTheme } = useDomainTheme();
-  const navigate = useNavigate();
+  const { startConsultation } = useConsultation();
   
   const journeys = userJourneys[domain] || [];
 
-  const startConsultation = (journeyId: string) => {
-    // For now, navigate to services with journey filter
-    // In Phase 2, this will navigate to consultation flow
-    navigate(`/services?domain=${domain}&journey=${journeyId}`);
+  const handleStartConsultation = (journeyId: string) => {
+    startConsultation(domain, journeyId);
   };
 
   const getDomainDisplayName = (domain: string) => {
@@ -74,7 +73,7 @@ const ConsultationEntry = ({ domain, className = "" }: ConsultationEntryProps) =
         {journeys.map((journey) => (
           <Button
             key={journey.id}
-            onClick={() => startConsultation(journey.id)}
+            onClick={() => handleStartConsultation(journey.id)}
             className="group relative overflow-hidden bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 p-6 h-auto"
             style={{ 
               fontFamily: currentTheme.fonts.body
@@ -135,4 +134,3 @@ const ConsultationEntry = ({ domain, className = "" }: ConsultationEntryProps) =
 };
 
 export default ConsultationEntry;
-
