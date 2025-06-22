@@ -7,11 +7,12 @@ import { ServiceCartProvider } from '@/contexts/ServiceCartContext';
 import IntegratedDomainTabs from '@/components/IntegratedDomainTabs';
 import ServiceDetailModal from '@/components/ServiceDetailModal';
 import ServiceCart from '@/components/ServiceCart';
+import ServiceCard from '@/components/ServiceCard';
 import UserJourneyFilter from '@/components/UserJourneyFilter';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { 
   allUnifiedServices, 
   getServicesByUserJourney,
@@ -151,7 +152,7 @@ const ServicesContent = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
-        {/* Integrated Domain Tabs */}
+        {/* Marketing Domain Tabs - Open beautiful modals */}
         <IntegratedDomainTabs />
         
         {/* Search Section */}
@@ -164,7 +165,7 @@ const ServicesContent = () => {
                 color: currentTheme.colors.primary 
               }}
             >
-              Search All Services
+              All Services
             </h2>
             <p 
               className="text-lg"
@@ -173,7 +174,7 @@ const ServicesContent = () => {
                 fontFamily: currentTheme.fonts.body
               }}
             >
-              Find the perfect combination of services across all our specialties
+              Browse and book from our complete collection of beauty services
             </p>
           </div>
           
@@ -199,7 +200,7 @@ const ServicesContent = () => {
                   backgroundColor: 'white'
                 }}
               >
-                Searching across all service categories
+                Searching: "{searchTerm}"
               </Badge>
             </div>
           )}
@@ -213,124 +214,93 @@ const ServicesContent = () => {
           />
         )}
 
-        {/* Results Section */}
-        {(searchTerm || selectedJourney) && (
-          <div className="max-w-7xl mx-auto">
-            {filteredServices.length > 0 ? (
-              <>
-                <div className="text-center mb-8">
-                  <p 
-                    className="text-xl"
-                    style={{ 
-                      color: currentTheme.colors.text,
-                      fontFamily: currentTheme.fonts.accent
-                    }}
-                  >
-                    {filteredServices.length} service{filteredServices.length !== 1 ? 's' : ''} found
-                    {searchTerm && ' across all categories'}
-                  </p>
-                </div>
-                
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                  {filteredServices.map((service) => (
-                    <Card key={service.id} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden bg-white/95 backdrop-blur-sm">
-                      <div className="aspect-[4/3] overflow-hidden">
-                        <img 
-                          src={service.imageUrl}
-                          alt={service.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        />
-                      </div>
-                      
-                      <CardContent className="p-5">
-                        <div className="flex items-start justify-between mb-3">
-                          <h3 
-                            className="text-lg font-medium cursor-pointer group-hover:text-opacity-80 transition-colors"
-                            style={{ color: currentTheme.colors.primary }}
-                            onClick={() => handleServiceClick(service)}
-                          >
-                            {service.name}
-                          </h3>
-                          <div className="text-right">
-                            <div className="font-bold" style={{ color: currentTheme.colors.primary }}>
-                              {service.price}
-                            </div>
-                            <div className="text-xs text-gray-500">{service.duration}</div>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-3 mb-3 text-sm text-gray-500">
-                          <Badge variant="outline" className="text-xs">
-                            {service.domain.replace('-', ' ')}
-                          </Badge>
-                          {service.featured && (
-                            <Badge className="bg-yellow-500 text-white text-xs">
-                              <Award className="w-3 h-3 mr-1" />
-                              Featured
-                            </Badge>
-                          )}
-                        </div>
-
-                        <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                          {service.description}
-                        </p>
-
-                        <Button
-                          variant="outline"
-                          className="w-full"
-                          onClick={() => handleServiceClick(service)}
-                          style={{ 
-                            borderColor: currentTheme.colors.primary,
-                            color: currentTheme.colors.primary
-                          }}
-                        >
-                          View Details
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <div className="text-center py-16">
-                <div 
-                  className="text-6xl mb-4"
-                  style={{ color: currentTheme.colors.muted }}
-                >
-                  🔍
-                </div>
-                <h3 
-                  className="text-2xl font-light mb-2"
+        {/* Services Grid - THE ACTUAL MARKETPLACE */}
+        <div className="max-w-7xl mx-auto">
+          {filteredServices.length > 0 ? (
+            <>
+              <div className="text-center mb-8">
+                <p 
+                  className="text-xl"
                   style={{ 
-                    fontFamily: currentTheme.fonts.heading,
-                    color: currentTheme.colors.primary
+                    color: currentTheme.colors.text,
+                    fontFamily: currentTheme.fonts.accent
                   }}
                 >
-                  No services found
-                </h3>
-                <p className="text-gray-600 mb-6">
-                  Try adjusting your search or explore our service categories above
+                  {filteredServices.length} service{filteredServices.length !== 1 ? 's' : ''} available
+                  {searchTerm && ` matching "${searchTerm}"`}
+                  {selectedJourney && ' for your journey'}
                 </p>
-                <Button
-                  onClick={() => {
-                    setSearchTerm('');
-                    setSelectedJourney(null);
-                  }}
-                  style={{ 
-                    backgroundColor: currentTheme.colors.primary,
-                    color: 'white'
-                  }}
-                >
-                  Clear Search
-                </Button>
               </div>
-            )}
-          </div>
-        )}
+              
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                {filteredServices.map((service) => (
+                  <ServiceCard
+                    key={service.id}
+                    service={service}
+                    onDetailsClick={handleServiceClick}
+                  />
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="text-center py-16">
+              <div 
+                className="text-6xl mb-4"
+                style={{ color: currentTheme.colors.muted }}
+              >
+                🔍
+              </div>
+              <h3 
+                className="text-2xl font-light mb-2"
+                style={{ 
+                  fontFamily: currentTheme.fonts.heading,
+                  color: currentTheme.colors.primary
+                }}
+              >
+                No services found
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Try adjusting your search or explore our service categories above
+              </p>
+              <Button
+                onClick={() => {
+                  setSearchTerm('');
+                  setSelectedJourney(null);
+                }}
+                style={{ 
+                  backgroundColor: currentTheme.colors.primary,
+                  color: 'white'
+                }}
+              >
+                Show All Services
+              </Button>
+            </div>
+          )}
+        </div>
 
-        {/* Welcome Message when no search/journey is active */}
+        {/* Stats Section */}
         {!searchTerm && !selectedJourney && (
           <div className="max-w-4xl mx-auto text-center py-16">
+            <div className="grid md:grid-cols-3 gap-6 mb-12">
+              <Card className="p-6 bg-white/90 backdrop-blur-sm hover:shadow-lg transition-all">
+                <Users className="w-12 h-12 mx-auto mb-4" style={{ color: currentTheme.colors.primary }} />
+                <h3 className="text-lg font-semibold mb-2">Expert Specialists</h3>
+                <p className="text-sm text-gray-600">Professional stylists, makeup artists, and wellness experts</p>
+              </Card>
+              
+              <Card className="p-6 bg-white/90 backdrop-blur-sm hover:shadow-lg transition-all">
+                <Calendar className="w-12 h-12 mx-auto mb-4" style={{ color: currentTheme.colors.primary }} />
+                <h3 className="text-lg font-semibold mb-2">Flexible Booking</h3>
+                <p className="text-sm text-gray-600">Book individual services or create custom packages</p>
+              </Card>
+              
+              <Card className="p-6 bg-white/90 backdrop-blur-sm hover:shadow-lg transition-all">
+                <Award className="w-12 h-12 mx-auto mb-4" style={{ color: currentTheme.colors.primary }} />
+                <h3 className="text-lg font-semibold mb-2">Package Savings</h3>
+                <p className="text-sm text-gray-600">Save money with our curated service combinations</p>
+              </Card>
+            </div>
+            
             <div 
               className="text-6xl mb-6"
               style={{ color: currentTheme.colors.primary }}
@@ -344,7 +314,7 @@ const ServicesContent = () => {
                 color: currentTheme.colors.primary
               }}
             >
-              Welcome to Your Beauty Marketplace
+              Your Complete Beauty Destination
             </h2>
             <p 
               className="text-xl mb-8"
@@ -353,28 +323,8 @@ const ServicesContent = () => {
                 fontFamily: currentTheme.fonts.body
               }}
             >
-              Explore our service categories above, search for specific treatments, or browse by your journey
+              From precision cuts to bridal makeup to wellness treatments - discover services that make you feel amazing
             </p>
-            
-            <div className="grid md:grid-cols-3 gap-6 mt-12">
-              <Card className="p-6 bg-white/90 backdrop-blur-sm hover:shadow-lg transition-all">
-                <Users className="w-12 h-12 mx-auto mb-4" style={{ color: currentTheme.colors.primary }} />
-                <h3 className="text-lg font-semibold mb-2">Expert Team</h3>
-                <p className="text-sm text-gray-600">Professional stylists and specialists</p>
-              </Card>
-              
-              <Card className="p-6 bg-white/90 backdrop-blur-sm hover:shadow-lg transition-all">
-                <Calendar className="w-12 h-12 mx-auto mb-4" style={{ color: currentTheme.colors.primary }} />
-                <h3 className="text-lg font-semibold mb-2">Flexible Booking</h3>
-                <p className="text-sm text-gray-600">Book single services or create packages</p>
-              </Card>
-              
-              <Card className="p-6 bg-white/90 backdrop-blur-sm hover:shadow-lg transition-all">
-                <Award className="w-12 h-12 mx-auto mb-4" style={{ color: currentTheme.colors.primary }} />
-                <h3 className="text-lg font-semibold mb-2">Package Deals</h3>
-                <p className="text-sm text-gray-600">Save with our curated service combinations</p>
-              </Card>
-            </div>
           </div>
         )}
       </div>
