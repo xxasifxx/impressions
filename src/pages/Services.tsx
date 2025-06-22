@@ -1,21 +1,19 @@
 
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Search } from 'lucide-react';
+import { ArrowLeft, Search, Calendar, Users, Award } from 'lucide-react';
 import { DomainThemeProvider, useDomainTheme } from '@/contexts/DomainThemeContext';
 import { ServiceCartProvider } from '@/contexts/ServiceCartContext';
-import DomainTabs from '@/components/DomainTabs';
+import IntegratedDomainTabs from '@/components/IntegratedDomainTabs';
 import ServiceDetailModal from '@/components/ServiceDetailModal';
-import ServiceCard from '@/components/ServiceCard';
 import ServiceCart from '@/components/ServiceCart';
 import UserJourneyFilter from '@/components/UserJourneyFilter';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 import { 
   allUnifiedServices, 
-  getServicesByDomain, 
-  getServiceCategories,
   getServicesByUserJourney,
   UnifiedService 
 } from '@/data/unifiedServicesData';
@@ -25,16 +23,12 @@ const ServicesContent = () => {
   const [selectedService, setSelectedService] = useState<UnifiedService | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedJourney, setSelectedJourney] = useState<string | null>(null);
 
-  const domainServices = getServicesByDomain(currentDomain);
-  const categories = getServiceCategories(currentDomain);
-
   const filteredServices = useMemo(() => {
-    let services = allUnifiedServices; // Always search across all domains
+    let services = allUnifiedServices;
 
-    // Apply journey filter only when one is selected
+    // Apply journey filter
     if (selectedJourney) {
       services = getServicesByUserJourney(currentDomain, selectedJourney);
     }
@@ -49,13 +43,8 @@ const ServicesContent = () => {
       );
     }
 
-    // Apply category filter only for domain-specific view when no search
-    if (selectedCategory !== 'all' && !searchTerm && !selectedJourney) {
-      services = domainServices.filter(service => service.category === selectedCategory);
-    }
-
     return services;
-  }, [domainServices, searchTerm, selectedCategory, selectedJourney, currentDomain, allUnifiedServices]);
+  }, [searchTerm, selectedJourney, currentDomain]);
 
   const handleServiceClick = (service: UnifiedService) => {
     setSelectedService(service);
@@ -69,7 +58,6 @@ const ServicesContent = () => {
 
   const handleJourneySelect = (journeyId: string | null) => {
     setSelectedJourney(journeyId);
-    setSelectedCategory('all');
     setSearchTerm('');
   };
 
@@ -77,7 +65,6 @@ const ServicesContent = () => {
     setSearchTerm(e.target.value);
     if (e.target.value) {
       setSelectedJourney(null);
-      setSelectedCategory('all');
     }
   };
 
@@ -109,12 +96,12 @@ const ServicesContent = () => {
     <div 
       className="min-h-screen transition-all duration-700 ease-in-out"
       style={{ 
-        background: currentTheme.backgroundImage,
+        background: `linear-gradient(135deg, ${currentTheme.colors.background}20, ${currentTheme.colors.secondary}10), ${currentTheme.backgroundImage}`,
         fontFamily: currentTheme.fonts.body
       }}
     >
       {/* Header */}
-      <header className="bg-white/90 backdrop-blur-sm border-b border-white/30 shadow-sm">
+      <header className="bg-white/95 backdrop-blur-sm border-b border-white/30 shadow-sm sticky top-0 z-40">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <Link 
@@ -133,7 +120,7 @@ const ServicesContent = () => {
                   color: currentTheme.colors.primary 
                 }}
               >
-                Service Marketplace
+                Beauty Marketplace
               </h1>
               <p 
                 className="text-sm mt-1 transition-all duration-700"
@@ -142,7 +129,7 @@ const ServicesContent = () => {
                   fontFamily: currentTheme.fonts.accent
                 }}
               >
-                Book multiple services, get package deals
+                Discover, combine, and book your perfect beauty experience
               </p>
             </div>
             
@@ -164,9 +151,60 @@ const ServicesContent = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
-        {/* Domain Tabs */}
-        <DomainTabs />
+        {/* Integrated Domain Tabs */}
+        <IntegratedDomainTabs />
         
+        {/* Search Section */}
+        <div className="max-w-4xl mx-auto mb-12">
+          <div className="text-center mb-8">
+            <h2 
+              className="text-3xl font-light mb-4"
+              style={{ 
+                fontFamily: currentTheme.fonts.heading,
+                color: currentTheme.colors.primary 
+              }}
+            >
+              Search All Services
+            </h2>
+            <p 
+              className="text-lg"
+              style={{ 
+                color: currentTheme.colors.muted,
+                fontFamily: currentTheme.fonts.body
+              }}
+            >
+              Find the perfect combination of services across all our specialties
+            </p>
+          </div>
+          
+          <div className="relative mb-6">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Input
+              placeholder="Search across hair, makeup, and wellness services..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="pl-12 py-4 text-lg bg-white/90 backdrop-blur-sm border-white/50 rounded-2xl shadow-lg focus:shadow-xl transition-all"
+            />
+          </div>
+
+          {/* Search indicator */}
+          {searchTerm && (
+            <div className="text-center mb-8">
+              <Badge 
+                variant="outline"
+                className="text-sm px-6 py-3 rounded-full"
+                style={{ 
+                  borderColor: currentTheme.colors.primary,
+                  color: currentTheme.colors.primary,
+                  backgroundColor: 'white'
+                }}
+              >
+                Searching across all service categories
+              </Badge>
+            </div>
+          )}
+        </div>
+
         {/* User Journey Filter - only show if not searching */}
         {!searchTerm && (
           <UserJourneyFilter 
@@ -174,138 +212,171 @@ const ServicesContent = () => {
             onJourneySelect={handleJourneySelect}
           />
         )}
-        
-        {/* Search and Category Filters */}
-        <div className="max-w-4xl mx-auto mb-8">
-          <div className="flex flex-col sm:flex-row gap-4 mb-6">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <Input
-                placeholder="Search all services across all categories..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-                className="pl-10 bg-white/90 backdrop-blur-sm border-white/50"
-              />
-            </div>
-          </div>
 
-          {/* Search indicator */}
-          {searchTerm && (
-            <div className="mb-4 text-center">
-              <Badge 
-                variant="outline"
-                className="text-sm px-4 py-2"
-                style={{ 
-                  borderColor: currentTheme.colors.primary,
-                  color: currentTheme.colors.primary
-                }}
-              >
-                Searching across all service categories
-              </Badge>
-            </div>
-          )}
+        {/* Results Section */}
+        {(searchTerm || selectedJourney) && (
+          <div className="max-w-7xl mx-auto">
+            {filteredServices.length > 0 ? (
+              <>
+                <div className="text-center mb-8">
+                  <p 
+                    className="text-xl"
+                    style={{ 
+                      color: currentTheme.colors.text,
+                      fontFamily: currentTheme.fonts.accent
+                    }}
+                  >
+                    {filteredServices.length} service{filteredServices.length !== 1 ? 's' : ''} found
+                    {searchTerm && ' across all categories'}
+                  </p>
+                </div>
+                
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                  {filteredServices.map((service) => (
+                    <Card key={service.id} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden bg-white/95 backdrop-blur-sm">
+                      <div className="aspect-[4/3] overflow-hidden">
+                        <img 
+                          src={service.imageUrl}
+                          alt={service.name}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                      </div>
+                      
+                      <CardContent className="p-5">
+                        <div className="flex items-start justify-between mb-3">
+                          <h3 
+                            className="text-lg font-medium cursor-pointer group-hover:text-opacity-80 transition-colors"
+                            style={{ color: currentTheme.colors.primary }}
+                            onClick={() => handleServiceClick(service)}
+                          >
+                            {service.name}
+                          </h3>
+                          <div className="text-right">
+                            <div className="font-bold" style={{ color: currentTheme.colors.primary }}>
+                              {service.price}
+                            </div>
+                            <div className="text-xs text-gray-500">{service.duration}</div>
+                          </div>
+                        </div>
 
-          {/* Category Tags - only show for domain-specific view when no search or journey */}
-          {!selectedJourney && !searchTerm && (
-            <div className="flex flex-wrap gap-2 mb-8">
-              <Badge
-                variant={selectedCategory === 'all' ? 'default' : 'outline'}
-                className="cursor-pointer transition-all duration-300 hover:scale-105"
-                onClick={() => setSelectedCategory('all')}
-                style={selectedCategory === 'all' ? { 
-                  backgroundColor: currentTheme.colors.primary,
-                  color: 'white'
-                } : {
-                  borderColor: currentTheme.colors.primary + '40',
-                  color: currentTheme.colors.primary
-                }}
-              >
-                All Categories
-              </Badge>
-              {categories.map((category) => (
-                <Badge
-                  key={category}
-                  variant={selectedCategory === category ? 'default' : 'outline'}
-                  className="cursor-pointer transition-all duration-300 hover:scale-105"
-                  onClick={() => setSelectedCategory(category)}
-                  style={selectedCategory === category ? { 
-                    backgroundColor: currentTheme.colors.primary,
-                    color: 'white'
-                  } : {
-                    borderColor: currentTheme.colors.primary + '40',
+                        <div className="flex items-center gap-3 mb-3 text-sm text-gray-500">
+                          <Badge variant="outline" className="text-xs">
+                            {service.domain.replace('-', ' ')}
+                          </Badge>
+                          {service.featured && (
+                            <Badge className="bg-yellow-500 text-white text-xs">
+                              <Award className="w-3 h-3 mr-1" />
+                              Featured
+                            </Badge>
+                          )}
+                        </div>
+
+                        <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                          {service.description}
+                        </p>
+
+                        <Button
+                          variant="outline"
+                          className="w-full"
+                          onClick={() => handleServiceClick(service)}
+                          style={{ 
+                            borderColor: currentTheme.colors.primary,
+                            color: currentTheme.colors.primary
+                          }}
+                        >
+                          View Details
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-16">
+                <div 
+                  className="text-6xl mb-4"
+                  style={{ color: currentTheme.colors.muted }}
+                >
+                  🔍
+                </div>
+                <h3 
+                  className="text-2xl font-light mb-2"
+                  style={{ 
+                    fontFamily: currentTheme.fonts.heading,
                     color: currentTheme.colors.primary
                   }}
                 >
-                  {category}
-                </Badge>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Services Grid */}
-        <div className="max-w-7xl mx-auto">
-          {filteredServices.length > 0 ? (
-            <>
-              <div className="text-center mb-8">
-                <p 
-                  className="text-lg"
+                  No services found
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Try adjusting your search or explore our service categories above
+                </p>
+                <Button
+                  onClick={() => {
+                    setSearchTerm('');
+                    setSelectedJourney(null);
+                  }}
                   style={{ 
-                    color: currentTheme.colors.text,
-                    fontFamily: currentTheme.fonts.accent
+                    backgroundColor: currentTheme.colors.primary,
+                    color: 'white'
                   }}
                 >
-                  {filteredServices.length} service{filteredServices.length !== 1 ? 's' : ''} available
-                  {searchTerm && ' across all categories'}
-                </p>
+                  Clear Search
+                </Button>
               </div>
-              
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredServices.map((service) => (
-                  <ServiceCard
-                    key={service.id}
-                    service={service}
-                    onDetailsClick={handleServiceClick}
-                  />
-                ))}
-              </div>
-            </>
-          ) : (
-            <div className="text-center py-16">
-              <div 
-                className="text-6xl mb-4"
-                style={{ color: currentTheme.colors.muted }}
-              >
-                🔍
-              </div>
-              <h3 
-                className="text-2xl font-light mb-2"
-                style={{ 
-                  fontFamily: currentTheme.fonts.heading,
-                  color: currentTheme.colors.primary
-                }}
-              >
-                No services found
-              </h3>
-              <p className="text-gray-600 mb-6">
-                Try adjusting your search or browse our other amazing services
-              </p>
-              <Button
-                onClick={() => {
-                  setSearchTerm('');
-                  setSelectedCategory('all');
-                  setSelectedJourney(null);
-                }}
-                style={{ 
-                  backgroundColor: currentTheme.colors.primary,
-                  color: 'white'
-                }}
-              >
-                View All Services
-              </Button>
+            )}
+          </div>
+        )}
+
+        {/* Welcome Message when no search/journey is active */}
+        {!searchTerm && !selectedJourney && (
+          <div className="max-w-4xl mx-auto text-center py-16">
+            <div 
+              className="text-6xl mb-6"
+              style={{ color: currentTheme.colors.primary }}
+            >
+              ✨
             </div>
-          )}
-        </div>
+            <h2 
+              className="text-4xl font-light mb-4"
+              style={{ 
+                fontFamily: currentTheme.fonts.heading,
+                color: currentTheme.colors.primary
+              }}
+            >
+              Welcome to Your Beauty Marketplace
+            </h2>
+            <p 
+              className="text-xl mb-8"
+              style={{ 
+                color: currentTheme.colors.muted,
+                fontFamily: currentTheme.fonts.body
+              }}
+            >
+              Explore our service categories above, search for specific treatments, or browse by your journey
+            </p>
+            
+            <div className="grid md:grid-cols-3 gap-6 mt-12">
+              <Card className="p-6 bg-white/90 backdrop-blur-sm hover:shadow-lg transition-all">
+                <Users className="w-12 h-12 mx-auto mb-4" style={{ color: currentTheme.colors.primary }} />
+                <h3 className="text-lg font-semibold mb-2">Expert Team</h3>
+                <p className="text-sm text-gray-600">Professional stylists and specialists</p>
+              </Card>
+              
+              <Card className="p-6 bg-white/90 backdrop-blur-sm hover:shadow-lg transition-all">
+                <Calendar className="w-12 h-12 mx-auto mb-4" style={{ color: currentTheme.colors.primary }} />
+                <h3 className="text-lg font-semibold mb-2">Flexible Booking</h3>
+                <p className="text-sm text-gray-600">Book single services or create packages</p>
+              </Card>
+              
+              <Card className="p-6 bg-white/90 backdrop-blur-sm hover:shadow-lg transition-all">
+                <Award className="w-12 h-12 mx-auto mb-4" style={{ color: currentTheme.colors.primary }} />
+                <h3 className="text-lg font-semibold mb-2">Package Deals</h3>
+                <p className="text-sm text-gray-600">Save with our curated service combinations</p>
+              </Card>
+            </div>
+          </div>
+        )}
       </div>
 
       <ServiceDetailModal
