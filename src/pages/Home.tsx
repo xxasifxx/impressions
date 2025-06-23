@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Scissors, Palette, Sparkles, ShoppingBag } from 'lucide-react';
@@ -116,6 +115,40 @@ const Home = () => {
 
         </div>
       </main>
+
+      {/* Unified Consultation CTA */}
+      <section className="py-16 bg-gradient-to-br from-red-50 via-stone-50 to-pink-50">
+        <div className="container mx-auto px-4 text-center">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-light text-stone-800 mb-6" style={{ fontFamily: 'Playfair Display, serif' }}>
+              Not sure what you need?
+            </h2>
+            <p className="text-xl text-stone-600 mb-8 font-light">
+              Take our personalized consultation to discover the perfect services for your goals
+            </p>
+            <Link to="/consultation">
+              <div className="inline-block bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 border border-red-200/50 hover:border-red-300 group">
+                <div className="flex items-center justify-center gap-4 mb-4">
+                  <Sparkles className="w-8 h-8 text-red-600 group-hover:animate-pulse" />
+                  <span className="text-2xl font-semibold text-stone-800">Start Personal Consultation</span>
+                  <Sparkles className="w-8 h-8 text-red-600 group-hover:animate-pulse" />
+                </div>
+                <p className="text-stone-600 mb-4">
+                  ✨ Motivation-based recommendations across all services
+                </p>
+                <div className="flex justify-center gap-6 text-sm text-stone-500">
+                  <span>💇‍♀️ Hair Services</span>
+                  <span>💄 Makeup Services</span>
+                  <span>✨ Skin Treatments</span>
+                </div>
+                <div className="mt-4 text-xs text-stone-400 uppercase tracking-widest">
+                  Takes 2 minutes • Cross-domain recommendations
+                </div>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Footer */}
       <footer className="py-12 text-center">
