@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Scissors, Star, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ConsultationEntry from '@/components/ConsultationEntry';
+import RealisticConsultationEntry from '@/components/RealisticConsultationEntry';
 
 const HairSalonLanding = () => {
   return (
@@ -141,8 +142,8 @@ const HairSalonLanding = () => {
               <p className="text-xl opacity-90">Let our expert stylists guide you to your perfect look</p>
             </div>
             
-            {/* Consultation Entry Component */}
-            <ConsultationEntry domain="hair-salon" />
+            {/* Realistic Consultation Entry Component */}
+            <RealisticConsultationEntry domain="hair-salon" />
             
             {/* Phone CTA */}
             <div className="text-center mt-12 pt-8 border-t border-white/20">

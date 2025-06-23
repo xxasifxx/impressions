@@ -13,6 +13,7 @@ import MakeupStudioLanding from '@/pages/MakeupStudioLanding';
 import MedSpaLanding from '@/pages/MedSpaLanding';
 import ConsultationFlow from '@/components/ConsultationFlow';
 import ConsultationResults from '@/pages/ConsultationResults';
+import RealisticConsultationFlow from '@/components/RealisticConsultationFlow';
 import { ServiceCartProvider } from '@/contexts/ServiceCartContext';
 
 const queryClient = new QueryClient();
@@ -32,7 +33,10 @@ function App() {
               <Route path="/makeup-studio" element={<MakeupStudioLanding />} />
               <Route path="/med-spa" element={<MedSpaLanding />} />
               <Route path="/consultation/:domain/:journey" element={<ConsultationFlow />} />
-            <Route path="/consultation/:domain/:journey/results" element={<ConsultationResults />} />
+              <Route path="/consultation/:domain/:journey/results" element={<ConsultationResults />} />
+              <Route path="/hair-salon/consultation" element={<RealisticConsultationFlow domain="hair-salon" />} />
+              <Route path="/makeup-studio/consultation" element={<RealisticConsultationFlow domain="makeup-studio" />} />
+              <Route path="/med-spa/consultation" element={<RealisticConsultationFlow domain="med-spa" />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />
