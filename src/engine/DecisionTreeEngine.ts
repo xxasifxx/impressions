@@ -27,6 +27,7 @@ export interface TreeGenerationContext {
 export interface NextNodeResult {
   node: ConsultationNode | null;
   shouldShowCards: boolean;
+  shouldTriggerCart?: boolean;
   reasoning: string;
   confidence: number;
   alternativePaths?: string[];
@@ -177,17 +178,18 @@ export class DecisionTreeEngine {
   // Private helper methods
 
   private getEntryNode(sessionState: ConsultationSessionState): ConsultationNode | null {
-    // Find the most appropriate entry node based on context
+    // Start with consultation type segmentation
+    const consultationTypeNode = this.nodeRegistry.get('entry_consultation_type');
+    
+    if (consultationTypeNode) {
+      return consultationTypeNode;
+    }
+
+    // Fallback to any entry node
     const entryNodes = Array.from(this.nodeRegistry.values())
       .filter(node => node.type === 'entry');
 
-    if (entryNodes.length === 0) {
-      return null;
-    }
-
-    // For now, return the first entry node
-    // This will be enhanced with context-aware selection
-    return entryNodes[0];
+    return entryNodes.length > 0 ? entryNodes[0] : null;
   }
 
   private determineNextNode(
@@ -195,18 +197,30 @@ export class DecisionTreeEngine {
     response: ConsultationResponse,
     context: TreeGenerationContext
   ): NextNodeResult {
-    // Check if we should show cards instead of continuing with questions
-    if (this.shouldShowCards(context)) {
+    const selectedOption = currentNode.options.find(opt => opt.id === response.optionId);
+    
+    // Handle cart actions - these trigger definitive end states
+    if (selectedOption?.value === 'cart_action') {
       return {
         node: null,
         shouldShowCards: true,
-        reasoning: 'Catalog filtered to manageable size, ready to show options',
+        shouldTriggerCart: true,
+        reasoning: 'User ready to add services to cart - triggering Agent D bundling',
+        confidence: 1.0
+      };
+    }
+
+    // Handle quick service path - show cards sooner
+    if (selectedOption?.metadata?.triggers?.includes('show_cards_soon')) {
+      return {
+        node: null,
+        shouldShowCards: true,
+        reasoning: 'Quick service path - showing options with minimal questions',
         confidence: 0.9
       };
     }
 
     // Look for explicit next node in the response option
-    const selectedOption = currentNode.options.find(opt => opt.id === response.optionId);
     if (selectedOption?.nextNodeId) {
       const nextNode = this.nodeRegistry.get(selectedOption.nextNodeId);
       if (nextNode) {
@@ -215,6 +229,33 @@ export class DecisionTreeEngine {
           shouldShowCards: false,
           reasoning: 'Following explicit node transition',
           confidence: 1.0
+        };
+      }
+    }
+
+    // Check if we should show cards for guided consultation (more questions allowed)
+    if (this.shouldShowCards(context)) {
+      // Determine which end state to use
+      const isQuickPath = context.responses.some(r => 
+        r.optionId === 'quick_service' || 
+        r.metadata?.triggers?.includes('fast_track')
+      );
+      
+      if (isQuickPath) {
+        const endStateNode = this.nodeRegistry.get('end_state_quick_results');
+        return {
+          node: endStateNode || null,
+          shouldShowCards: true,
+          reasoning: 'Quick service path complete - showing filtered results',
+          confidence: 0.9
+        };
+      } else {
+        const endStateNode = this.nodeRegistry.get('end_state_guided_recommendations');
+        return {
+          node: endStateNode || null,
+          shouldShowCards: true,
+          reasoning: 'Guided consultation complete - showing personalized recommendations',
+          confidence: 0.9
         };
       }
     }
@@ -408,4 +449,3 @@ export class DecisionTreeEngine {
     // });
   }
 }
-

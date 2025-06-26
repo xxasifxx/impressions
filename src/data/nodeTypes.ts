@@ -5,80 +5,184 @@ import { ConsultationNode } from '@/data/models/ConsultationTypes';
  * These nodes implement the professional cosmetologist consultation pattern
  */
 
-// ENTRY NODES - Always start with motivation/occasion detection
+// ENTRY NODES - Start with natural discovery, not leading questions
 export const entryNodes: ConsultationNode[] = [
   {
-    id: 'entry_motivation',
+    id: 'entry_consultation_type',
     type: 'entry',
-    title: 'Tell me about your beauty goals',
-    description: 'Understanding what brings you here today helps me recommend the perfect services for you.',
-    question: 'What\'s inspiring your visit today?',
+    title: 'How can I help you today?',
+    description: 'I\'m here to help you find exactly what you\'re looking for.',
+    question: 'What brings you here today?',
     options: [
       {
-        id: 'motivation_wedding',
-        text: 'I have a wedding coming up',
-        value: 'wedding',
-        metadata: {
-          weight: 10,
-          category: 'motivation',
-          triggers: ['bridal_package', 'timeline_urgent']
-        }
-      },
-      {
-        id: 'motivation_professional',
-        text: 'I want to look more professional/polished',
-        value: 'professional',
+        id: 'quick_service',
+        text: 'I know what I want - show me options and pricing',
+        value: 'quick_service',
+        nextNodeId: 'quick_service_filter',
         metadata: {
           weight: 8,
-          category: 'motivation',
-          triggers: ['business_look', 'confidence_building']
+          category: 'consultation_type',
+          triggers: ['fast_track', 'minimal_questions', 'pricing_focus']
         }
       },
       {
-        id: 'motivation_event',
-        text: 'I have a special event or date',
-        value: 'special_event',
+        id: 'help_me_decide',
+        text: 'Help me figure out what would be best for me',
+        value: 'guided_consultation',
+        nextNodeId: 'guided_current_situation',
         metadata: {
-          weight: 7,
-          category: 'motivation',
-          triggers: ['occasion_styling', 'timeline_soon']
+          weight: 9,
+          category: 'consultation_type',
+          triggers: ['detailed_consultation', 'education', 'guidance']
         }
       },
       {
-        id: 'motivation_selfcare',
-        text: 'I want to treat myself and feel better',
-        value: 'self_care',
-        metadata: {
-          weight: 6,
-          category: 'motivation',
-          triggers: ['transformation', 'confidence']
-        }
-      },
-      {
-        id: 'motivation_maintenance',
-        text: 'I need regular maintenance/touch-ups',
-        value: 'maintenance',
+        id: 'browse_services',
+        text: 'I\'m just browsing to see what you offer',
+        value: 'exploration',
+        nextNodeId: 'exploration_interests',
         metadata: {
           weight: 5,
-          category: 'motivation',
-          triggers: ['routine_services', 'existing_client']
+          category: 'consultation_type',
+          triggers: ['discovery', 'low_commitment', 'education']
         }
       },
       {
-        id: 'motivation_explore',
-        text: 'I\'m exploring what you offer',
-        value: 'exploration',
+        id: 'specific_concern',
+        text: 'I have a specific concern or problem to address',
+        value: 'problem_solving',
+        nextNodeId: 'concern_assessment',
         metadata: {
-          weight: 3,
-          category: 'motivation',
-          triggers: ['discovery', 'education']
+          weight: 8,
+          category: 'consultation_type',
+          triggers: ['solution_focused', 'expert_guidance', 'targeted']
         }
       }
     ],
     metadata: {
-      category: 'motivation_detection',
+      category: 'consultation_segmentation',
       priority: 10,
-      tags: ['entry', 'required', 'motivation']
+      tags: ['entry', 'required', 'segmentation']
+    }
+  },
+
+  // QUICK SERVICE PATH - Minimal questions, fast filtering
+  {
+    id: 'quick_service_filter',
+    type: 'refinement',
+    title: 'What type of service are you looking for?',
+    description: 'I\'ll show you options and pricing for your area of interest.',
+    question: 'Which area interests you most?',
+    options: [
+      {
+        id: 'quick_hair',
+        text: 'Hair services (cut, color, styling)',
+        value: 'hair-salon',
+        nextNodeId: 'quick_hair_specifics',
+        metadata: {
+          weight: 8,
+          category: 'quick_domain',
+          triggers: ['hair_services', 'show_cards_soon']
+        }
+      },
+      {
+        id: 'quick_makeup',
+        text: 'Makeup application or lessons',
+        value: 'makeup-studio',
+        nextNodeId: 'quick_makeup_specifics',
+        metadata: {
+          weight: 8,
+          category: 'quick_domain',
+          triggers: ['makeup_services', 'show_cards_soon']
+        }
+      },
+      {
+        id: 'quick_skincare',
+        text: 'Skincare treatments or facials',
+        value: 'med-spa',
+        nextNodeId: 'quick_skincare_specifics',
+        metadata: {
+          weight: 8,
+          category: 'quick_domain',
+          triggers: ['skincare_services', 'show_cards_soon']
+        }
+      },
+      {
+        id: 'quick_multiple',
+        text: 'Multiple services (hair + makeup, etc.)',
+        value: 'multiple',
+        nextNodeId: 'quick_package_options',
+        metadata: {
+          weight: 9,
+          category: 'quick_domain',
+          triggers: ['package_services', 'bundling_opportunity']
+        }
+      }
+    ],
+    metadata: {
+      category: 'quick_service_filtering',
+      priority: 9,
+      tags: ['quick_path', 'domain_selection', 'fast_track']
+    }
+  },
+
+  // GUIDED CONSULTATION PATH - Detailed discovery
+  {
+    id: 'guided_current_situation',
+    type: 'entry',
+    title: 'Tell me about your current situation',
+    description: 'Understanding where you\'re starting from helps me give you the best recommendations.',
+    question: 'What\'s your current beauty routine like?',
+    options: [
+      {
+        id: 'minimal_routine',
+        text: 'Pretty minimal - I don\'t do much beyond basics',
+        value: 'minimal',
+        nextNodeId: 'guided_goals_discovery',
+        metadata: {
+          weight: 7,
+          category: 'current_state',
+          triggers: ['beginner_friendly', 'education_needed', 'simple_start']
+        }
+      },
+      {
+        id: 'some_routine',
+        text: 'I have some routine but want to improve it',
+        value: 'developing',
+        nextNodeId: 'guided_goals_discovery',
+        metadata: {
+          weight: 8,
+          category: 'current_state',
+          triggers: ['intermediate_level', 'enhancement_focused']
+        }
+      },
+      {
+        id: 'established_routine',
+        text: 'I have an established routine and get regular services',
+        value: 'established',
+        nextNodeId: 'guided_change_motivation',
+        metadata: {
+          weight: 9,
+          category: 'current_state',
+          triggers: ['experienced_client', 'refinement_focused']
+        }
+      },
+      {
+        id: 'professional_level',
+        text: 'I work in beauty/fashion or am very experienced',
+        value: 'professional',
+        nextNodeId: 'guided_specific_goals',
+        metadata: {
+          weight: 10,
+          category: 'current_state',
+          triggers: ['expert_level', 'advanced_services', 'technical_discussion']
+        }
+      }
+    ],
+    metadata: {
+      category: 'guided_assessment',
+      priority: 9,
+      tags: ['guided_path', 'current_state', 'experience_level']
     }
   },
 
@@ -189,6 +293,160 @@ export const entryNodes: ConsultationNode[] = [
       category: 'timeline_assessment',
       priority: 8,
       tags: ['entry', 'timeline', 'scheduling']
+    }
+  }
+];
+
+// GOAL DISCOVERY NODES - Natural motivation discovery
+export const goalDiscoveryNodes: ConsultationNode[] = [
+  {
+    id: 'guided_goals_discovery',
+    type: 'refinement',
+    title: 'What are you hoping to achieve?',
+    description: 'Understanding your goals helps me recommend the perfect approach for you.',
+    question: 'What would make you feel most confident and happy with your appearance?',
+    options: [
+      {
+        id: 'goal_special_occasion',
+        text: 'Looking amazing for a special event or milestone',
+        value: 'special_occasion',
+        nextNodeId: 'occasion_details',
+        metadata: {
+          weight: 9,
+          category: 'goal_motivation',
+          triggers: ['occasion_focused', 'timeline_sensitive', 'high_impact']
+        }
+      },
+      {
+        id: 'goal_daily_confidence',
+        text: 'Feeling more confident in my daily life',
+        value: 'daily_confidence',
+        nextNodeId: 'confidence_areas',
+        metadata: {
+          weight: 8,
+          category: 'goal_motivation',
+          triggers: ['confidence_building', 'lifestyle_enhancement']
+        }
+      },
+      {
+        id: 'goal_professional_image',
+        text: 'Improving my professional appearance',
+        value: 'professional_image',
+        nextNodeId: 'professional_context',
+        metadata: {
+          weight: 8,
+          category: 'goal_motivation',
+          triggers: ['professional_focus', 'career_enhancement']
+        }
+      },
+      {
+        id: 'goal_maintenance',
+        text: 'Maintaining what I have but doing it better',
+        value: 'maintenance_improvement',
+        nextNodeId: 'maintenance_focus',
+        metadata: {
+          weight: 7,
+          category: 'goal_motivation',
+          triggers: ['maintenance_focused', 'optimization']
+        }
+      },
+      {
+        id: 'goal_transformation',
+        text: 'Making a significant change or trying something new',
+        value: 'transformation',
+        nextNodeId: 'transformation_scope',
+        metadata: {
+          weight: 9,
+          category: 'goal_motivation',
+          triggers: ['transformation_focused', 'change_ready', 'bold_choices']
+        }
+      }
+    ],
+    metadata: {
+      category: 'goal_discovery',
+      priority: 8,
+      tags: ['guided_path', 'motivation_discovery', 'natural_flow']
+    }
+  },
+
+  {
+    id: 'occasion_details',
+    type: 'refinement',
+    title: 'Tell me about your special occasion',
+    description: 'The more I know about your event, the better I can help you look and feel amazing.',
+    question: 'What\'s the occasion?',
+    options: [
+      {
+        id: 'wedding_bride',
+        text: 'My wedding - I\'m the bride',
+        value: 'wedding_bride',
+        nextNodeId: 'bridal_timeline',
+        metadata: {
+          weight: 10,
+          category: 'occasion_type',
+          triggers: ['bridal_focus', 'high_stakes', 'comprehensive_needs']
+        }
+      },
+      {
+        id: 'wedding_party',
+        text: 'Wedding party member or guest',
+        value: 'wedding_guest',
+        nextNodeId: 'wedding_role_details',
+        metadata: {
+          weight: 8,
+          category: 'occasion_type',
+          triggers: ['wedding_appropriate', 'coordinated_look']
+        }
+      },
+      {
+        id: 'date_romantic',
+        text: 'Important date or romantic occasion',
+        value: 'romantic_date',
+        nextNodeId: 'date_context',
+        metadata: {
+          weight: 7,
+          category: 'occasion_type',
+          triggers: ['romantic_styling', 'confidence_boost']
+        }
+      },
+      {
+        id: 'professional_event',
+        text: 'Work event, interview, or professional milestone',
+        value: 'professional_event',
+        nextNodeId: 'professional_event_details',
+        metadata: {
+          weight: 8,
+          category: 'occasion_type',
+          triggers: ['professional_styling', 'authority_presence']
+        }
+      },
+      {
+        id: 'celebration',
+        text: 'Birthday, anniversary, or personal celebration',
+        value: 'personal_celebration',
+        nextNodeId: 'celebration_style',
+        metadata: {
+          weight: 7,
+          category: 'occasion_type',
+          triggers: ['celebratory_styling', 'personal_expression']
+        }
+      },
+      {
+        id: 'photos',
+        text: 'Photo shoot or important photos',
+        value: 'photo_session',
+        nextNodeId: 'photo_context',
+        metadata: {
+          weight: 8,
+          category: 'occasion_type',
+          triggers: ['photo_ready', 'camera_appropriate']
+        }
+      }
+    ],
+    metadata: {
+      category: 'occasion_specification',
+      priority: 9,
+      tags: ['occasion_path', 'context_discovery', 'high_stakes']
     }
   }
 ];
@@ -554,6 +812,310 @@ export const bundlingNodes: ConsultationNode[] = [
   }
 ];
 
+// DEFINITIVE END STATES - Consultation pauses for cart actions
+export const definitiveEndStates: ConsultationNode[] = [
+  {
+    id: 'end_state_quick_results',
+    type: 'exit',
+    title: 'Here are your options',
+    description: 'Based on what you\'re looking for, here are the services that match your needs with pricing.',
+    question: 'Ready to add something to your cart, or would you like to explore more?',
+    options: [
+      {
+        id: 'add_to_cart',
+        text: 'Add a service to my cart',
+        value: 'cart_action',
+        metadata: {
+          weight: 10,
+          category: 'cart_action',
+          triggers: ['conversion', 'agent_d_bundling']
+        }
+      },
+      {
+        id: 'explore_more',
+        text: 'Show me more options in this area',
+        value: 'expand_results',
+        nextNodeId: 'expand_quick_results',
+        metadata: {
+          weight: 7,
+          category: 'exploration',
+          triggers: ['catalog_expansion', 'continue_browsing']
+        }
+      },
+      {
+        id: 'different_area',
+        text: 'Actually, I\'m interested in a different type of service',
+        value: 'pivot_service',
+        nextNodeId: 'quick_service_filter',
+        metadata: {
+          weight: 6,
+          category: 'pivot',
+          triggers: ['service_pivot', 'restart_filtering']
+        }
+      },
+      {
+        id: 'need_guidance',
+        text: 'I need more help deciding - can you guide me?',
+        value: 'request_guidance',
+        nextNodeId: 'guided_current_situation',
+        metadata: {
+          weight: 8,
+          category: 'consultation_upgrade',
+          triggers: ['detailed_consultation', 'guidance_needed']
+        }
+      }
+    ],
+    metadata: {
+      category: 'quick_service_end_state',
+      priority: 10,
+      tags: ['end_state', 'cart_trigger', 'agent_d_handoff']
+    }
+  },
+
+  {
+    id: 'end_state_guided_recommendations',
+    type: 'exit',
+    title: 'Your personalized recommendations',
+    description: 'Based on our conversation, I\'ve selected services that will help you achieve your goals.',
+    question: 'What would you like to do next?',
+    options: [
+      {
+        id: 'book_recommended',
+        text: 'Book one of these recommended services',
+        value: 'cart_action',
+        metadata: {
+          weight: 10,
+          category: 'cart_action',
+          triggers: ['conversion', 'agent_d_bundling']
+        }
+      },
+      {
+        id: 'learn_more_service',
+        text: 'Tell me more about one of these services',
+        value: 'service_education',
+        nextNodeId: 'service_deep_dive',
+        metadata: {
+          weight: 8,
+          category: 'education',
+          triggers: ['service_education', 'confidence_building']
+        }
+      },
+      {
+        id: 'modify_recommendations',
+        text: 'These don\'t feel quite right - can we adjust?',
+        value: 'refine_recommendations',
+        nextNodeId: 'recommendation_refinement',
+        metadata: {
+          weight: 7,
+          category: 'refinement',
+          triggers: ['recommendation_adjustment', 'preference_clarification']
+        }
+      },
+      {
+        id: 'save_for_later',
+        text: 'Save these recommendations for later',
+        value: 'save_recommendations',
+        metadata: {
+          weight: 5,
+          category: 'save_action',
+          triggers: ['lead_nurture', 'future_booking']
+        }
+      }
+    ],
+    metadata: {
+      category: 'guided_consultation_end_state',
+      priority: 10,
+      tags: ['end_state', 'cart_trigger', 'agent_d_handoff']
+    }
+  },
+
+  {
+    id: 'end_state_cart_analysis',
+    type: 'exit',
+    title: 'Let me analyze your selections',
+    description: 'I see you\'ve added some services to your cart. Let me suggest some combinations that work beautifully together.',
+    question: 'Based on what you\'ve selected, here are some intelligent recommendations:',
+    options: [
+      {
+        id: 'accept_bundle',
+        text: 'Add the recommended combination',
+        value: 'bundle_acceptance',
+        metadata: {
+          weight: 10,
+          category: 'bundle_action',
+          triggers: ['bundle_conversion', 'upsell_success']
+        }
+      },
+      {
+        id: 'modify_bundle',
+        text: 'I like some of these suggestions - let me customize',
+        value: 'bundle_customization',
+        nextNodeId: 'bundle_customization',
+        metadata: {
+          weight: 8,
+          category: 'bundle_modification',
+          triggers: ['bundle_refinement', 'personalization']
+        }
+      },
+      {
+        id: 'just_original',
+        text: 'Just book what I originally selected',
+        value: 'original_selection',
+        metadata: {
+          weight: 6,
+          category: 'bundle_decline',
+          triggers: ['minimal_booking', 'bundle_resistance']
+        }
+      },
+      {
+        id: 'continue_shopping',
+        text: 'Let me look at more options first',
+        value: 'continue_browsing',
+        nextNodeId: 'post_cart_browsing',
+        metadata: {
+          weight: 7,
+          category: 'continued_exploration',
+          triggers: ['extended_shopping', 'catalog_expansion']
+        }
+      }
+    ],
+    metadata: {
+      category: 'cart_analysis_end_state',
+      priority: 10,
+      tags: ['end_state', 'agent_d_primary', 'bundling_focus']
+    }
+  }
+];
+
+// MULTIPLE ENTRY POINT NODES - Can be reached from different paths
+export const multipleEntryNodes: ConsultationNode[] = [
+  {
+    id: 'service_deep_dive',
+    type: 'refinement',
+    title: 'Let me explain this service',
+    description: 'Understanding exactly what this service involves helps you make the best decision.',
+    question: 'Which service would you like to know more about?',
+    // This node can be reached from:
+    // - end_state_guided_recommendations
+    // - browsing flow
+    // - cart analysis flow
+    // - direct service inquiry
+    options: [
+      {
+        id: 'service_process',
+        text: 'What exactly happens during this service?',
+        value: 'process_explanation',
+        nextNodeId: 'service_process_details',
+        metadata: {
+          weight: 9,
+          category: 'service_education',
+          triggers: ['process_understanding', 'confidence_building']
+        }
+      },
+      {
+        id: 'service_results',
+        text: 'What results can I expect?',
+        value: 'results_explanation',
+        nextNodeId: 'service_results_details',
+        metadata: {
+          weight: 9,
+          category: 'service_education',
+          triggers: ['outcome_understanding', 'expectation_setting']
+        }
+      },
+      {
+        id: 'service_maintenance',
+        text: 'What\'s the maintenance and aftercare like?',
+        value: 'maintenance_explanation',
+        nextNodeId: 'service_maintenance_details',
+        metadata: {
+          weight: 8,
+          category: 'service_education',
+          triggers: ['maintenance_understanding', 'long_term_planning']
+        }
+      },
+      {
+        id: 'ready_to_book',
+        text: 'I understand - I\'m ready to book this',
+        value: 'cart_action',
+        metadata: {
+          weight: 10,
+          category: 'cart_action',
+          triggers: ['conversion', 'agent_d_bundling']
+        }
+      }
+    ],
+    metadata: {
+      category: 'service_education',
+      priority: 8,
+      tags: ['multiple_entry', 'education', 'conversion_support']
+    }
+  },
+
+  {
+    id: 'recommendation_refinement',
+    type: 'refinement',
+    title: 'Let\'s adjust your recommendations',
+    description: 'Tell me what doesn\'t feel right and I\'ll find better options for you.',
+    question: 'What would you like to change about these recommendations?',
+    // This node can be reached from:
+    // - end_state_guided_recommendations
+    // - post-cart analysis
+    // - browsing refinement
+    options: [
+      {
+        id: 'too_complex',
+        text: 'These seem too complex or time-consuming',
+        value: 'simplify_recommendations',
+        nextNodeId: 'simplified_options',
+        metadata: {
+          weight: 8,
+          category: 'complexity_adjustment',
+          triggers: ['simplification', 'time_conscious']
+        }
+      },
+      {
+        id: 'too_simple',
+        text: 'I\'m ready for something more advanced or dramatic',
+        value: 'enhance_recommendations',
+        nextNodeId: 'enhanced_options',
+        metadata: {
+          weight: 8,
+          category: 'complexity_adjustment',
+          triggers: ['enhancement', 'bold_choices']
+        }
+      },
+      {
+        id: 'wrong_focus',
+        text: 'The focus is wrong - I\'m more interested in [different area]',
+        value: 'refocus_recommendations',
+        nextNodeId: 'focus_adjustment',
+        metadata: {
+          weight: 9,
+          category: 'focus_adjustment',
+          triggers: ['domain_shift', 'preference_clarification']
+        }
+      },
+      {
+        id: 'budget_concerns',
+        text: 'I need to see options at different price points',
+        value: 'budget_adjustment',
+        nextNodeId: 'budget_options',
+        metadata: {
+          weight: 8,
+          category: 'budget_adjustment',
+          triggers: ['price_sensitivity', 'value_options']
+        }
+      }
+    ],
+    metadata: {
+      category: 'recommendation_adjustment',
+      priority: 8,
+      tags: ['multiple_entry', 'refinement', 'personalization']
+    }
+  }
+];
+
 // EXIT NODES - Finalize recommendations and complete consultation
 export const exitNodes: ConsultationNode[] = [
   {
@@ -769,8 +1331,11 @@ export const educationNodes: ConsultationNode[] = [
 // Export all node collections
 export const allNodes: ConsultationNode[] = [
   ...entryNodes,
+  ...goalDiscoveryNodes,
   ...refinementNodes,
   ...bundlingNodes,
+  ...definitiveEndStates,
+  ...multipleEntryNodes,
   ...exitNodes,
   ...educationNodes
 ];
@@ -808,4 +1373,3 @@ export function getBundlingNodes(): ConsultationNode[] {
 export function getRefinementNodes(): ConsultationNode[] {
   return refinementNodes;
 }
-
