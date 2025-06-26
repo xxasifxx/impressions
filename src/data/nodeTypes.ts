@@ -13,6 +13,8 @@ export const entryNodes: ConsultationNode[] = [
     title: 'How can I help you today?',
     description: 'I\'m here to help you find exactly what you\'re looking for.',
     question: 'What brings you here today?',
+    hasTextInput: true,
+    textInputPlaceholder: 'Tell me what you\'re looking for... (e.g., "I need a haircut and eyebrows" or "Help me look professional")',
     options: [
       {
         id: 'quick_service',
@@ -62,7 +64,7 @@ export const entryNodes: ConsultationNode[] = [
     metadata: {
       category: 'consultation_segmentation',
       priority: 10,
-      tags: ['entry', 'required', 'segmentation']
+      tags: ['entry', 'required', 'segmentation', 'hybrid_input']
     }
   },
 
@@ -123,6 +125,66 @@ export const entryNodes: ConsultationNode[] = [
       category: 'quick_service_filtering',
       priority: 9,
       tags: ['quick_path', 'domain_selection', 'fast_track']
+    }
+  },
+
+  // SPECIFIC SERVICE BREAKDOWN - For direct service requests via text input
+  {
+    id: 'specific_service_breakdown',
+    type: 'refinement',
+    title: 'Let me understand your specific needs',
+    description: 'I can see you\'re interested in specific services. Let me help you get exactly what you want.',
+    question: 'Based on what you mentioned, which of these would you like to focus on first?',
+    options: [
+      {
+        id: 'focus_primary',
+        text: 'Focus on my main request first',
+        value: 'primary_focus',
+        nextNodeId: 'service_specific_details',
+        metadata: {
+          weight: 9,
+          category: 'service_focus',
+          triggers: ['primary_service', 'focused_consultation']
+        }
+      },
+      {
+        id: 'package_all',
+        text: 'I want to package these services together',
+        value: 'package_services',
+        nextNodeId: 'package_coordination',
+        metadata: {
+          weight: 10,
+          category: 'service_bundling',
+          triggers: ['package_services', 'bundling_opportunity', 'agent_d_early']
+        }
+      },
+      {
+        id: 'compare_options',
+        text: 'Show me options for each service type',
+        value: 'compare_services',
+        nextNodeId: 'service_comparison',
+        metadata: {
+          weight: 8,
+          category: 'service_comparison',
+          triggers: ['comparison_mode', 'detailed_options']
+        }
+      },
+      {
+        id: 'need_guidance',
+        text: 'Actually, I could use some guidance on what works best together',
+        value: 'request_guidance',
+        nextNodeId: 'guided_current_situation',
+        metadata: {
+          weight: 7,
+          category: 'consultation_upgrade',
+          triggers: ['detailed_consultation', 'guidance_needed']
+        }
+      }
+    ],
+    metadata: {
+      category: 'specific_service_handling',
+      priority: 9,
+      tags: ['text_input_route', 'service_specific', 'smart_routing']
     }
   },
 

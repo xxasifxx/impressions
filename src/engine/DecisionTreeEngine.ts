@@ -7,6 +7,7 @@ import {
 } from '@/data/models';
 import { UnifiedService } from '@/data/unifiedServicesData';
 import { UnifiedProduct } from '@/data/models/UnifiedProduct';
+import { SmartSearchEngine, ParsedUserInput } from './SmartSearchEngine';
 
 export interface DecisionTreeConfig {
   maxQuestionsBeforeCards: number;
@@ -37,6 +38,7 @@ export class DecisionTreeEngine {
   private config: DecisionTreeConfig;
   private nodeRegistry: Map<string, ConsultationNode>;
   private transitionRules: Map<string, (context: TreeGenerationContext) => NextNodeResult>;
+  private smartSearchEngine: SmartSearchEngine;
 
   constructor(config: Partial<DecisionTreeConfig> = {}) {
     this.config = {
@@ -49,6 +51,7 @@ export class DecisionTreeEngine {
     
     this.nodeRegistry = new Map();
     this.transitionRules = new Map();
+    this.smartSearchEngine = new SmartSearchEngine();
     this.initializeTransitionRules();
   }
 
@@ -74,6 +77,31 @@ export class DecisionTreeEngine {
     sessionState: ConsultationSessionState
   ): NextNodeResult {
     const context = this.buildGenerationContext(sessionState);
+    
+    // Handle text input with smart search routing
+    if (response.textInput && response.textInput.trim()) {
+      const parsedInput = this.smartSearchEngine.parseUserInput(response.textInput);
+      
+      // If smart search has high confidence, route directly to suggested node
+      if (parsedInput.confidence >= 0.8) {
+        const targetNode = this.nodeRegistry.get(parsedInput.routingNodeId);
+        if (targetNode) {
+          return {
+            node: targetNode,
+            shouldShowCards: parsedInput.suggestedRoute === 'quick_service',
+            reasoning: `Smart routing: ${parsedInput.suggestedRoute} (confidence: ${parsedInput.confidence})`,
+            confidence: parsedInput.confidence,
+            alternativePaths: parsedInput.preFilteredServices
+          };
+        }
+      }
+      
+      // Store parsed input in response metadata for later use
+      response.metadata = {
+        ...response.metadata,
+        smartSearchResult: parsedInput
+      };
+    }
     
     // Update context with the new response
     const updatedContext = {

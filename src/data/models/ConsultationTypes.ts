@@ -4,6 +4,8 @@ export interface ConsultationNode {
   title: string;
   description?: string;
   question?: string;
+  hasTextInput?: boolean;
+  textInputPlaceholder?: string;
   options: ConsultationOption[];
   metadata?: {
     category?: string;
@@ -28,6 +30,7 @@ export interface ConsultationResponse {
   nodeId: string;
   optionId: string;
   value: any;
+  textInput?: string;
   timestamp: number;
   metadata?: Record<string, any>;
 }
@@ -130,4 +133,3 @@ export interface ModalLifecycleState {
   previousPhase?: string;
   timestamp: number;
 }
-
