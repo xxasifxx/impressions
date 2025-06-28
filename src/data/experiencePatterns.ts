@@ -1,9 +1,53 @@
 /**
- * Experience Detection Patterns
+ * Experience Detection Patterns - Production Data
  * 
- * Comprehensive pattern definitions for detecting user experience levels
- * in beauty service consultations. These patterns are based on language
- * usage, technical knowledge, and decision-making confidence.
+ * SCOPE: Hardcoded intelligence patterns for classifying user experience levels
+ * in beauty consultations. Contains vocabulary, technical, confidence, and familiarity patterns.
+ * 
+ * SUCCESS CRITERIA:
+ * - Pattern coverage: Each experience level has 3+ distinct pattern types
+ * - Pattern accuracy: 85%+ correct classification when patterns match
+ * - Pattern completeness: Common beauty terminology covered across all categories
+ * - Pattern weights: Properly balanced to avoid over/under-classification
+ * 
+ * CONSTRAINTS:
+ * - English language patterns only (basic support for other languages)
+ * - Beauty industry focused (hair, makeup, skincare, wellness)
+ * - Static patterns (no dynamic learning or updates)
+ * - Case-insensitive matching (patterns stored in lowercase)
+ * 
+ * PATTERN STRUCTURE:
+ * - id: Unique identifier for debugging and maintenance
+ * - name: Human-readable description of pattern purpose
+ * - category: 'vocabulary' | 'technical' | 'confidence' | 'familiarity'
+ * - experienceLevel: 'beginner' | 'intermediate' | 'advanced' | 'expert'
+ * - patterns: Array of text patterns to match
+ * - weight: Importance factor (0-1, higher = more important)
+ * - context: Optional service contexts where pattern applies
+ * - negativePatterns: Patterns that contradict this experience level
+ * 
+ * KNOWN ISSUES:
+ * 1. Pattern overlap: Some patterns may match multiple experience levels
+ * 2. Context sensitivity: Generic patterns may not work well in all service contexts
+ * 3. Language evolution: Beauty terminology changes over time
+ * 4. Cultural differences: Patterns may not work for all cultural contexts
+ * 
+ * MAINTENANCE PROCEDURES:
+ * 1. Monthly review: Check pattern effectiveness with real consultation data
+ * 2. Pattern updates: Add new terminology as beauty industry evolves
+ * 3. Weight adjustment: Modify pattern weights based on classification accuracy
+ * 4. Context expansion: Add new service contexts as business grows
+ * 
+ * DIAGNOSTIC METHODS:
+ * - Check pattern match counts in analysis results
+ * - Review evidence arrays for pattern matching details
+ * - Monitor classification accuracy by experience level
+ * - Test new patterns with known good/bad examples
+ * 
+ * EMERGENCY PROCEDURES:
+ * - If patterns cause misclassification: Temporarily disable problematic patterns
+ * - If new terminology appears: Add emergency patterns with low weights
+ * - If performance degrades: Reduce pattern count or optimize matching logic
  */
 
 import { ExperiencePattern } from '../types/ExperienceTypes';
@@ -365,4 +409,3 @@ export const EXPERIENCE_THRESHOLDS = {
   advanced: { min: 0.6, max: 0.8 },
   expert: { min: 0.8, max: 1.0 }
 };
-

@@ -1,8 +1,38 @@
 /**
- * Pattern Matching Utilities
+ * Pattern Matching Utilities - Production System
  * 
- * Reusable utilities for pattern matching and text analysis.
- * These functions can be used across different analysis engines.
+ * SCOPE: Reusable text analysis and pattern matching functions for experience analysis.
+ * Used by ExperienceAnalysisEngine and potentially other analysis systems.
+ * 
+ * SUCCESS CRITERIA:
+ * - Pattern matching accuracy ≥90% for clear text patterns
+ * - Fuzzy matching threshold 0.8 provides good balance of precision/recall
+ * - Text preprocessing normalizes input consistently
+ * - Performance <100ms for typical consultation responses
+ * 
+ * CONSTRAINTS:
+ * - Input text max 10,000 characters per function call
+ * - Fuzzy matching uses Levenshtein distance (computationally expensive for long strings)
+ * - English language optimized (basic support for other languages)
+ * - No external dependencies (pure JavaScript/TypeScript)
+ * 
+ * KNOWN FAILURE STATES:
+ * 1. Very long strings (>5000 chars) → Fuzzy matching becomes slow
+ * 2. Non-English text → May not match patterns correctly
+ * 3. Heavily abbreviated text → Pattern matching may fail
+ * 4. Special characters/emojis → May interfere with text preprocessing
+ * 
+ * DIAGNOSTIC METHODS:
+ * - Use matchPatterns() return value to see match details
+ * - Check fuzzyThreshold parameter if matches seem too strict/loose
+ * - Examine preprocessText() output for normalization issues
+ * - Monitor performance with timing for optimization needs
+ * 
+ * MAINTENANCE:
+ * - Update stop words list for better meaningful word extraction
+ * - Adjust fuzzy threshold based on real-world performance
+ * - Add new pattern categories as needed
+ * - Optimize string similarity calculation if performance degrades
  */
 
 import { ExperiencePattern, PatternMatchResult, ConfidenceLevel } from '../types/ExperienceTypes';
@@ -343,4 +373,3 @@ export function calculateTextComplexity(
     overallComplexity: Math.min(overallComplexity, 1) // Cap at 1.0
   };
 }
-
