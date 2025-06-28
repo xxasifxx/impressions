@@ -19,7 +19,8 @@ import {
 
 import { CognitiveLoadEngine } from './CognitiveLoadEngine';
 import { CognitiveLoadContext, ContentAnalysisResult } from '../types/CognitiveLoadTypes';
-import { VisualComplexityLevel } from '../types/VisualEvolutionTypes';
+import { VisualComplexityLevel, ProfessionalContext } from '../types/VisualEvolutionTypes';
+import { CONTEXTUAL_VISUAL_LANGUAGES } from '../styles/ContextualVisualLanguage';
 
 import { 
   AESTHETIC_STATES,
@@ -52,6 +53,7 @@ export class AestheticEvolutionEngine {
   private lastTransitionTime: number;
   private cognitiveLoadEngine: CognitiveLoadEngine;
   private currentVisualComplexity: VisualComplexityLevel;
+  private currentProfessionalContext: ProfessionalContext;
 
   constructor(config: Partial<AestheticEvolutionConfig> = {}) {
     this.config = {
@@ -75,6 +77,7 @@ export class AestheticEvolutionEngine {
     this.lastTransitionTime = Date.now();
     this.cognitiveLoadEngine = CognitiveLoadEngine.getInstance();
     this.currentVisualComplexity = 'balanced';
+    this.currentProfessionalContext = 'sophisticated';
     
     // Initialize with uncertain state
     this.currentEvolution = {
@@ -474,6 +477,61 @@ export class AestheticEvolutionEngine {
   }
 
   /**
+   * Set professional context for contextual visual language
+   */
+  setProfessionalContext(context: ProfessionalContext): void {
+    this.currentProfessionalContext = context;
+    
+    if (this.config.debugMode) {
+      console.log('🎨 Professional Context Updated:', {
+        context,
+        visualLanguage: CONTEXTUAL_VISUAL_LANGUAGES[context].functionalPurpose
+      });
+    }
+  }
+
+  /**
+   * Get current professional context
+   */
+  getCurrentProfessionalContext(): ProfessionalContext {
+    return this.currentProfessionalContext;
+  }
+
+  /**
+   * Auto-detect professional context from service category
+   */
+  detectProfessionalContext(serviceCategory?: string): ProfessionalContext {
+    if (!serviceCategory) return this.currentProfessionalContext;
+
+    const contextMapping: Record<string, ProfessionalContext> = {
+      'hair': 'sophisticated',
+      'makeup': 'artistic', 
+      'skincare': 'clinical',
+      'facial': 'clinical',
+      'wellness': 'wellness',
+      'holistic': 'wellness',
+      'brows': 'precision',
+      'eyebrows': 'precision',
+      'lashes': 'dramatic',
+      'eyelashes': 'dramatic',
+      'natural': 'natural',
+      'organic': 'natural',
+      'luxury': 'luxury',
+      'premium': 'luxury',
+      'bridal': 'luxury',
+      'wedding': 'luxury'
+    };
+
+    const detectedContext = contextMapping[serviceCategory.toLowerCase()];
+    if (detectedContext) {
+      this.setProfessionalContext(detectedContext);
+      return detectedContext;
+    }
+
+    return this.currentProfessionalContext;
+  }
+
+  /**
    * Apply visual complexity adaptations to aesthetic state
    */
   applyVisualComplexityAdaptations(
@@ -548,6 +606,7 @@ export class AestheticEvolutionEngine {
     this.stateHistory = [];
     this.lastTransitionTime = Date.now();
     this.currentVisualComplexity = 'balanced';
+    this.currentProfessionalContext = 'sophisticated';
     
     this.currentEvolution = {
       currentState: AESTHETIC_STATES.uncertain,
@@ -557,5 +616,27 @@ export class AestheticEvolutionEngine {
     };
 
     return this.currentEvolution;
+  }
+
+  /**
+   * Get comprehensive visual evolution state including contextual information
+   */
+  getComprehensiveState(): {
+    aestheticEvolution: AestheticEvolution;
+    visualComplexity: VisualComplexityLevel;
+    professionalContext: ProfessionalContext;
+    contextualLanguage: typeof CONTEXTUAL_VISUAL_LANGUAGES[ProfessionalContext];
+    cognitiveLoadAdaptation: any;
+  } {
+    const contextualLanguage = CONTEXTUAL_VISUAL_LANGUAGES[this.currentProfessionalContext];
+    const cognitiveLoadAdaptation = contextualLanguage.cognitiveLoadAdaptation[this.currentVisualComplexity];
+
+    return {
+      aestheticEvolution: this.currentEvolution,
+      visualComplexity: this.currentVisualComplexity,
+      professionalContext: this.currentProfessionalContext,
+      contextualLanguage,
+      cognitiveLoadAdaptation
+    };
   }
 }
