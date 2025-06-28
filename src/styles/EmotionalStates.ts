@@ -34,41 +34,78 @@ const BEAUTY_PALETTE = {
   platinum: '#E5E4E2'
 };
 
-// Typography scales for different emotional intensities
+// Font personalities for different emotional states (from existing portal system)
+const FONT_PERSONALITIES = {
+  approachable: {
+    headingFont: 'Inter, system-ui, sans-serif',
+    bodyFont: 'Inter, system-ui, sans-serif',
+    personality: 'Clean, modern, approachable'
+  },
+  sophisticated: {
+    headingFont: 'Playfair Display, serif',
+    bodyFont: 'Inter, system-ui, sans-serif', 
+    personality: 'Classic, elegant, timeless'
+  },
+  artistic: {
+    headingFont: 'Dancing Script, cursive',
+    bodyFont: 'Inter, system-ui, sans-serif',
+    personality: 'Flowing, creative, expressive'
+  },
+  luxury: {
+    headingFont: 'Imperial Script, cursive',
+    bodyFont: 'Playfair Display, serif',
+    personality: 'Premium, exclusive, refined'
+  },
+  celebration: {
+    headingFont: 'Fleur De Leah, cursive',
+    bodyFont: 'Dancing Script, cursive',
+    personality: 'Handcrafted, joyful, organic'
+  }
+};
+
+// Typography scales for technical evolution within each personality
 const TYPOGRAPHY_SCALES = {
   subtle: {
-    headingWeight: 400,
+    headingWeight: 300,
     headingSize: '1.5rem',
     bodySize: '0.95rem',
+    letterSpacing: '0.02em',
+    lineHeight: 1.6
+  },
+  balanced: {
+    headingWeight: 400,
+    headingSize: '1.75rem', 
+    bodySize: '1rem',
     letterSpacing: '0.01em',
     lineHeight: 1.5
   },
-  balanced: {
-    headingWeight: 500,
-    headingSize: '1.75rem', 
-    bodySize: '1rem',
-    letterSpacing: '0em',
-    lineHeight: 1.6
-  },
   confident: {
-    headingWeight: 600,
+    headingWeight: 500,
     headingSize: '2rem',
     bodySize: '1.05rem',
-    letterSpacing: '-0.01em',
+    letterSpacing: '0em',
     lineHeight: 1.4
   },
   bold: {
-    headingWeight: 700,
+    headingWeight: 600,
     headingSize: '2.25rem',
     bodySize: '1.1rem',
-    letterSpacing: '-0.02em',
+    letterSpacing: '-0.01em',
     lineHeight: 1.3
+  },
+  celebration: {
+    headingWeight: 400, // Cursive fonts look better at normal weight
+    headingSize: '2.5rem',
+    bodySize: '1.15rem',
+    letterSpacing: '0.02em', // More spacing for celebration
+    lineHeight: 1.4
   }
 };
 
 /**
  * UNCERTAIN STATE - Initial consultation entry
  * Calming, professional, non-intimidating
+ * Font: Clean sans-serif (approachable, non-intimidating)
  */
 export const UNCERTAIN_STATE: AestheticState = {
   id: 'uncertain',
@@ -85,7 +122,11 @@ export const UNCERTAIN_STATE: AestheticState = {
     textSecondary: '#666666'
   },
   
-  typography: TYPOGRAPHY_SCALES.subtle,
+  typography: {
+    ...TYPOGRAPHY_SCALES.subtle,
+    headingFont: FONT_PERSONALITIES.approachable.headingFont,
+    bodyFont: FONT_PERSONALITIES.approachable.bodyFont
+  },
   
   spacing: {
     containerPadding: '2rem',
@@ -111,6 +152,7 @@ export const UNCERTAIN_STATE: AestheticState = {
 /**
  * EXPLORING STATE - Discovery and learning phase
  * Inspiring, open, possibility-focused
+ * Font: Playfair Display (sophisticated discovery, elegant exploration)
  */
 export const EXPLORING_STATE: AestheticState = {
   id: 'exploring',
@@ -127,7 +169,11 @@ export const EXPLORING_STATE: AestheticState = {
     textSecondary: '#555555'
   },
   
-  typography: TYPOGRAPHY_SCALES.balanced,
+  typography: {
+    ...TYPOGRAPHY_SCALES.balanced,
+    headingFont: FONT_PERSONALITIES.sophisticated.headingFont,
+    bodyFont: FONT_PERSONALITIES.sophisticated.bodyFont
+  },
   
   spacing: {
     containerPadding: '2.5rem',
@@ -153,6 +199,7 @@ export const EXPLORING_STATE: AestheticState = {
 /**
  * ENGAGED STATE - Active participation and choice-making
  * Dynamic, interactive, empowering
+ * Font: Dancing Script (creative expression, artistic flow)
  */
 export const ENGAGED_STATE: AestheticState = {
   id: 'engaged',
@@ -169,7 +216,11 @@ export const ENGAGED_STATE: AestheticState = {
     textSecondary: '#444444'
   },
   
-  typography: TYPOGRAPHY_SCALES.confident,
+  typography: {
+    ...TYPOGRAPHY_SCALES.confident,
+    headingFont: FONT_PERSONALITIES.artistic.headingFont,
+    bodyFont: FONT_PERSONALITIES.artistic.bodyFont
+  },
   
   spacing: {
     containerPadding: '3rem',
@@ -195,6 +246,7 @@ export const ENGAGED_STATE: AestheticState = {
 /**
  * CONFIDENT STATE - Clear decision-making
  * Sophisticated, premium, empowering
+ * Font: Imperial Script (luxury, exclusivity, refined confidence)
  */
 export const CONFIDENT_STATE: AestheticState = {
   id: 'confident',
@@ -212,7 +264,11 @@ export const CONFIDENT_STATE: AestheticState = {
     textSecondary: '#333333'
   },
   
-  typography: TYPOGRAPHY_SCALES.confident,
+  typography: {
+    ...TYPOGRAPHY_SCALES.bold,
+    headingFont: FONT_PERSONALITIES.luxury.headingFont,
+    bodyFont: FONT_PERSONALITIES.luxury.bodyFont
+  },
   
   spacing: {
     containerPadding: '3.5rem',
@@ -238,6 +294,7 @@ export const CONFIDENT_STATE: AestheticState = {
 /**
  * CELEBRATORY STATE - Cart/booking moment
  * Luxurious, exciting, anticipatory
+ * Font: Fleur De Leah (handcrafted celebration, organic joy)
  */
 export const CELEBRATORY_STATE: AestheticState = {
   id: 'celebratory',
@@ -255,7 +312,11 @@ export const CELEBRATORY_STATE: AestheticState = {
     textSecondary: '#2C2C2C'
   },
   
-  typography: TYPOGRAPHY_SCALES.bold,
+  typography: {
+    ...TYPOGRAPHY_SCALES.celebration,
+    headingFont: FONT_PERSONALITIES.celebration.headingFont,
+    bodyFont: FONT_PERSONALITIES.celebration.bodyFont
+  },
   
   spacing: {
     containerPadding: '4rem',
@@ -278,36 +339,56 @@ export const CELEBRATORY_STATE: AestheticState = {
   }
 };
 
-// Service-specific aesthetic variations
+// Service-specific aesthetic variations (matching existing portal system)
 export const SERVICE_AESTHETIC_MODIFIERS = {
-  // Hair services - Transformation focus
+  // Hair services - Transformation focus (Playfair Display from hair portal)
   hair: {
     colorShift: { accent: BEAUTY_PALETTE.bronze },
-    serviceEmotion: 'transformation' as ServiceEmotion
+    serviceEmotion: 'transformation' as ServiceEmotion,
+    fontOverride: {
+      headingFont: FONT_PERSONALITIES.sophisticated.headingFont,
+      bodyFont: FONT_PERSONALITIES.sophisticated.bodyFont
+    }
   },
   
-  // Makeup services - Confidence focus  
+  // Makeup services - Confidence focus (Dancing Script from makeup portal)
   makeup: {
     colorShift: { accent: BEAUTY_PALETTE.coral },
-    serviceEmotion: 'confidence' as ServiceEmotion
+    serviceEmotion: 'confidence' as ServiceEmotion,
+    fontOverride: {
+      headingFont: FONT_PERSONALITIES.artistic.headingFont,
+      bodyFont: FONT_PERSONALITIES.artistic.bodyFont
+    }
   },
   
-  // Skincare services - Renewal focus
+  // Skincare services - Renewal focus (Fleur De Leah from wellness portal)
   skincare: {
     colorShift: { accent: BEAUTY_PALETTE.mint },
-    serviceEmotion: 'renewal' as ServiceEmotion
+    serviceEmotion: 'renewal' as ServiceEmotion,
+    fontOverride: {
+      headingFont: FONT_PERSONALITIES.celebration.headingFont,
+      bodyFont: FONT_PERSONALITIES.celebration.bodyFont
+    }
   },
   
-  // Brow services - Polish focus
+  // Brow services - Polish focus (Imperial Script for precision)
   brows: {
     colorShift: { accent: BEAUTY_PALETTE.taupe },
-    serviceEmotion: 'polish' as ServiceEmotion
+    serviceEmotion: 'polish' as ServiceEmotion,
+    fontOverride: {
+      headingFont: FONT_PERSONALITIES.luxury.headingFont,
+      bodyFont: FONT_PERSONALITIES.luxury.bodyFont
+    }
   },
   
-  // Lash services - Glamour focus
+  // Lash services - Glamour focus (Dancing Script for drama)
   lashes: {
     colorShift: { accent: BEAUTY_PALETTE.sapphire },
-    serviceEmotion: 'glamour' as ServiceEmotion
+    serviceEmotion: 'glamour' as ServiceEmotion,
+    fontOverride: {
+      headingFont: FONT_PERSONALITIES.artistic.headingFont,
+      bodyFont: FONT_PERSONALITIES.artistic.bodyFont
+    }
   }
 };
 
@@ -367,6 +448,10 @@ export function applyServiceModifications(
       ...baseState.colors,
       ...modifier.colorShift
     },
+    typography: modifier.fontOverride ? {
+      ...baseState.typography,
+      ...modifier.fontOverride
+    } : baseState.typography,
     serviceEmotion: modifier.serviceEmotion
   };
 }
@@ -387,4 +472,3 @@ export function applyMoodAdjustments(
     layout: adjustment.layout ? { ...baseState.layout, ...adjustment.layout } : baseState.layout
   };
 }
-

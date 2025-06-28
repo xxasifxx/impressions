@@ -128,6 +128,8 @@ export function AestheticProvider({
     style.setProperty('--aesthetic-color-text', state.colors.text);
     style.setProperty('--aesthetic-color-text-secondary', state.colors.textSecondary);
     
+    style.setProperty('--aesthetic-font-family-heading', state.typography.headingFont);
+    style.setProperty('--aesthetic-font-family-body', state.typography.bodyFont);
     style.setProperty('--aesthetic-font-weight-heading', state.typography.headingWeight.toString());
     style.setProperty('--aesthetic-font-size-heading', state.typography.headingSize);
     style.setProperty('--aesthetic-font-size-body', state.typography.bodySize);
@@ -162,6 +164,8 @@ export function AestheticProvider({
       '--aesthetic-color-surface',
       '--aesthetic-color-text',
       '--aesthetic-color-text-secondary',
+      '--aesthetic-font-family-heading',
+      '--aesthetic-font-family-body',
       '--aesthetic-font-weight-heading',
       '--aesthetic-font-size-heading',
       '--aesthetic-font-size-body',
@@ -302,4 +306,3 @@ export function AestheticDebugPanel() {
     </div>
   );
 }
-

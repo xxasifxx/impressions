@@ -46,6 +46,8 @@ export interface AestheticState {
   };
   
   typography: {
+    headingFont: string;
+    bodyFont: string;
     headingWeight: number;
     headingSize: string;
     bodySize: string;
@@ -161,4 +163,3 @@ export interface AestheticMetrics {
     userSatisfactionScore?: number;
   };
 }
-
