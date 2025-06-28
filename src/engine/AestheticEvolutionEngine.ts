@@ -54,6 +54,9 @@ export class AestheticEvolutionEngine {
   private cognitiveLoadEngine: CognitiveLoadEngine;
   private currentVisualComplexity: VisualComplexityLevel;
   private currentProfessionalContext: ProfessionalContext;
+  private detectedServices: string[];
+  private detectedKeywords: string[];
+  private currentUrgencyLevel: 'low' | 'medium' | 'high' | 'urgent';
 
   constructor(config: Partial<AestheticEvolutionConfig> = {}) {
     this.config = {
@@ -78,6 +81,9 @@ export class AestheticEvolutionEngine {
     this.cognitiveLoadEngine = CognitiveLoadEngine.getInstance();
     this.currentVisualComplexity = 'balanced';
     this.currentProfessionalContext = 'sophisticated';
+    this.detectedServices = [];
+    this.detectedKeywords = [];
+    this.currentUrgencyLevel = 'low';
     
     // Initialize with uncertain state
     this.currentEvolution = {
@@ -397,10 +403,265 @@ export class AestheticEvolutionEngine {
     return progression[current] || current;
   }
 
+  /**
+   * Visual Evolution Orchestrator - The core integration method
+   * 
+   * Takes base emotional state and applies:
+   * 1. Professional context modifications (clinical, artistic, luxury, etc.)
+   * 2. Cognitive load adaptations (spacing, complexity)
+   * 3. Service-specific overrides (wedding → luxury fonts)
+   * 4. Conflict resolution between competing systems
+   */
   private applyContextualModifications(baseState: AestheticState): AestheticState {
-    // This would be enhanced with actual service and mood context
-    // For now, return base state
-    return baseState;
+    let modifiedState = { ...baseState };
+
+    // Step 1: Apply Professional Context Visual Language
+    const contextualLanguage = CONTEXTUAL_VISUAL_LANGUAGES[this.currentProfessionalContext];
+    const cognitiveAdaptation = contextualLanguage.cognitiveLoadAdaptation[this.currentVisualComplexity];
+
+    // Step 2: Apply Cognitive Load Spacing Adaptations
+    modifiedState.spacing = {
+      ...modifiedState.spacing,
+      containerPadding: cognitiveAdaptation.spacing.containerPadding,
+      elementGap: cognitiveAdaptation.spacing.elementGap,
+      borderRadius: contextualLanguage.visualProperties.shapes.borderRadius
+    };
+
+    // Step 3: Apply Professional Context Color Modifications
+    // Blend base emotional colors with professional context palette
+    const contextColors = contextualLanguage.colorPalette;
+    modifiedState.colors = {
+      ...modifiedState.colors,
+      // Keep emotional primary, but adjust secondary/accent to professional context
+      secondary: this.blendColors(modifiedState.colors.secondary, contextColors.secondary, 0.3),
+      accent: this.blendColors(modifiedState.colors.accent, contextColors.accent, 0.4),
+      surface: this.blendColors(modifiedState.colors.surface, contextColors.surface, 0.2)
+    };
+
+    // Step 4: Apply Professional Context Typography Modifications
+    // This is where we resolve font conflicts intelligently
+    const resolvedTypography = this.resolveTypographyConflicts(
+      modifiedState.typography,
+      contextualLanguage,
+      baseState.emotionalState
+    );
+    modifiedState.typography = resolvedTypography;
+
+    // Step 5: Apply Visual Complexity Effects
+    modifiedState.effects = {
+      ...modifiedState.effects,
+      shadowIntensity: cognitiveAdaptation.effects.shadowIntensity,
+      gradientIntensity: cognitiveAdaptation.effects.gradientIntensity,
+      // Professional context influences animation style
+      animationEasing: contextualLanguage.visualProperties.animations.easing
+    };
+
+    // Step 6: Apply Layout Adaptations
+    modifiedState.layout = {
+      ...modifiedState.layout,
+      // Cognitive load affects content density
+      maxWidth: cognitiveAdaptation.layout.maxWidth,
+      verticalSpacing: cognitiveAdaptation.layout.verticalSpacing
+    };
+
+    if (this.config.debugMode) {
+      console.log('🎨 Contextual Modifications Applied:', {
+        originalState: baseState.emotionalState,
+        professionalContext: this.currentProfessionalContext,
+        visualComplexity: this.currentVisualComplexity,
+        modifications: {
+          typography: resolvedTypography,
+          spacing: modifiedState.spacing,
+          colors: modifiedState.colors
+        }
+      });
+    }
+
+    return modifiedState;
+  }
+
+  /**
+   * Intelligent Typography Conflict Resolution
+   * 
+   * Resolves conflicts between:
+   * - Emotional state fonts (uncertain → Inter, confident → Imperial Script)
+   * - Professional context fonts (clinical → geometric, artistic → flowing)
+   * - Service overrides (wedding → luxury fonts)
+   */
+  private resolveTypographyConflicts(
+    baseTypography: AestheticState['typography'],
+    contextualLanguage: typeof CONTEXTUAL_VISUAL_LANGUAGES[ProfessionalContext],
+    emotionalState: EmotionalState
+  ): AestheticState['typography'] {
+    // System Hierarchy for Typography Conflicts:
+    // 1. Service Override (wedding, urgent) - Highest priority
+    // 2. Professional Context (clinical, artistic) - Medium priority  
+    // 3. Emotional State (uncertain, confident) - Base priority
+    // 4. Cognitive Load (technical adjustments) - Lowest priority
+
+    let resolvedTypography = { ...baseTypography };
+
+    // Check for service-specific font overrides
+    const serviceOverride = this.getServiceFontOverride();
+    if (serviceOverride) {
+      // Service override wins - wedding gets luxury fonts regardless of other factors
+      resolvedTypography.headingFont = serviceOverride.headingFont;
+      resolvedTypography.bodyFont = serviceOverride.bodyFont;
+      
+      if (this.config.debugMode) {
+        console.log('🎯 Service Font Override Applied:', serviceOverride);
+      }
+      return resolvedTypography;
+    }
+
+    // Professional context modifies emotional state fonts
+    const contextModification = this.getContextualFontModification(
+      emotionalState,
+      this.currentProfessionalContext
+    );
+
+    if (contextModification) {
+      resolvedTypography.headingFont = contextModification.headingFont;
+      resolvedTypography.bodyFont = contextModification.bodyFont;
+      
+      if (this.config.debugMode) {
+        console.log('🎨 Professional Context Font Applied:', {
+          context: this.currentProfessionalContext,
+          modification: contextModification
+        });
+      }
+    }
+
+    // Cognitive load affects technical typography properties (weight, size, spacing)
+    const cognitiveAdaptation = contextualLanguage.cognitiveLoadAdaptation[this.currentVisualComplexity];
+    resolvedTypography = {
+      ...resolvedTypography,
+      headingSize: cognitiveAdaptation.typography.headingSize,
+      bodySize: cognitiveAdaptation.typography.bodySize,
+      lineHeight: cognitiveAdaptation.typography.lineHeight,
+      letterSpacing: cognitiveAdaptation.typography.letterSpacing
+    };
+
+    return resolvedTypography;
+  }
+
+  /**
+   * Get service-specific font overrides (highest priority)
+   */
+  private getServiceFontOverride(): { headingFont: string; bodyFont: string } | null {
+    // Check for high-priority service contexts that override everything
+    const serviceKeywords = this.getDetectedServiceKeywords();
+    
+    // Wedding context always gets luxury fonts
+    if (serviceKeywords.includes('wedding') || serviceKeywords.includes('bridal')) {
+      return {
+        headingFont: 'Imperial Script, cursive',
+        bodyFont: 'Playfair Display, serif'
+      };
+    }
+
+    // Urgent/emergency contexts get clean, readable fonts
+    if (serviceKeywords.includes('urgent') || serviceKeywords.includes('today') || serviceKeywords.includes('tomorrow')) {
+      return {
+        headingFont: 'Inter, system-ui, sans-serif',
+        bodyFont: 'Inter, system-ui, sans-serif'
+      };
+    }
+
+    return null;
+  }
+
+  /**
+   * Get professional context font modifications (medium priority)
+   */
+  private getContextualFontModification(
+    emotionalState: EmotionalState,
+    professionalContext: ProfessionalContext
+  ): { headingFont: string; bodyFont: string } | null {
+    // Professional context influences font choice within emotional state
+    const contextFontMap: Record<ProfessionalContext, { headingFont: string; bodyFont: string }> = {
+      clinical: {
+        headingFont: 'Inter, system-ui, sans-serif',
+        bodyFont: 'Inter, system-ui, sans-serif'
+      },
+      artistic: {
+        headingFont: 'Dancing Script, cursive',
+        bodyFont: 'Inter, system-ui, sans-serif'
+      },
+      sophisticated: {
+        headingFont: 'Playfair Display, serif',
+        bodyFont: 'Inter, system-ui, sans-serif'
+      },
+      luxury: {
+        headingFont: 'Imperial Script, cursive',
+        bodyFont: 'Playfair Display, serif'
+      },
+      wellness: {
+        headingFont: 'Fleur De Leah, cursive',
+        bodyFont: 'Inter, system-ui, sans-serif'
+      },
+      precision: {
+        headingFont: 'Inter, system-ui, sans-serif',
+        bodyFont: 'Inter, system-ui, sans-serif'
+      },
+      dramatic: {
+        headingFont: 'Playfair Display, serif',
+        bodyFont: 'Inter, system-ui, sans-serif'
+      },
+      natural: {
+        headingFont: 'Inter, system-ui, sans-serif',
+        bodyFont: 'Inter, system-ui, sans-serif'
+      }
+    };
+
+    return contextFontMap[professionalContext];
+  }
+
+  /**
+   * Blend two colors with specified ratio
+   */
+  private blendColors(color1: string, color2: string, ratio: number): string {
+    // Simple color blending - in production would use proper color space blending
+    // For now, return the contextual color with reduced opacity influence
+    return color2;
+  }
+
+  /**
+   * Get detected service keywords from current context
+   */
+  private getDetectedServiceKeywords(): string[] {
+    return [...this.detectedKeywords, ...this.detectedServices];
+  }
+
+  /**
+   * Update service context from Agent B's smart search results
+   * This method allows Agent B to inform the aesthetic system about detected services
+   */
+  updateServiceContext(
+    detectedServices: string[],
+    serviceKeywords: string[],
+    urgencyLevel: 'low' | 'medium' | 'high' | 'urgent' = 'low'
+  ): void {
+    // Store detected service information for use in font override decisions
+    this.detectedServices = detectedServices;
+    this.detectedKeywords = serviceKeywords;
+    this.currentUrgencyLevel = urgencyLevel;
+
+    // Auto-detect professional context from primary service
+    if (detectedServices.length > 0) {
+      const primaryService = detectedServices[0];
+      const detectedContext = this.detectProfessionalContext(primaryService);
+      this.setProfessionalContext(detectedContext);
+    }
+
+    if (this.config.debugMode) {
+      console.log('🔍 Service Context Updated:', {
+        detectedServices,
+        serviceKeywords,
+        urgencyLevel,
+        professionalContext: this.currentProfessionalContext
+      });
+    }
   }
 
   private initializeTriggers(): void {
