@@ -17,6 +17,10 @@ import {
   AestheticEvolutionPath
 } from '../types/AestheticTypes';
 
+import { CognitiveLoadEngine } from './CognitiveLoadEngine';
+import { CognitiveLoadContext, ContentAnalysisResult } from '../types/CognitiveLoadTypes';
+import { VisualComplexityLevel } from '../types/VisualEvolutionTypes';
+
 import { 
   AESTHETIC_STATES,
   getAestheticState,
@@ -46,6 +50,8 @@ export class AestheticEvolutionEngine {
   private evolutionPaths: Map<string, AestheticEvolutionPath>;
   private stateHistory: Array<{ state: EmotionalState; timestamp: number; reason: string }>;
   private lastTransitionTime: number;
+  private cognitiveLoadEngine: CognitiveLoadEngine;
+  private currentVisualComplexity: VisualComplexityLevel;
 
   constructor(config: Partial<AestheticEvolutionConfig> = {}) {
     this.config = {
@@ -67,6 +73,8 @@ export class AestheticEvolutionEngine {
     this.evolutionPaths = new Map();
     this.stateHistory = [];
     this.lastTransitionTime = Date.now();
+    this.cognitiveLoadEngine = CognitiveLoadEngine.getInstance();
+    this.currentVisualComplexity = 'balanced';
     
     // Initialize with uncertain state
     this.currentEvolution = {
@@ -410,11 +418,136 @@ export class AestheticEvolutionEngine {
   }
 
   /**
+   * Assess cognitive load and adapt visual complexity
+   * Core principle: Visual complexity inversely relates to cognitive load
+   */
+  assessCognitiveLoadAndAdapt(
+    contentText: string,
+    userContext: {
+      experienceLevel: 'beginner' | 'intermediate' | 'expert';
+      currentEmotionalState: EmotionalState;
+      sessionProgress: number;
+      previousDecisions: number;
+      engagementDepth: number;
+    },
+    contentType: 'decision' | 'information' | 'confirmation' | 'instruction' | 'selection' | 'input' | 'result' | 'celebration'
+  ): ContentAnalysisResult {
+    // Analyze content complexity
+    const contentAnalysis = this.cognitiveLoadEngine.analyzeTextContent(contentText);
+    
+    // Assess cognitive load
+    const cognitiveLoad = this.cognitiveLoadEngine.assessCognitiveLoad(
+      contentAnalysis,
+      userContext,
+      contentType
+    );
+    
+    // Determine appropriate visual complexity (inverse relationship)
+    const visualComplexity = this.cognitiveLoadEngine.determineVisualComplexity(cognitiveLoad);
+    this.currentVisualComplexity = visualComplexity;
+    
+    // Get visual adaptation recommendations
+    const recommendations = this.cognitiveLoadEngine.getVisualAdaptationRecommendations(cognitiveLoad);
+    
+    if (this.config.debugMode) {
+      console.log('🧠 Cognitive Load Assessment:', {
+        contentAnalysis,
+        cognitiveLoad,
+        visualComplexity,
+        recommendations
+      });
+    }
+    
+    return {
+      analysis: contentAnalysis,
+      cognitiveLoad,
+      visualComplexity,
+      recommendations
+    };
+  }
+
+  /**
+   * Get current visual complexity level
+   */
+  getCurrentVisualComplexity(): VisualComplexityLevel {
+    return this.currentVisualComplexity;
+  }
+
+  /**
+   * Apply visual complexity adaptations to aesthetic state
+   */
+  applyVisualComplexityAdaptations(
+    baseState: AestheticState,
+    visualComplexity: VisualComplexityLevel
+  ): AestheticState {
+    const adaptations = {
+      minimal: {
+        // High cognitive load = minimal visual complexity
+        spacing: Math.max(baseState.spacing * 1.5, 24), // Extra generous spacing
+        borderRadius: Math.min(baseState.borderRadius, 8), // Simpler shapes
+        shadowBlur: Math.min(baseState.shadowBlur, 10), // Subtle shadows
+        animationDuration: Math.max(baseState.animationDuration, 400), // Slower, calmer
+        maxWidth: Math.min(baseState.maxWidth || 600, 500), // Narrower focus
+        verticalSpacing: Math.max(baseState.verticalSpacing, 32) // More breathing room
+      },
+      simple: {
+        // Moderate-high cognitive load = simple visual complexity
+        spacing: Math.max(baseState.spacing * 1.2, 20),
+        borderRadius: baseState.borderRadius,
+        shadowBlur: Math.min(baseState.shadowBlur, 15),
+        animationDuration: baseState.animationDuration,
+        maxWidth: baseState.maxWidth || 600,
+        verticalSpacing: Math.max(baseState.verticalSpacing, 24)
+      },
+      balanced: {
+        // Moderate cognitive load = balanced visual complexity
+        spacing: baseState.spacing,
+        borderRadius: baseState.borderRadius,
+        shadowBlur: baseState.shadowBlur,
+        animationDuration: baseState.animationDuration,
+        maxWidth: baseState.maxWidth,
+        verticalSpacing: baseState.verticalSpacing
+      },
+      rich: {
+        // Low cognitive load = rich visual complexity
+        spacing: Math.max(baseState.spacing * 0.9, 12),
+        borderRadius: Math.max(baseState.borderRadius, 12),
+        shadowBlur: Math.max(baseState.shadowBlur, 20),
+        animationDuration: Math.min(baseState.animationDuration, 300),
+        maxWidth: Math.max(baseState.maxWidth || 600, 700),
+        verticalSpacing: Math.max(baseState.verticalSpacing * 0.9, 16)
+      },
+      sophisticated: {
+        // Minimal cognitive load = sophisticated visual complexity
+        spacing: Math.max(baseState.spacing * 0.8, 8),
+        borderRadius: Math.max(baseState.borderRadius, 16),
+        shadowBlur: Math.max(baseState.shadowBlur, 25),
+        animationDuration: Math.min(baseState.animationDuration, 250),
+        maxWidth: Math.max(baseState.maxWidth || 600, 800),
+        verticalSpacing: Math.max(baseState.verticalSpacing * 0.8, 12)
+      }
+    };
+
+    const adaptation = adaptations[visualComplexity];
+    
+    return {
+      ...baseState,
+      spacing: adaptation.spacing,
+      borderRadius: adaptation.borderRadius,
+      shadowBlur: adaptation.shadowBlur,
+      animationDuration: adaptation.animationDuration,
+      maxWidth: adaptation.maxWidth,
+      verticalSpacing: adaptation.verticalSpacing
+    };
+  }
+
+  /**
    * Reset to initial state
    */
   reset(): AestheticEvolution {
     this.stateHistory = [];
     this.lastTransitionTime = Date.now();
+    this.currentVisualComplexity = 'balanced';
     
     this.currentEvolution = {
       currentState: AESTHETIC_STATES.uncertain,
@@ -426,4 +559,3 @@ export class AestheticEvolutionEngine {
     return this.currentEvolution;
   }
 }
-
