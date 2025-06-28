@@ -6,6 +6,7 @@ import {
 import { UnifiedService } from '@/data/unifiedServicesData';
 import { UnifiedProduct } from '@/data/models/UnifiedProduct';
 import { ExperienceProfile } from './RulesEngine';
+import { ExperienceAnalysisEngine } from './ExperienceAnalysisEngine';
 
 export interface AdaptationConfig {
   enableEducationalContent: boolean;
@@ -539,14 +540,60 @@ export class ExperienceAdapter {
     showsExpertise: boolean;
     comfortableWithComplexity: boolean;
   } {
-    // Analyze responses for confidence indicators
-    // This is a simplified implementation
-    return {
-      showsUnderstanding: responses.length >= 3,
-      asksGoodQuestions: responses.some(r => r.metadata?.category === 'question'),
-      showsExpertise: responses.some(r => r.value.toString().includes('advanced')),
-      comfortableWithComplexity: responses.some(r => r.value.toString().includes('complex'))
+    // Use the production-grade Experience Analysis Engine
+    const analysisInput = {
+      responses: responses.map(r => ({
+        text: r.value.toString(),
+        timestamp: new Date(r.timestamp || Date.now()),
+        context: r.metadata?.category,
+        metadata: r.metadata
+      })),
+      sessionContext: {
+        serviceCategory: this.detectServiceCategory(responses),
+        previousSessions: 0 // Could be enhanced with session tracking
+      }
     };
+    
+    const analysisEngine = new ExperienceAnalysisEngine();
+    const result = analysisEngine.analyzeExperience(analysisInput);
+    
+    // Map detailed analysis to simplified indicators for backward compatibility
+    return {
+      showsUnderstanding: result.technicalKnowledge.score > 0.5,
+      asksGoodQuestions: result.decisionConfidence.questioningBehavior > 0.3,
+      showsExpertise: result.experienceLevel === 'advanced' || result.experienceLevel === 'expert',
+      comfortableWithComplexity: result.recommendations.suggestedServiceComplexity === 'complex' || 
+                                result.recommendations.suggestedServiceComplexity === 'advanced'
+    };
+  }
+  
+  /**
+   * Detect service category from consultation responses
+   */
+  private detectServiceCategory(responses: ConsultationResponse[]): string {
+    const allText = responses.map(r => r.value.toString()).join(' ').toLowerCase();
+    
+    const categoryKeywords = {
+      hair: ['hair', 'cut', 'color', 'style', 'trim', 'highlights', 'balayage', 'roots'],
+      makeup: ['makeup', 'foundation', 'lipstick', 'eyeshadow', 'mascara', 'contour', 'blush'],
+      skincare: ['facial', 'skin', 'acne', 'wrinkles', 'cleansing', 'moisturizer', 'treatment'],
+      wellness: ['massage', 'relaxation', 'aromatherapy', 'wellness', 'spa', 'therapeutic']
+    };
+    
+    let bestCategory = 'general';
+    let bestScore = 0;
+    
+    for (const [category, keywords] of Object.entries(categoryKeywords)) {
+      const matches = keywords.filter(keyword => allText.includes(keyword));
+      const score = matches.length;
+      
+      if (score > bestScore) {
+        bestScore = score;
+        bestCategory = category;
+      }
+    }
+    
+    return bestCategory;
   }
 
   private simplifyQuestion(question: string): string {
@@ -571,4 +618,3 @@ export class ExperienceAdapter {
     return description.split('.')[0] + '.'; // Keep only first sentence
   }
 }
-
