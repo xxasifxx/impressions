@@ -21,6 +21,7 @@ import { CognitiveLoadEngine } from './CognitiveLoadEngine';
 import { CognitiveLoadContext, ContentAnalysisResult } from '../types/CognitiveLoadTypes';
 import { VisualComplexityLevel, ProfessionalContext } from '../types/VisualEvolutionTypes';
 import { CONTEXTUAL_VISUAL_LANGUAGES } from '../styles/ContextualVisualLanguage';
+import { blendColors, getContextBlendingStrategy } from '../utils/colorBlending';
 
 import { 
   AESTHETIC_STATES,
@@ -618,12 +619,16 @@ export class AestheticEvolutionEngine {
   }
 
   /**
-   * Blend two colors with specified ratio
+   * Blend two colors with specified ratio using production-grade LAB color space blending
    */
   private blendColors(color1: string, color2: string, ratio: number): string {
-    // Simple color blending - in production would use proper color space blending
-    // For now, return the contextual color with reduced opacity influence
-    return color2;
+    const strategy = getContextBlendingStrategy(this.currentProfessionalContext);
+    
+    return blendColors(color1, color2, ratio, {
+      strategy,
+      maintainContrast: true,
+      minContrastRatio: 4.5 // WCAG AA compliance
+    });
   }
 
   /**
