@@ -15,6 +15,23 @@ import { CatalogFilter, FilterResult } from './CatalogFilter';
 import { CardDisplayManager, CardDisplayDecision } from './CardDisplayManager';
 import { BundlingIntelligence, BundleRecommendation } from './BundlingIntelligence';
 
+// Production Engine Imports
+import { ExperienceAnalysisEngine } from './ExperienceAnalysisEngine';
+import { BundleRecommendationEngine } from './BundleRecommendationEngine';
+import { CatalogFilterEngine } from './CatalogFilterEngine';
+import { 
+  ExperienceAnalysisInput, 
+  ExperienceAnalysisResult 
+} from '../types/ExperienceTypes';
+import { 
+  BundleAnalysisInput, 
+  BundleAnalysisResult 
+} from '../types/BundleTypes';
+import { 
+  FilterInput, 
+  FilterResult as ProductionFilterResult 
+} from '../types/FilterTypes';
+
 export interface SessionManagerConfig {
   autoSaveInterval: number; // milliseconds
   sessionTimeoutMinutes: number;
@@ -49,6 +66,11 @@ export class ConsultationSessionManager {
   private bundlingIntelligence: BundlingIntelligence;
   private config: SessionManagerConfig;
   
+  // Production Engines
+  private experienceAnalysisEngine: ExperienceAnalysisEngine;
+  private bundleRecommendationEngine: BundleRecommendationEngine;
+  private catalogFilterEngine: CatalogFilterEngine;
+  
   private sessionState: ConsultationSessionState | null = null;
   private consultationState: ConsultationState;
   private sessionEvents: SessionEvent[] = [];
@@ -74,6 +96,11 @@ export class ConsultationSessionManager {
     this.catalogFilter = new CatalogFilter(this.rulesEngine);
     this.cardDisplayManager = new CardDisplayManager(this.rulesEngine);
     this.bundlingIntelligence = new BundlingIntelligence(this.rulesEngine);
+    
+    // Initialize production engines
+    this.experienceAnalysisEngine = new ExperienceAnalysisEngine();
+    this.bundleRecommendationEngine = new BundleRecommendationEngine();
+    this.catalogFilterEngine = new CatalogFilterEngine();
 
     // Initialize consultation state
     this.consultationState = {
@@ -539,5 +566,463 @@ export class ConsultationSessionManager {
       this.autoSaveTimer = null;
     }
   }
-}
 
+  /**
+   * PRODUCTION ENGINE METHODS
+   * 
+   * These methods provide access to production-grade engines with comprehensive
+   * diagnostic capabilities, error handling, and performance monitoring.
+   * They can be used alongside or instead of the prototype engines.
+   */
+
+  /**
+   * Analyze user experience level using production engine
+   * 
+   * USAGE: Call this to get comprehensive experience analysis with diagnostic info
+   * RETURNS: Detailed experience analysis with confidence scores and recommendations
+   */
+  public analyzeUserExperienceProduction(): ExperienceAnalysisResult | null {
+    if (!this.sessionState) {
+      console.warn('No session state available for experience analysis');
+      return null;
+    }
+
+    try {
+      const input: ExperienceAnalysisInput = {
+        responses: this.sessionState.responses,
+        userProfile: {
+          previousExperience: this.sessionState.userProfile?.previousExperience || [],
+          skillLevel: this.sessionState.userProfile?.skillLevel || 'beginner',
+          preferences: this.sessionState.userProfile?.preferences || {},
+          goals: this.sessionState.userProfile?.goals || []
+        },
+        sessionContext: {
+          sessionDuration: Date.now() - this.sessionState.startTime,
+          responseCount: this.sessionState.responses.length,
+          currentPhase: this.sessionState.currentNodeId || 'initial',
+          confidenceIndicators: this.extractConfidenceIndicators()
+        }
+      };
+
+      const result = this.experienceAnalysisEngine.analyzeExperience(input);
+      
+      // Log production analysis for comparison
+      this.logEvent({
+        type: 'node_transition', // Reusing existing event type
+        timestamp: Date.now(),
+        data: { 
+          type: 'production_experience_analysis',
+          experienceLevel: result.experienceLevel,
+          confidence: result.confidence,
+          skillGaps: result.skillGaps,
+          recommendations: result.recommendations
+        },
+        nodeId: this.sessionState.currentNodeId
+      });
+
+      return result;
+    } catch (error) {
+      console.error('Production experience analysis failed:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Generate bundle recommendations using production engine
+   * 
+   * USAGE: Call this for comprehensive bundle analysis with business intelligence
+   * RETURNS: Detailed bundle recommendations with pricing analysis and diagnostics
+   */
+  public generateBundleRecommendationsProduction(
+    cartItems: (UnifiedService | UnifiedProduct)[]
+  ): BundleAnalysisResult | null {
+    if (!this.sessionState) {
+      console.warn('No session state available for bundle analysis');
+      return null;
+    }
+
+    try {
+      // Get experience analysis for bundle context
+      const experienceAnalysis = this.analyzeUserExperienceProduction();
+      
+      const input: BundleAnalysisInput = {
+        currentCart: {
+          services: cartItems.filter(item => 'duration' in item) as UnifiedService[],
+          products: cartItems.filter(item => !('duration' in item)) as UnifiedProduct[]
+        },
+        userProfile: {
+          experienceLevel: experienceAnalysis?.experienceLevel || 'beginner',
+          preferences: this.sessionState.userProfile?.preferences || {},
+          restrictions: this.sessionState.userProfile?.restrictions || [],
+          budget: this.sessionState.userProfile?.budget,
+          goals: this.sessionState.userProfile?.goals || []
+        },
+        sessionContext: {
+          consultationPhase: this.sessionState.currentNodeId || 'initial',
+          responseHistory: this.sessionState.responses,
+          timeConstraints: this.extractTimeConstraints(),
+          specialRequests: this.extractSpecialRequests()
+        },
+        businessContext: {
+          availableInventory: [], // Would be populated from business system
+          currentPromotions: [], // Would be populated from business system
+          staffAvailability: [], // Would be populated from business system
+          seasonalFactors: [] // Would be populated from business system
+        }
+      };
+
+      const result = this.bundleRecommendationEngine.generateRecommendations(input);
+      
+      // Log production analysis for comparison
+      this.logEvent({
+        type: 'bundle_suggested',
+        timestamp: Date.now(),
+        data: { 
+          type: 'production_bundle_analysis',
+          recommendationCount: result.recommendations.length,
+          confidence: result.metadata.confidence,
+          processingTime: result.metadata.processingTime,
+          fallbacksUsed: result.metadata.fallbacksUsed
+        },
+        nodeId: this.sessionState.currentNodeId
+      });
+
+      return result;
+    } catch (error) {
+      console.error('Production bundle analysis failed:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Filter catalog using production engine
+   * 
+   * USAGE: Call this for comprehensive catalog filtering with business rules
+   * RETURNS: Detailed filter results with rejection tracking and performance metrics
+   */
+  public filterCatalogProduction(
+    availableServices: UnifiedService[],
+    availableProducts: UnifiedProduct[]
+  ): ProductionFilterResult | null {
+    if (!this.sessionState) {
+      console.warn('No session state available for catalog filtering');
+      return null;
+    }
+
+    try {
+      // Get experience analysis for filter context
+      const experienceAnalysis = this.analyzeUserExperienceProduction();
+      
+      const input: FilterInput = {
+        catalog: {
+          services: availableServices,
+          products: availableProducts
+        },
+        filterCriteria: {
+          categories: this.extractCategoryPreferences(),
+          priceRange: this.extractPriceRange(),
+          experienceLevel: experienceAnalysis?.experienceLevel || 'beginner',
+          availability: {
+            urgency: this.extractUrgency(),
+            flexibilityLevel: 'moderate'
+          }
+        },
+        userContext: {
+          experienceLevel: experienceAnalysis?.experienceLevel || 'beginner',
+          preferences: {
+            preferredCategories: this.extractCategoryPreferences(),
+            pricePreference: this.extractPricePreference(),
+            timePreferences: this.extractTimePreferences()
+          },
+          restrictions: {
+            allergies: this.sessionState.userProfile?.restrictions?.allergies || [],
+            medicalConditions: this.sessionState.userProfile?.restrictions?.medicalConditions || [],
+            budgetRestrictions: this.extractBudgetRestrictions()
+          }
+        },
+        businessContext: {
+          operationalHours: {}, // Would be populated from business system
+          staffAvailability: [], // Would be populated from business system
+          inventoryLevels: [], // Would be populated from business system
+          promotions: [] // Would be populated from business system
+        }
+      };
+
+      const result = this.catalogFilterEngine.filterCatalog(input);
+      
+      // Log production analysis for comparison
+      this.logEvent({
+        type: 'cards_displayed',
+        timestamp: Date.now(),
+        data: { 
+          type: 'production_catalog_filtering',
+          originalCount: result.filterSummary.originalCount.total,
+          filteredCount: result.filterSummary.filteredCount.total,
+          filterEffectiveness: result.filterSummary.filterEffectiveness,
+          processingTime: result.metadata.processingTime,
+          filtersApplied: result.metadata.filtersApplied
+        },
+        nodeId: this.sessionState.currentNodeId
+      });
+
+      return result;
+    } catch (error) {
+      console.error('Production catalog filtering failed:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Run comprehensive system health check on all production engines
+   * 
+   * USAGE: Call this to validate all production engines are working correctly
+   * RETURNS: Health status for all engines with performance metrics
+   */
+  public runProductionHealthCheck(): {
+    experienceEngine: { healthy: boolean; issues: string[]; performance: number };
+    bundleEngine: { healthy: boolean; issues: string[]; performance: number };
+    filterEngine: { healthy: boolean; issues: string[]; performance: number };
+    overallHealth: boolean;
+  } {
+    try {
+      const experienceHealth = this.experienceAnalysisEngine.runHealthCheck();
+      const bundleHealth = this.bundleRecommendationEngine.runHealthCheck();
+      const filterHealth = this.catalogFilterEngine.runHealthCheck();
+      
+      const overallHealth = experienceHealth.healthy && bundleHealth.healthy && filterHealth.healthy;
+      
+      // Log health check results
+      this.logEvent({
+        type: 'node_transition', // Reusing existing event type
+        timestamp: Date.now(),
+        data: { 
+          type: 'production_health_check',
+          overallHealth,
+          experienceEngineHealth: experienceHealth.healthy,
+          bundleEngineHealth: bundleHealth.healthy,
+          filterEngineHealth: filterHealth.healthy,
+          totalIssues: experienceHealth.issues.length + bundleHealth.issues.length + filterHealth.issues.length
+        },
+        nodeId: this.sessionState?.currentNodeId || 'health_check'
+      });
+
+      return {
+        experienceEngine: experienceHealth,
+        bundleEngine: bundleHealth,
+        filterEngine: filterHealth,
+        overallHealth
+      };
+    } catch (error) {
+      console.error('Production health check failed:', error);
+      return {
+        experienceEngine: { healthy: false, issues: ['Health check failed'], performance: 0 },
+        bundleEngine: { healthy: false, issues: ['Health check failed'], performance: 0 },
+        filterEngine: { healthy: false, issues: ['Health check failed'], performance: 0 },
+        overallHealth: false
+      };
+    }
+  }
+
+  /**
+   * Get comprehensive diagnostic information from all production engines
+   * 
+   * USAGE: Call this when troubleshooting production engine issues
+   * RETURNS: Detailed diagnostic breakdown for all engines
+   */
+  public getProductionDiagnostics(): any {
+    if (!this.sessionState) {
+      return { error: 'No session state available for diagnostics' };
+    }
+
+    try {
+      // Create sample inputs for diagnostic analysis
+      const experienceInput: ExperienceAnalysisInput = {
+        responses: this.sessionState.responses,
+        userProfile: {
+          previousExperience: this.sessionState.userProfile?.previousExperience || [],
+          skillLevel: this.sessionState.userProfile?.skillLevel || 'beginner',
+          preferences: this.sessionState.userProfile?.preferences || {},
+          goals: this.sessionState.userProfile?.goals || []
+        },
+        sessionContext: {
+          sessionDuration: Date.now() - this.sessionState.startTime,
+          responseCount: this.sessionState.responses.length,
+          currentPhase: this.sessionState.currentNodeId || 'initial',
+          confidenceIndicators: this.extractConfidenceIndicators()
+        }
+      };
+
+      return {
+        experienceEngine: this.experienceAnalysisEngine.getDiagnosticInfo(experienceInput),
+        bundleEngine: this.bundleRecommendationEngine.getDiagnosticInfo({
+          currentCart: { services: [], products: [] },
+          userProfile: {
+            experienceLevel: 'beginner',
+            preferences: {},
+            restrictions: [],
+            goals: []
+          },
+          sessionContext: {
+            consultationPhase: 'initial',
+            responseHistory: [],
+            timeConstraints: {},
+            specialRequests: []
+          },
+          businessContext: {
+            availableInventory: [],
+            currentPromotions: [],
+            staffAvailability: [],
+            seasonalFactors: []
+          }
+        }),
+        filterEngine: this.catalogFilterEngine.getDiagnosticInfo({
+          catalog: { services: [], products: [] },
+          filterCriteria: {},
+          userContext: { experienceLevel: 'beginner' },
+          businessContext: {}
+        }),
+        sessionInfo: {
+          sessionId: this.sessionState.sessionId,
+          duration: Date.now() - this.sessionState.startTime,
+          responseCount: this.sessionState.responses.length,
+          currentNode: this.sessionState.currentNodeId,
+          eventsLogged: this.sessionEvents.length
+        }
+      };
+    } catch (error) {
+      console.error('Production diagnostics failed:', error);
+      return { error: `Diagnostics failed: ${error instanceof Error ? error.message : 'Unknown error'}` };
+    }
+  }
+
+  /**
+   * Helper methods for extracting context from session state
+   */
+  private extractConfidenceIndicators(): string[] {
+    const indicators: string[] = [];
+    
+    // Analyze response patterns for confidence indicators
+    this.sessionState?.responses.forEach(response => {
+      if (response.confidence && response.confidence > 0.8) {
+        indicators.push('high_confidence_response');
+      }
+      if (response.metadata?.hesitation) {
+        indicators.push('hesitation_detected');
+      }
+      if (response.value.toString().includes('not sure') || response.value.toString().includes('maybe')) {
+        indicators.push('uncertainty_language');
+      }
+    });
+
+    return indicators;
+  }
+
+  private extractCategoryPreferences(): string[] {
+    const preferences: string[] = [];
+    
+    this.sessionState?.responses.forEach(response => {
+      if (response.metadata?.category === 'domain' || response.nodeId.includes('domain')) {
+        preferences.push(response.value.toString());
+      }
+      if (response.metadata?.category === 'style' || response.nodeId.includes('style')) {
+        preferences.push(response.value.toString());
+      }
+    });
+
+    return preferences.filter(p => p !== 'complete' && p !== 'exploration');
+  }
+
+  private extractPriceRange(): { min: number; max: number; currency: string } | undefined {
+    const budgetResponse = this.sessionState?.responses.find(r => 
+      r.metadata?.category === 'budget' || r.nodeId.includes('budget')
+    );
+    
+    if (budgetResponse) {
+      const budget = budgetResponse.value.toString();
+      if (budget.includes('under_100')) {
+        return { min: 0, max: 100, currency: 'USD' };
+      } else if (budget.includes('100_300')) {
+        return { min: 100, max: 300, currency: 'USD' };
+      } else if (budget.includes('over_300')) {
+        return { min: 300, max: 1000, currency: 'USD' };
+      }
+    }
+
+    return undefined;
+  }
+
+  private extractUrgency(): 'low' | 'medium' | 'high' {
+    const timelineResponse = this.sessionState?.responses.find(r => 
+      r.metadata?.category === 'timeline' || r.nodeId.includes('timeline')
+    );
+    
+    if (timelineResponse) {
+      const timeline = timelineResponse.value.toString();
+      if (timeline.includes('immediate') || timeline.includes('today')) {
+        return 'high';
+      } else if (timeline.includes('week') || timeline.includes('soon')) {
+        return 'medium';
+      }
+    }
+
+    return 'low';
+  }
+
+  private extractTimeConstraints(): any {
+    return {
+      maxDuration: 240, // 4 hours default
+      preferredStartTime: '10:00',
+      mustFinishBy: '18:00'
+    };
+  }
+
+  private extractSpecialRequests(): string[] {
+    const requests: string[] = [];
+    
+    this.sessionState?.responses.forEach(response => {
+      if (response.metadata?.category === 'special' || response.nodeId.includes('special')) {
+        requests.push(response.value.toString());
+      }
+    });
+
+    return requests;
+  }
+
+  private extractPricePreference(): 'budget' | 'value' | 'premium' | 'luxury' {
+    const priceRange = this.extractPriceRange();
+    
+    if (!priceRange) return 'value';
+    
+    if (priceRange.max <= 100) return 'budget';
+    if (priceRange.max <= 300) return 'value';
+    if (priceRange.max <= 600) return 'premium';
+    return 'luxury';
+  }
+
+  private extractTimePreferences(): any[] {
+    return [
+      {
+        dayOfWeek: 6, // Saturday
+        timeSlot: { start: '10:00', end: '16:00' },
+        preference: 'preferred'
+      }
+    ];
+  }
+
+  private extractBudgetRestrictions(): any[] {
+    const priceRange = this.extractPriceRange();
+    
+    if (priceRange) {
+      return [
+        {
+          type: 'hard-limit',
+          amount: priceRange.max,
+          category: 'total',
+          reason: 'User specified budget limit'
+        }
+      ];
+    }
+
+    return [];
+  }
+}
