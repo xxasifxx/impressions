@@ -1,0 +1,354 @@
+/**
+ * Progressive Disclosure Styling
+ * 
+ * Styles for progressive disclosure components that integrate with
+ * contextual visual languages and cognitive load adaptations.
+ */
+
+/* Base Progressive Disclosure Container */
+.progressive-disclosure {
+  position: relative;
+  transition: all var(--contextual-transition-duration) ease-out;
+}
+
+/* Disclosure Layer Base Styles */
+.disclosure-layer {
+  position: relative;
+  margin: 8px 0;
+  transition: all 300ms ease-out;
+  will-change: opacity, transform;
+}
+
+.disclosure-layer.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.disclosure-layer.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.disclosure-layer.animating {
+  transition-duration: 300ms;
+}
+
+/* Disclosure Level Styling */
+.disclosure-level-essential {
+  /* Always visible, primary information */
+  border-left: 3px solid var(--color-primary, #2563eb);
+  padding-left: 16px;
+  font-weight: 500;
+}
+
+.disclosure-level-helpful {
+  /* Secondary information, revealed progressively */
+  border-left: 2px solid var(--color-secondary, #64748b);
+  padding-left: 12px;
+  opacity: 0.9;
+}
+
+.disclosure-level-detailed {
+  /* Detailed information for engaged users */
+  border-left: 1px solid var(--color-tertiary, #94a3b8);
+  padding-left: 8px;
+  opacity: 0.8;
+  font-size: 0.95em;
+}
+
+.disclosure-level-expert {
+  /* Expert-level information for advanced users */
+  border-left: 1px dashed var(--color-muted, #cbd5e1);
+  padding-left: 8px;
+  opacity: 0.7;
+  font-size: 0.9em;
+  font-style: italic;
+}
+
+/* Contextual Adaptations */
+
+/* Clinical Context - Clean, precise disclosure */
+.progressive-disclosure[data-professional-context="clinical"] .disclosure-layer {
+  border-radius: var(--contextual-border-radius-small);
+  background: linear-gradient(135deg, 
+    hsla(210, 20%, 98%, 0.8) 0%, 
+    hsla(210, 15%, 96%, 0.8) 100%);
+  border: 1px solid hsla(210, 15%, 90%, 0.6);
+}
+
+.progressive-disclosure[data-professional-context="clinical"] .disclosure-level-essential {
+  border-left-color: hsl(210, 70%, 50%);
+  background: hsla(210, 70%, 50%, 0.05);
+}
+
+/* Artistic Context - Creative, flowing disclosure */
+.progressive-disclosure[data-professional-context="artistic"] .disclosure-layer {
+  border-radius: var(--contextual-border-radius-medium);
+  background: linear-gradient(135deg, 
+    hsla(25, 25%, 98%, 0.8) 0%, 
+    hsla(30, 20%, 96%, 0.8) 100%);
+  border: 1px solid hsla(25, 20%, 88%, 0.6);
+}
+
+.progressive-disclosure[data-professional-context="artistic"] .disclosure-level-essential {
+  border-left-color: hsl(25, 60%, 55%);
+  background: hsla(25, 60%, 55%, 0.05);
+}
+
+/* Sophisticated Context - Elegant, refined disclosure */
+.progressive-disclosure[data-professional-context="sophisticated"] .disclosure-layer {
+  border-radius: var(--contextual-border-radius-medium);
+  background: linear-gradient(135deg, 
+    hsla(0, 0%, 99%, 0.8) 0%, 
+    hsla(0, 0%, 97%, 0.8) 100%);
+  border: 1px solid hsla(0, 0%, 92%, 0.6);
+}
+
+.progressive-disclosure[data-professional-context="sophisticated"] .disclosure-level-essential {
+  border-left-color: hsl(0, 0%, 40%);
+  background: hsla(0, 0%, 40%, 0.05);
+}
+
+/* Luxury Context - Premium, exclusive disclosure */
+.progressive-disclosure[data-professional-context="luxury"] .disclosure-layer {
+  border-radius: var(--contextual-border-radius-medium);
+  background: linear-gradient(135deg, 
+    hsla(45, 15%, 98%, 0.9) 0%, 
+    hsla(40, 12%, 96%, 0.9) 100%);
+  border: 1px solid hsla(45, 20%, 85%, 0.7);
+  box-shadow: 0 2px 8px hsla(45, 20%, 15%, 0.08);
+}
+
+.progressive-disclosure[data-professional-context="luxury"] .disclosure-level-essential {
+  border-left-color: hsl(45, 50%, 45%);
+  background: hsla(45, 50%, 45%, 0.05);
+}
+
+/* Wellness Context - Natural, organic disclosure */
+.progressive-disclosure[data-professional-context="wellness"] .disclosure-layer {
+  border-radius: var(--contextual-border-radius-large);
+  background: linear-gradient(135deg, 
+    hsla(120, 15%, 98%, 0.8) 0%, 
+    hsla(115, 12%, 96%, 0.8) 100%);
+  border: 1px solid hsla(120, 20%, 88%, 0.6);
+}
+
+.progressive-disclosure[data-professional-context="wellness"] .disclosure-level-essential {
+  border-left-color: hsl(120, 50%, 45%);
+  background: hsla(120, 50%, 45%, 0.05);
+}
+
+/* Precision Context - Technical, exact disclosure */
+.progressive-disclosure[data-professional-context="precision"] .disclosure-layer {
+  border-radius: var(--contextual-border-radius-small);
+  background: linear-gradient(135deg, 
+    hsla(200, 15%, 98%, 0.8) 0%, 
+    hsla(200, 12%, 96%, 0.8) 100%);
+  border: 1px solid hsla(200, 20%, 88%, 0.6);
+}
+
+.progressive-disclosure[data-professional-context="precision"] .disclosure-level-essential {
+  border-left-color: hsl(200, 70%, 50%);
+  background: hsla(200, 70%, 50%, 0.05);
+}
+
+/* Dramatic Context - Bold, impactful disclosure */
+.progressive-disclosure[data-professional-context="dramatic"] .disclosure-layer {
+  border-radius: var(--contextual-border-radius-medium);
+  background: linear-gradient(135deg, 
+    hsla(0, 5%, 98%, 0.9) 0%, 
+    hsla(0, 3%, 95%, 0.9) 100%);
+  border: 1px solid hsla(0, 10%, 85%, 0.7);
+  box-shadow: 0 2px 8px hsla(0, 10%, 15%, 0.1);
+}
+
+.progressive-disclosure[data-professional-context="dramatic"] .disclosure-level-essential {
+  border-left-color: hsl(0, 60%, 50%);
+  background: hsla(0, 60%, 50%, 0.05);
+}
+
+/* Natural Context - Subtle, comfortable disclosure */
+.progressive-disclosure[data-professional-context="natural"] .disclosure-layer {
+  border-radius: var(--contextual-border-radius-medium);
+  background: linear-gradient(135deg, 
+    hsla(35, 20%, 98%, 0.8) 0%, 
+    hsla(30, 15%, 96%, 0.8) 100%);
+  border: 1px solid hsla(35, 25%, 90%, 0.6);
+}
+
+.progressive-disclosure[data-professional-context="natural"] .disclosure-level-essential {
+  border-left-color: hsl(35, 50%, 50%);
+  background: hsla(35, 50%, 50%, 0.05);
+}
+
+/* Cognitive Load Adaptations */
+
+/* Minimal Complexity - High cognitive load */
+.progressive-disclosure[data-cognitive-load="complex"] .disclosure-layer,
+.progressive-disclosure[data-cognitive-load="high"] .disclosure-layer {
+  margin: 16px 0;
+  padding: 20px;
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+
+.progressive-disclosure[data-cognitive-load="complex"] .disclosure-level-helpful,
+.progressive-disclosure[data-cognitive-load="complex"] .disclosure-level-detailed,
+.progressive-disclosure[data-cognitive-load="complex"] .disclosure-level-expert {
+  display: none; /* Hide non-essential info under high cognitive load */
+}
+
+.progressive-disclosure[data-cognitive-load="high"] .disclosure-level-detailed,
+.progressive-disclosure[data-cognitive-load="high"] .disclosure-level-expert {
+  display: none; /* Limit to essential and helpful under high cognitive load */
+}
+
+/* Sophisticated Complexity - Low cognitive load */
+.progressive-disclosure[data-cognitive-load="minimal"] .disclosure-layer,
+.progressive-disclosure[data-cognitive-load="low"] .disclosure-layer {
+  margin: 6px 0;
+  padding: 12px;
+  font-size: 0.95em;
+  line-height: 1.4;
+}
+
+/* Visual Complexity Adaptations */
+.progressive-disclosure[data-visual-complexity="minimal"] .disclosure-layer {
+  border-radius: 4px;
+  padding: 20px;
+  margin: 16px 0;
+  box-shadow: none;
+  border-width: 1px;
+}
+
+.progressive-disclosure[data-visual-complexity="sophisticated"] .disclosure-layer {
+  border-radius: var(--contextual-border-radius-large);
+  padding: 16px;
+  margin: 8px 0;
+  box-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+  border-width: 2px;
+}
+
+/* Reveal Animations */
+.disclosure-layer.reveal-fade {
+  transition: opacity 300ms ease-out;
+}
+
+.disclosure-layer.reveal-slide {
+  transition: opacity 300ms ease-out, transform 300ms ease-out;
+}
+
+.disclosure-layer.reveal-expand {
+  transition: opacity 300ms ease-out, transform 300ms ease-out;
+  transform-origin: top;
+}
+
+.disclosure-layer.reveal-unfold {
+  transition: opacity 300ms ease-out, transform 300ms ease-out;
+  transform-origin: top;
+  perspective: 1000px;
+}
+
+/* Timing Variations */
+.disclosure-layer.timing-instant {
+  transition-duration: 0ms;
+}
+
+.disclosure-layer.timing-quick {
+  transition-duration: 150ms;
+}
+
+.disclosure-layer.timing-smooth {
+  transition-duration: 300ms;
+}
+
+.disclosure-layer.timing-deliberate {
+  transition-duration: 500ms;
+}
+
+/* Interactive Elements */
+.disclosure-reveal-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: var(--contextual-border-radius-small);
+  background: var(--color-background, #ffffff);
+  color: var(--color-text-secondary, #64748b);
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 200ms ease-out;
+}
+
+.disclosure-reveal-button:hover {
+  border-color: var(--color-primary, #2563eb);
+  color: var(--color-primary, #2563eb);
+  background: var(--color-primary-light, #eff6ff);
+}
+
+.disclosure-hide-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-background-secondary, #f8fafc);
+  color: var(--color-text-muted, #94a3b8);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: all 200ms ease-out;
+}
+
+.disclosure-hide-button:hover {
+  opacity: 1;
+  background: var(--color-background-tertiary, #e2e8f0);
+  color: var(--color-text, #1e293b);
+}
+
+/* Content Styling */
+.disclosure-content {
+  position: relative;
+}
+
+.disclosure-content .contextual-typography {
+  transition: all var(--contextual-transition-duration) ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .disclosure-layer {
+    margin: 12px 0;
+    padding: 16px;
+  }
+  
+  .disclosure-level-essential {
+    padding-left: 12px;
+  }
+  
+  .disclosure-level-helpful,
+  .disclosure-level-detailed {
+    padding-left: 8px;
+  }
+  
+  .disclosure-level-expert {
+    padding-left: 8px;
+    font-size: 0.85em;
+  }
+}
+
+@media (max-width: 480px) {
+  .disclosure-layer {
+    margin: 8px 0;
+    padding: 12px;
+  }
+  
+  .disclosure-level-detailed,
+  .disclosure-level-expert {
+    font-size: 0.9em;
+  }
+}
+
