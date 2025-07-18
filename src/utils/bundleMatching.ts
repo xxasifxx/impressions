@@ -692,10 +692,23 @@ function createFallbackPricingAnalysis(services: UnifiedService[], products: Uni
   };
 }
 
+// Stub implementations for missing functions
+function checkProductServiceComplements(product: any, service: any, productCategory: string, serviceCategory: string): boolean {
+  // Basic stub - just check if categories align
+  return productCategory === serviceCategory;
+}
+
+function findServiceConflicts(services: any[]): any[] {
+  // Stub - no conflicts detected
+  return [];
+}
+
+function findServiceSynergies(services: any[]): any[] {
+  // Stub - no synergies detected
+  return [];
+}
+
 // Additional helper functions would be implemented here for:
-// - findServiceConflicts
-// - findServiceSynergies
-// - checkProductServiceComplements
 // - checkProductServiceConflicts
 // - checkIngredientConflicts
 // - checkProductSynergies
@@ -711,4 +724,3 @@ function createFallbackPricingAnalysis(services: UnifiedService[], products: Uni
 // - findProductComplementsInBundle
 
 // These would follow the same pattern of detailed implementation with error handling
-

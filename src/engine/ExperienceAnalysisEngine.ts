@@ -379,9 +379,9 @@ export class ExperienceAnalysisEngine {
     
     return (
       vocabulary.score * weights.vocabulary +
-      technical.score * weights.technicalKnowledge +
-      confidence.score * weights.decisionConfidence +
-      familiarity.score * weights.serviceFamiliarity
+      technical.score * weights.technical +
+      confidence.score * weights.confidence +
+      familiarity.score * weights.familiarity
     );
   }
   
