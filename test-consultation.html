@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultation Flow Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>Consultation Flow Test</h1>
+    <div id="results"></div>
+    
+    <script>
+        // Test if the consultation flow is accessible
+        fetch('http://localhost:8080/consultation')
+            .then(response => {
+                const resultsDiv = document.getElementById('results');
+                if (response.ok) {
+                    resultsDiv.innerHTML += '<div class="test-result success">✅ Consultation flow is accessible at /consultation</div>';
+                } else {
+                    resultsDiv.innerHTML += '<div class="test-result error">❌ Consultation flow not accessible</div>';
+                }
+            })
+            .catch(error => {
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML += '<div class="test-result error">❌ Error accessing consultation: ' + error.message + '</div>';
+            });
+    </script>
+</body>
+</html>
