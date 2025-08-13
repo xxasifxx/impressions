@@ -4,7 +4,7 @@ import BeautyBenefitsSection from '@/components/home/BeautyBenefitsSection';
 import ServicePreviewSection from '@/components/home/ServicePreviewSection';
 import UnifiedTestimonialsSection from '@/components/home/UnifiedTestimonialsSection';
 import ConsultationCTASection from '@/components/home/ConsultationCTASection';
-import UnifiedConsultationModal from '@/components/ConsultationModal/UnifiedConsultationModal';
+import EnhancedConsultationModal from '@/components/ConsultationModal/EnhancedConsultationModal';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
@@ -51,8 +51,8 @@ const Home = () => {
         <p className="text-stone-500 text-sm font-light tracking-wide">(732) 613-1942 • Walk-ins Welcome</p>
       </footer>
       
-      {/* Consultation Modal */}
-      <UnifiedConsultationModal
+      {/* Enhanced Consultation Modal */}
+      <EnhancedConsultationModal
         isOpen={isConsultationOpen}
         onClose={closeConsultation}
         onComplete={handleConsultationComplete}
