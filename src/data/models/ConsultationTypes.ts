@@ -1,135 +1,72 @@
-export interface ConsultationNode {
-  id: string;
-  type: 'entry' | 'bundling' | 'refinement' | 'exit';
-  title: string;
-  description?: string;
-  question?: string;
-  hasTextInput?: boolean;
-  textInputPlaceholder?: string;
-  options: ConsultationOption[];
-  metadata?: {
-    category?: string;
-    priority?: number;
-    tags?: string[];
-  };
-}
+/**
+ * Types for the consultation system
+ */
 
-export interface ConsultationOption {
-  id: string;
-  text: string;
-  value: any;
-  nextNodeId?: string;
-  metadata?: {
-    weight?: number;
-    category?: string;
-    triggers?: string[];
-  };
-}
-
+// Consultation response from user
 export interface ConsultationResponse {
-  nodeId: string;
-  optionId: string;
-  value: any;
-  textInput?: string;
-  timestamp: number;
+  questionId: string;
+  responseId: string;
+  responseText: string;
+  domain?: string;
+  domains?: string[];
+  tags?: string[];
   metadata?: Record<string, any>;
 }
 
-export interface ConsultationSessionState {
-  sessionId: string;
-  startTime: number;
-  lastUpdated: number;
+// Consultation question
+export interface ConsultationQuestion {
+  id: string;
+  text: string;
+  description?: string;
+  responseType: 'single' | 'multiple' | 'text' | 'rating';
+  options?: ConsultationOption[];
+  domain?: string;
+  domains?: string[];
+  tags?: string[];
+  metadata?: Record<string, any>;
+}
+
+// Option for a consultation question
+export interface ConsultationOption {
+  id: string;
+  text: string;
+  description?: string;
+  imageUrl?: string;
+  domain?: string;
+  domains?: string[];
+  tags?: string[];
+  metadata?: Record<string, any>;
+  nextQuestionId?: string;
+}
+
+// Node in the consultation decision tree
+export interface ConsultationNode {
+  id: string;
+  type: 'question' | 'result';
+  question?: ConsultationQuestion;
+  result?: ConsultationResult;
+  children?: Record<string, ConsultationNode>;
+  nextNodeId?: string;
+}
+
+// Result of a consultation
+export interface ConsultationResult {
+  id: string;
+  title: string;
+  description: string;
+  primaryDomain?: string;
+  domains?: string[];
+  recommendedServices?: Record<string, string[]>;
+  crossDomainPackages?: string[];
+  metadata?: Record<string, any>;
+}
+
+// Consultation state
+export interface ConsultationState {
   currentNodeId: string;
-  responses: ConsultationResponse[];
-  userProfile: UserProfile;
-  preferences: UserPreferences;
-  recommendedItems: RecommendedItem[];
-  artEvolution: ArtEvolutionState;
-  navigationStack: string[];
-  isComplete: boolean;
+  responses: Record<string, ConsultationResponse>;
+  completedNodes: string[];
+  path: string[];
+  result?: ConsultationResult;
 }
 
-export interface UserProfile {
-  id?: string;
-  demographics?: {
-    ageRange?: string;
-    skinType?: string;
-    hairType?: string;
-    lifestyle?: string[];
-  };
-  preferences?: {
-    budget?: string;
-    timeCommitment?: string;
-    experienceLevel?: string;
-    priorities?: string[];
-  };
-  history?: {
-    previousServices?: string[];
-    previousProducts?: string[];
-    consultationHistory?: string[];
-  };
-}
-
-export interface UserPreferences {
-  categories: string[];
-  priceRange: {
-    min: number;
-    max: number;
-  };
-  timeAvailability: string;
-  specialRequirements?: string[];
-  avoidances?: string[];
-}
-
-export interface RecommendedItem {
-  type: 'service' | 'product';
-  itemId: string;
-  confidence: number;
-  reasoning: string;
-  bundleContext?: {
-    bundleId: string;
-    bundleReason: string;
-    compatibleItems: string[];
-  };
-}
-
-export interface ArtEvolutionState {
-  currentTheme: string;
-  evolutionStage: number;
-  colorPalette: string[];
-  styleIntensity: number;
-  transitionDirection: 'subtle' | 'moderate' | 'dramatic';
-  triggers: ArtEvolutionTrigger[];
-}
-
-export interface ArtEvolutionTrigger {
-  responsePattern: string;
-  themeShift: string;
-  intensity: number;
-  duration: number;
-}
-
-export interface ConsultationSessionContext {
-  sessionState: ConsultationSessionState;
-  updateSession: (updates: Partial<ConsultationSessionState>) => void;
-  addResponse: (response: ConsultationResponse) => void;
-  navigateToNode: (nodeId: string) => void;
-  persistSession: () => void;
-  restoreSession: (sessionId: string) => void;
-}
-
-// Navigation types for modal-based system
-export interface ModalNavigationStack {
-  current: string;
-  history: string[];
-  canGoBack: boolean;
-  canGoForward: boolean;
-}
-
-export type NavigationDirection = 'forward' | 'back' | 'jump';
-
-export interface ModalLifecycleState {
-  phase: 'opening' | 'active' | 'transitioning' | 'closing';
-  previousPhase?: string;
-  timestamp: number;
-}
