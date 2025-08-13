@@ -1,350 +1,151 @@
-
-import React from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import React, { useState, useEffect } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Clock, Star, User, Award, CheckCircle, Heart, Sparkles } from 'lucide-react';
-import { UnifiedService } from '@/data/unifiedServicesData';
-import { useDomainTheme } from '@/contexts/DomainThemeContext';
-import AppointmentBookingModal from './AppointmentBookingModal';
+import { withAestheticEvolution } from './ConsultationModal/AestheticProvider';
+import { Clock, DollarSign, X, Check } from 'lucide-react';
+import { ServiceCardBase } from './ServiceCard';
 
 interface ServiceDetailModalProps {
-  service: UnifiedService | null;
+  service: any;
   isOpen: boolean;
   onClose: () => void;
+  onAddToCart: () => void;
+  aesthetic?: any; // Provided by withAestheticEvolution
 }
 
-const ServiceDetailModal = ({ service, isOpen, onClose }: ServiceDetailModalProps) => {
-  const { currentTheme } = useDomainTheme();
-
-  if (!service) return null;
-
-  const difficultyColors = {
-    Easy: 'bg-green-100 text-green-700 border-green-200',
-    Moderate: 'bg-yellow-100 text-yellow-700 border-yellow-200',
-    Advanced: 'bg-red-100 text-red-700 border-red-200'
+/**
+ * Modal component for displaying detailed service information
+ * Integrates with aesthetic evolution system
+ */
+const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({ 
+  service, 
+  isOpen, 
+  onClose, 
+  onAddToCart,
+  aesthetic // Provided by withAestheticEvolution
+}) => {
+  const [relatedServices, setRelatedServices] = useState<any[]>([]);
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
+  
+  useEffect(() => {
+    // Reset state when service changes
+    setIsAddedToCart(false);
+    
+    // Get related services
+    if (service && service.relatedServices) {
+      // In a real implementation, this would fetch related services
+      // For now, we'll just mock it with empty array
+      setRelatedServices([]);
+    }
+  }, [service]);
+  
+  const handleAddToCart = () => {
+    onAddToCart();
+    setIsAddedToCart(true);
+    
+    // Reset after 2 seconds
+    setTimeout(() => {
+      setIsAddedToCart(false);
+    }, 2000);
   };
-
+  
+  if (!isOpen || !service) return null;
+  
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <DialogTitle 
-                className="text-3xl font-light mb-2 pr-8"
-                style={{ 
-                  fontFamily: currentTheme.fonts.heading,
-                  color: currentTheme.colors.primary 
-                }}
-              >
-                {service.name}
-              </DialogTitle>
-              <div className="flex items-center gap-3 mb-4">
-                <Badge 
-                  className="flex items-center gap-1"
-                  style={{ 
-                    backgroundColor: currentTheme.colors.primary + '20',
-                    color: currentTheme.colors.primary
-                  }}
-                >
-                  <Sparkles className="w-3 h-3" />
-                  {service.category}
-                </Badge>
-                {service.difficulty && (
-                  <Badge className={difficultyColors[service.difficulty]}>
-                    {service.difficulty} Level
-                  </Badge>
-                )}
-                {service.featured && (
-                  <Badge 
-                    style={{ 
-                      backgroundColor: currentTheme.colors.accent,
-                      color: 'white'
-                    }}
-                  >
-                    <Award className="w-3 h-3 mr-1" />
-                    Featured Service
-                  </Badge>
-                )}
-              </div>
-            </div>
-            <div className="text-right flex-shrink-0">
-              <div 
-                className="text-2xl font-bold"
-                style={{ color: currentTheme.colors.primary }}
-              >
-                {service.price}
-              </div>
-              <div className="flex items-center gap-2 text-sm text-gray-500">
-                <Clock className="w-4 h-4" />
-                <span>{service.duration}</span>
-              </div>
-            </div>
-          </div>
+      <DialogContent className="service-detail-modal max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <DialogHeader className="border-b pb-4">
+          <DialogTitle className="text-2xl font-semibold">{service.name}</DialogTitle>
+          <DialogClose className="absolute right-4 top-4">
+            <X className="h-4 w-4" />
+          </DialogClose>
         </DialogHeader>
-
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Left Column - Service Image and Overview */}
-          <div>
-            <div className="relative rounded-2xl overflow-hidden mb-6">
+        
+        <div className="modal-content grid md:grid-cols-2 gap-6 py-6">
+          <div className="service-image aspect-video overflow-hidden rounded-md">
+            {service.imageUrl ? (
               <img 
                 src={service.imageUrl} 
-                alt={service.name}
-                className="w-full h-64 object-cover"
+                alt={service.name} 
+                className="w-full h-full object-cover"
               />
-              <div 
-                className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"
-              />
+            ) : (
+              <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                <span className="text-gray-400">Image not available</span>
+              </div>
+            )}
+          </div>
+          
+          <div className="service-details">
+            <div className="service-meta flex items-center gap-6 mb-4 text-lg">
+              <div className="flex items-center">
+                <DollarSign className="w-5 h-5 mr-1 text-gray-500" />
+                <span className="service-price font-medium">${service.price || '0'}</span>
+              </div>
+              <div className="flex items-center">
+                <Clock className="w-5 h-5 mr-1 text-gray-500" />
+                <span className="service-duration">{service.duration || '0'} min</span>
+              </div>
             </div>
-
-            {/* Service Overview */}
-            <div 
-              className="rounded-xl p-6 mb-6"
-              style={{ 
-                backgroundColor: currentTheme.colors.background,
-                border: `1px solid ${currentTheme.colors.primary}20`
-              }}
-            >
-              <h3 
-                className="text-lg font-medium mb-3"
-                style={{ color: currentTheme.colors.primary }}
-              >
-                About This Service
-              </h3>
-              <p className="text-gray-700 mb-4 leading-relaxed">
-                {service.description}
+            
+            <div className="service-description mb-6">
+              <p className="text-gray-700">
+                {service.fullDescription || service.shortDescription || 'No description available'}
               </p>
-              
-              <div className="flex items-center gap-6 text-sm text-gray-600">
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
-                  <span>{service.duration}</span>
-                </div>
-                {service.details?.specialist && (
-                  <div className="flex items-center gap-2">
-                    <User className="w-4 h-4" />
-                    <span>{service.details.specialist}</span>
-                  </div>
-                )}
-              </div>
             </div>
-
-            {/* Client Story */}
-            {service.clientStory && (
-              <div 
-                className="rounded-xl p-6"
-                style={{ 
-                  backgroundColor: currentTheme.colors.primary + '10',
-                  border: `1px solid ${currentTheme.colors.primary}30`
-                }}
-              >
-                <div className="flex items-center gap-2 mb-3">
-                  <Heart 
-                    className="w-5 h-5" 
-                    style={{ color: currentTheme.colors.primary }}
-                  />
-                  <span 
-                    className="font-medium"
-                    style={{ color: currentTheme.colors.primary }}
-                  >
-                    Client Love
-                  </span>
-                </div>
-                <div className="flex items-center gap-1 mb-3">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`w-4 h-4 ${
-                        i < service.clientStory!.rating 
-                          ? 'text-yellow-400 fill-current' 
-                          : 'text-gray-300'
-                      }`}
-                    />
-                  ))}
-                </div>
-                <blockquote className="text-gray-700 italic mb-2 text-lg">
-                  "{service.clientStory.quote}"
-                </blockquote>
-                <cite className="text-sm text-gray-600">
-                  — {service.clientStory.name}
-                  {service.clientStory.transformation && (
-                    <span className="block text-xs mt-1">
-                      {service.clientStory.transformation}
-                    </span>
-                  )}
-                </cite>
-              </div>
-            )}
-          </div>
-
-          {/* Right Column - Process and Details */}
-          <div className="space-y-6">
-            {/* Process Steps */}
-            {service.details?.process && (
-              <div>
-                <h3 
-                  className="text-lg font-medium mb-4 flex items-center gap-2"
-                  style={{ color: currentTheme.colors.primary }}
-                >
-                  <CheckCircle className="w-5 h-5" />
-                  What to Expect
-                </h3>
-                <ol className="space-y-3">
-                  {service.details.process.map((step, index) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <span 
-                        className="flex-shrink-0 w-7 h-7 rounded-full text-white text-sm flex items-center justify-center font-medium"
-                        style={{ backgroundColor: currentTheme.colors.primary }}
-                      >
-                        {index + 1}
-                      </span>
-                      <span className="text-gray-700 leading-relaxed pt-1">{step}</span>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            )}
-
-            {/* Benefits */}
-            {service.details?.benefits && (
-              <div>
-                <h3 
-                  className="text-lg font-medium mb-4"
-                  style={{ color: currentTheme.colors.primary }}
-                >
-                  Key Benefits
-                </h3>
-                <ul className="space-y-3">
-                  {service.details.benefits.map((benefit, index) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <CheckCircle 
-                        className="w-5 h-5 mt-0.5 flex-shrink-0" 
-                        style={{ color: currentTheme.colors.secondary }}
-                      />
-                      <span className="text-gray-700 leading-relaxed">{benefit}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Perfect For */}
-            {service.details?.perfectFor && (
-              <div>
-                <h3 
-                  className="text-lg font-medium mb-4"
-                  style={{ color: currentTheme.colors.primary }}
-                >
-                  Perfect For
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {service.details.perfectFor.map((item, index) => (
-                    <Badge 
-                      key={index}
-                      variant="outline"
-                      className="text-sm py-2 px-3"
-                      style={{ 
-                        borderColor: currentTheme.colors.secondary,
-                        color: currentTheme.colors.secondary
-                      }}
-                    >
-                      {item}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Preparation */}
-            {service.details?.preparation && (
-              <div>
-                <h3 
-                  className="text-lg font-medium mb-3"
-                  style={{ color: currentTheme.colors.primary }}
-                >
-                  How to Prepare
-                </h3>
+            
+            {service.benefits && service.benefits.length > 0 && (
+              <div className="service-benefits mb-6">
+                <h3 className="text-lg font-medium mb-2">Benefits</h3>
                 <ul className="space-y-2">
-                  {service.details.preparation.map((tip, index) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <span 
-                        className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
-                        style={{ backgroundColor: currentTheme.colors.accent }}
-                      />
-                      <span className="text-gray-700 text-sm">{tip}</span>
+                  {service.benefits.map((benefit: string, index: number) => (
+                    <li key={index} className="flex items-start">
+                      <Check className="w-5 h-5 mr-2 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span>{benefit}</span>
                     </li>
                   ))}
                 </ul>
               </div>
             )}
-
-            {/* Aftercare */}
-            {service.details?.aftercare && (
-              <div>
-                <h3 
-                  className="text-lg font-medium mb-3"
-                  style={{ color: currentTheme.colors.primary }}
-                >
-                  Aftercare Tips
-                </h3>
-                <ul className="space-y-2">
-                  {service.details.aftercare.map((tip, index) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <span 
-                        className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
-                        style={{ backgroundColor: currentTheme.colors.secondary }}
-                      />
-                      <span className="text-gray-700 text-sm">{tip}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            
+            <Button 
+              className="add-to-cart-button w-full md:w-auto"
+              onClick={handleAddToCart}
+              disabled={isAddedToCart}
+            >
+              {isAddedToCart ? 'Added to Cart ✓' : 'Add to Cart'}
+            </Button>
           </div>
         </div>
-
-        {/* Action Buttons */}
-        <div className="flex gap-4 pt-6 border-t">
-          <AppointmentBookingModal
-            trigger={
-              <Button 
-                className="flex-1 py-3 text-lg"
-                style={{ 
-                  backgroundColor: currentTheme.colors.primary,
-                  color: 'white'
-                }}
-              >
-                Book {service.name} - {service.price}
-              </Button>
-            }
-            prefilledService={{
-              name: service.name,
-              price: service.price,
-              duration: service.duration
-            }}
-            sourcePage={`service-modal-${service.domain}`}
-          />
-          <Button 
-            variant="outline" 
-            onClick={onClose} 
-            className="px-8 py-3"
-            style={{ 
-              borderColor: currentTheme.colors.primary,
-              color: currentTheme.colors.primary
-            }}
-          >
-            Close
-          </Button>
-        </div>
+        
+        {relatedServices.length > 0 && (
+          <div className="related-services border-t pt-6">
+            <h3 className="text-xl font-medium mb-4">Frequently Booked Together</h3>
+            <div className="related-services-grid grid grid-cols-1 md:grid-cols-3 gap-4">
+              {relatedServices.map((relatedService: any) => (
+                <ServiceCardBase 
+                  key={relatedService.id}
+                  service={relatedService}
+                  onClick={() => {
+                    // Replace current service with related service
+                    onClose();
+                    // In a real implementation, this would open a new modal
+                  }}
+                  onAddToCart={() => {
+                    // Add related service to cart
+                    // In a real implementation, this would call addToCart
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );
 };
 
-export default ServiceDetailModal;
+// Wrap with aesthetic evolution
+export default withAestheticEvolution(ServiceDetailModal, { autoApplyStyles: true });
+export { ServiceDetailModal as ServiceDetailModalBase };
+

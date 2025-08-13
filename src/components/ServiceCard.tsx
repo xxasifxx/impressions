@@ -1,195 +1,100 @@
-
 import React from 'react';
-import { Clock, Star, Users, Award, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { UnifiedService } from '@/data/unifiedServicesData';
-import { useDomainTheme } from '@/contexts/DomainThemeContext';
-import { useServiceCart } from '@/contexts/ServiceCartContext';
-import AppointmentBookingModal from './AppointmentBookingModal';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { withAestheticEvolution } from './ConsultationModal/AestheticProvider';
+import { Clock, DollarSign } from 'lucide-react';
 
 interface ServiceCardProps {
-  service: UnifiedService;
-  onDetailsClick: (service: UnifiedService) => void;
+  service: any;
+  onClick: () => void;
+  onAddToCart: () => void;
+  isPrimary?: boolean;
+  aesthetic?: any; // Provided by withAestheticEvolution
 }
 
-const ServiceCard = ({ service, onDetailsClick }: ServiceCardProps) => {
-  const { currentTheme } = useDomainTheme();
-  const { addToCart } = useServiceCart();
-
-  const difficultyColors = {
-    Easy: 'bg-green-100 text-green-700 border-green-200',
-    Moderate: 'bg-yellow-100 text-yellow-700 border-yellow-200',
-    Advanced: 'bg-red-100 text-red-700 border-red-200'
-  };
-
-  // Get domain badge color
-  const getDomainColor = (domain: string) => {
-    switch (domain) {
-      case 'hair-salon': return 'bg-red-100 text-red-700 border-red-200';
-      case 'makeup-studio': return 'bg-pink-100 text-pink-700 border-pink-200';
-      case 'med-spa': return 'bg-emerald-100 text-emerald-700 border-emerald-200';
-      default: return 'bg-gray-100 text-gray-700 border-gray-200';
+/**
+ * Card component for displaying service information
+ * Integrates with aesthetic evolution system
+ */
+const ServiceCard: React.FC<ServiceCardProps> = ({ 
+  service, 
+  onClick, 
+  onAddToCart, 
+  isPrimary = false,
+  aesthetic // Provided by withAestheticEvolution
+}) => {
+  // Handle click on the card
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Only trigger onClick if the click wasn't on a button
+    if (!(e.target as HTMLElement).closest('button')) {
+      onClick();
     }
   };
-
+  
   return (
-    <div className="group bg-white/90 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-      {/* Service Image */}
-      <div className="relative h-48 overflow-hidden">
-        <img 
-          src={service.imageUrl} 
-          alt={service.name}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-        />
-        
-        {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-2">
-          {service.featured && (
-            <Badge 
-              className="bg-yellow-500 text-white border-0"
-            >
-              <Award className="w-3 h-3 mr-1" />
-              Featured
-            </Badge>
-          )}
-          
-          {/* Domain Badge */}
-          <Badge className={getDomainColor(service.domain)}>
-            {service.domain.replace('-', ' ')}
-          </Badge>
-        </div>
-
-        {service.difficulty && (
-          <Badge 
-            className={`absolute top-3 right-3 ${difficultyColors[service.difficulty]}`}
-          >
-            {service.difficulty}
-          </Badge>
+    <Card 
+      className={`service-card ${isPrimary ? 'primary' : ''} cursor-pointer hover:shadow-md transition-shadow`}
+      onClick={handleCardClick}
+    >
+      <div className="service-image aspect-video overflow-hidden">
+        {service.imageUrl ? (
+          <img 
+            src={service.imageUrl} 
+            alt={service.name} 
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+            <span className="text-gray-400">Image not available</span>
+          </div>
         )}
       </div>
       
-      <div className="p-6">
-        {/* Header */}
-        <div className="flex justify-between items-start mb-3">
-          <h3 
-            className="text-xl font-medium group-hover:scale-105 transition-transform cursor-pointer"
-            style={{ 
-              color: currentTheme.colors.primary,
-              fontFamily: currentTheme.fonts.heading 
-            }}
-            onClick={() => onDetailsClick(service)}
-          >
-            {service.name}
-          </h3>
-          <div className="text-right">
-            <div 
-              className="text-lg font-bold"
-              style={{ color: currentTheme.colors.primary }}
-            >
-              {service.price}
-            </div>
-            <div className="text-xs text-gray-500">{service.duration}</div>
-          </div>
-        </div>
-
-        {/* Service Info */}
-        <div className="flex items-center gap-4 mb-3 text-sm text-gray-500">
-          <div className="flex items-center gap-1">
-            <Clock className="w-3 h-3" />
-            <span>{service.duration}</span>
-          </div>
-          {service.details?.specialist && (
-            <div className="flex items-center gap-1">
-              <Users className="w-3 h-3" />
-              <span className="truncate">{service.details.specialist}</span>
-            </div>
-          )}
-        </div>
-
-        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-          {service.description}
+      <CardContent className="service-content p-4">
+        <h3 className="service-name text-lg font-semibold mb-2">{service.name}</h3>
+        <p className="service-description text-sm text-gray-600 mb-3">
+          {service.shortDescription || 'No description available'}
         </p>
-
-        {/* Client Story */}
-        {service.clientStory && (
-          <div 
-            className="rounded-lg p-3 mb-4 border"
-            style={{ 
-              backgroundColor: currentTheme.colors.background,
-              borderColor: currentTheme.colors.primary + '20'
-            }}
-          >
-            <div className="flex items-center gap-1 mb-2">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-3 h-3 ${
-                    i < service.clientStory!.rating 
-                      ? 'text-yellow-400 fill-current' 
-                      : 'text-gray-300'
-                  }`}
-                />
-              ))}
-            </div>
-            <p className="text-sm text-gray-600 italic mb-1">
-              "{service.clientStory.quote}"
-            </p>
-            <p className="text-xs text-gray-500">— {service.clientStory.name}</p>
+        
+        <div className="service-meta flex items-center justify-between text-sm">
+          <div className="flex items-center">
+            <DollarSign className="w-4 h-4 mr-1 text-gray-500" />
+            <span className="service-price font-medium">${service.price || '0'}</span>
           </div>
-        )}
-
-        {/* CTAs */}
-        <div className="space-y-3">
-          {/* Quick Add to Cart */}
-          <Button
-            onClick={() => addToCart(service)}
-            variant="outline"
-            className="w-full"
-            style={{ 
-              borderColor: currentTheme.colors.primary,
-              color: currentTheme.colors.primary
-            }}
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add to Cart - {service.price}
-          </Button>
-
-          {/* Book Single Service */}
-          <AppointmentBookingModal
-            trigger={
-              <Button 
-                className="w-full"
-                style={{ 
-                  backgroundColor: currentTheme.colors.primary,
-                  color: 'white'
-                }}
-              >
-                Book Now - {service.price}
-              </Button>
-            }
-            prefilledService={{
-              name: service.name,
-              price: service.price,
-              duration: service.duration
-            }}
-            sourcePage={`unified-services-${service.domain}`}
-          />
-          
-          <Button
-            variant="ghost"
-            className="w-full text-sm"
-            onClick={() => onDetailsClick(service)}
-            style={{ 
-              color: currentTheme.colors.primary
-            }}
-          >
-            View Details & Process
-          </Button>
+          <div className="flex items-center">
+            <Clock className="w-4 h-4 mr-1 text-gray-500" />
+            <span className="service-duration">{service.duration || '0'} min</span>
+          </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+      
+      <CardFooter className="service-actions p-4 pt-0 flex gap-2">
+        <Button 
+          variant="outline" 
+          className="details-button flex-1"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClick();
+          }}
+        >
+          View Details
+        </Button>
+        
+        <Button 
+          className="add-to-cart-button flex-1"
+          onClick={(e) => {
+            e.stopPropagation();
+            onAddToCart();
+          }}
+        >
+          Add to Cart
+        </Button>
+      </CardFooter>
+    </Card>
   );
 };
 
-export default ServiceCard;
+// Export both the wrapped and unwrapped versions
+export default withAestheticEvolution(ServiceCard, { autoApplyStyles: true });
+export { ServiceCard as ServiceCardBase };
+
