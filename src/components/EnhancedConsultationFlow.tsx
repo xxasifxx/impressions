@@ -168,8 +168,8 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
   if (!currentNode && !isComplete) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-50 via-stone-50 to-red-50/30 flex items-center justify-center">
-        <Card className="p-8 max-w-md text-center">
-          <h2 className="text-2xl font-semibold mb-4">Something went wrong</h2>
+        <Card className="p-4 md:p-8 max-w-md text-center">
+          <h2 className="text-xl md:text-2xl font-semibold mb-4">Something went wrong</h2>
           <p className="text-gray-600 mb-6">We couldn't load the consultation.</p>
           <Link to="/">
             <Button>Go Back Home</Button>
@@ -193,30 +193,31 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
     >
       {/* Header */}
       <header className="bg-white/90 backdrop-blur-sm border-b border-red-100 sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-4 py-2 md:py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 md:gap-4">
               <Link to="/">
-                <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700">
-                  <ArrowLeft className="w-4 h-4 mr-2" />
-                  Back to Home
+                <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700 px-2 md:px-3">
+                  <ArrowLeft className="w-4 h-4 mr-1 md:mr-2" />
+                  <span className="hidden sm:inline">Back to Home</span>
+                  <span className="sm:hidden">Back</span>
                 </Button>
               </Link>
               <div>
-                <h1 className="text-xl font-semibold text-gray-900">
-                  Personal Beauty Consultation
+                <h1 className="text-base md:text-xl font-semibold text-gray-900">
+                  Beauty Consultation
                 </h1>
-                <p className="text-sm text-gray-600">
-                  Let's find the perfect services for your needs
+                <p className="text-xs md:text-sm text-gray-600 hidden sm:block">
+                  Find your perfect services
                 </p>
               </div>
             </div>
             <div className="text-right">
-              <div className="text-sm text-gray-600">
+              <div className="text-xs md:text-sm text-gray-600">
                 {isComplete ? 'Complete!' : `Step ${completedNodes + 1}`}
               </div>
-              <div className="w-32">
-                <Progress value={progressPercentage} className="h-2" />
+              <div className="w-20 md:w-32">
+                <Progress value={progressPercentage} className="h-1.5 md:h-2" />
               </div>
             </div>
           </div>
@@ -224,27 +225,37 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-3 md:px-4 py-4 md:py-8 overflow-x-hidden">
         <div className="max-w-3xl mx-auto">
           
-          {/* Conversation History */}
+          {/* Conversation History - Only show on larger screens or when there are few items */}
           {conversationHistory.length > 0 && (
-            <div className="mb-8 space-y-4">
-              {conversationHistory.map((entry, index) => (
+            <div className={`mb-4 md:mb-8 space-y-2 md:space-y-4 ${conversationHistory.length > 3 ? 'hidden md:block' : ''}`}>
+              {/* On mobile, only show the last 2 responses when there are many */}
+              {(conversationHistory.length <= 3 ? conversationHistory : conversationHistory.slice(-2)).map((entry, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="bg-white/80 backdrop-blur-sm rounded-lg p-4 border border-red-100"
+                  className="bg-white/80 backdrop-blur-sm rounded-lg p-2 md:p-4 border border-red-100"
                 >
-                  <div className="text-sm text-gray-600 mb-1">{entry.question}</div>
-                  <div className="font-medium text-gray-900 flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
+                  <div className="text-xs md:text-sm text-gray-600 mb-1">{entry.question}</div>
+                  <div className="font-medium text-sm md:text-base text-gray-900 flex items-center gap-2">
+                    <CheckCircle className="w-3 h-3 md:w-4 md:h-4 text-green-600" />
                     {entry.answer}
                   </div>
                 </motion.div>
               ))}
+              
+              {/* Show a summary badge on mobile when there are many responses */}
+              {conversationHistory.length > 3 && (
+                <div className="md:hidden text-center">
+                  <span className="inline-block bg-gray-100 text-gray-600 text-xs rounded-full px-2 py-1">
+                    {conversationHistory.length - 2} previous answers
+                  </span>
+                </div>
+              )}
             </div>
           )}
 
@@ -258,7 +269,7 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
               >
-                <Card className="p-8 bg-white/90 backdrop-blur-sm">
+                <Card className="p-3 md:p-6 bg-white/90 backdrop-blur-sm overflow-auto max-h-[70vh] md:max-h-none">
                   <ImageChoiceQuestion
                     question={currentNode.question}
                     options={currentNode.options}
@@ -267,15 +278,15 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
                   
                   {/* Back Button */}
                   {conversationHistory.length > 0 && (
-                    <div className="flex justify-start mt-6">
+                    <div className="flex justify-start mt-4 md:mt-6">
                       <Button
                         onClick={handleGoBack}
                         variant="ghost"
                         size="sm"
-                        className="text-gray-600 hover:text-gray-800"
+                        className="text-gray-600 hover:text-gray-800 text-xs md:text-sm"
                         disabled={isTransitioning}
                       >
-                        <ArrowLeft className="w-4 h-4 mr-2" />
+                        <ArrowLeft className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
                         Go Back
                       </Button>
                     </div>
@@ -289,26 +300,27 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
+                className="overflow-auto max-h-[80vh] md:max-h-none"
               >
-                <Card className="p-8">
-                  <div className="text-center mb-8">
+                <Card className="p-4 md:p-8">
+                  <div className="text-center mb-4 md:mb-8">
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 }}
                     >
-                      <Sparkles className="w-16 h-16 text-red-600 mx-auto mb-4" />
+                      <Sparkles className="w-10 h-10 md:w-16 md:h-16 text-red-600 mx-auto mb-2 md:mb-4" />
                     </motion.div>
-                    <h2 className="text-3xl font-light mb-4 text-gray-900">
-                      Perfect! We have personalized recommendations for you.
+                    <h2 className="text-xl md:text-3xl font-light mb-2 md:mb-4 text-gray-900">
+                      Perfect! We have recommendations for you.
                     </h2>
-                    <p className="text-lg text-gray-600">
-                      Based on your needs, here are services across our beauty domains that would be perfect for you.
+                    <p className="text-sm md:text-lg text-gray-600">
+                      Based on your needs, here are services that would be perfect for you.
                     </p>
                   </div>
 
                   {/* Cross-Domain Recommendations */}
-                  <div className="space-y-6 mb-8">
+                  <div className="space-y-3 md:space-y-6 mb-4 md:mb-8">
                     
                     {/* Hair Salon Services */}
                     {recommendations.recommendedServices['hair-salon'].length > 0 && (
@@ -316,17 +328,17 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.3 }}
-                        className="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-6"
+                        className="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-3 md:p-6"
                       >
-                        <h3 className="text-lg font-semibold mb-3 text-gray-900 flex items-center gap-2">
-                          <span className="text-xl">💇‍♀️</span>
+                        <h3 className="text-base md:text-lg font-semibold mb-2 md:mb-3 text-gray-900 flex items-center gap-2">
+                          <span className="text-lg md:text-xl">💇‍♀️</span>
                           Hair Salon Services
                         </h3>
-                        <div className="space-y-2">
+                        <div className="space-y-1 md:space-y-2">
                           {recommendations.recommendedServices['hair-salon'].map((serviceId: string, index: number) => (
                             <div key={serviceId} className="flex items-center gap-2">
-                              <CheckCircle className="w-4 h-4 text-green-600" />
-                              <span className="text-gray-700">
+                              <CheckCircle className="w-3 h-3 md:w-4 md:h-4 text-green-600 flex-shrink-0" />
+                              <span className="text-sm md:text-base text-gray-700">
                                 {serviceId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
                               </span>
                             </div>
@@ -341,17 +353,17 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.4 }}
-                        className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg p-6"
+                        className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg p-3 md:p-6"
                       >
-                        <h3 className="text-lg font-semibold mb-3 text-gray-900 flex items-center gap-2">
-                          <span className="text-xl">💄</span>
+                        <h3 className="text-base md:text-lg font-semibold mb-2 md:mb-3 text-gray-900 flex items-center gap-2">
+                          <span className="text-lg md:text-xl">💄</span>
                           Makeup Studio Services
                         </h3>
-                        <div className="space-y-2">
+                        <div className="space-y-1 md:space-y-2">
                           {recommendations.recommendedServices['makeup-studio'].map((serviceId: string, index: number) => (
                             <div key={serviceId} className="flex items-center gap-2">
-                              <CheckCircle className="w-4 h-4 text-green-600" />
-                              <span className="text-gray-700">
+                              <CheckCircle className="w-3 h-3 md:w-4 md:h-4 text-green-600 flex-shrink-0" />
+                              <span className="text-sm md:text-base text-gray-700">
                                 {serviceId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
                               </span>
                             </div>
@@ -366,17 +378,17 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.5 }}
-                        className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6"
+                        className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-3 md:p-6"
                       >
-                        <h3 className="text-lg font-semibold mb-3 text-gray-900 flex items-center gap-2">
-                          <span className="text-xl">✨</span>
+                        <h3 className="text-base md:text-lg font-semibold mb-2 md:mb-3 text-gray-900 flex items-center gap-2">
+                          <span className="text-lg md:text-xl">✨</span>
                           Med Spa Services
                         </h3>
-                        <div className="space-y-2">
+                        <div className="space-y-1 md:space-y-2">
                           {recommendations.recommendedServices['med-spa'].map((serviceId: string, index: number) => (
                             <div key={serviceId} className="flex items-center gap-2">
-                              <CheckCircle className="w-4 h-4 text-green-600" />
-                              <span className="text-gray-700">
+                              <CheckCircle className="w-3 h-3 md:w-4 md:h-4 text-green-600 flex-shrink-0" />
+                              <span className="text-sm md:text-base text-gray-700">
                                 {serviceId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
                               </span>
                             </div>
@@ -391,17 +403,17 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.6 }}
-                        className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-6 border-2 border-yellow-200"
+                        className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-3 md:p-6 border-2 border-yellow-200"
                       >
-                        <h3 className="text-lg font-semibold mb-3 text-gray-900 flex items-center gap-2">
-                          <span className="text-xl">🎁</span>
+                        <h3 className="text-base md:text-lg font-semibold mb-2 md:mb-3 text-gray-900 flex items-center gap-2">
+                          <span className="text-lg md:text-xl">🎁</span>
                           Special Package Deals
                         </h3>
-                        <div className="space-y-2">
+                        <div className="space-y-1 md:space-y-2">
                           {recommendations.crossDomainPackages.map((packageId: string, index: number) => (
                             <div key={packageId} className="flex items-center gap-2">
-                              <Sparkles className="w-4 h-4 text-yellow-600" />
-                              <span className="text-gray-700 font-medium">
+                              <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-yellow-600 flex-shrink-0" />
+                              <span className="text-sm md:text-base text-gray-700 font-medium">
                                 {packageId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} Package
                               </span>
                             </div>
@@ -416,19 +428,19 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.7 }}
-                    className="flex flex-col sm:flex-row gap-4"
+                    className="flex flex-col sm:flex-row gap-2 md:gap-4"
                   >
                     <Button
                       onClick={handleViewServices}
-                      className="flex-1 bg-red-600 hover:bg-red-700 text-white"
+                      className="flex-1 bg-red-600 hover:bg-red-700 text-white text-sm md:text-base py-2 md:py-3"
                     >
-                      <ShoppingCart className="w-4 h-4 mr-2" />
+                      <ShoppingCart className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
                       View Services & Book
                     </Button>
                     <Button
                       onClick={handleStartOver}
                       variant="outline"
-                      className="flex-1"
+                      className="flex-1 text-sm md:text-base py-2 md:py-3"
                     >
                       Start Over
                     </Button>
