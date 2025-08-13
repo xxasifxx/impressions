@@ -1,55 +1,49 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { CartProvider } from './contexts/CartContext';
+import { Toaster } from './components/ui/toaster';
 
-import Home from '@/pages/Home';
-import Services from '@/pages/Services';
-import Contact from '@/pages/Contact';
-import About from '@/pages/About';
-import NotFound from '@/pages/NotFound';
-import HairSalonLanding from '@/pages/HairSalonLanding';
-import MakeupStudioLanding from '@/pages/MakeupStudioLanding';
-import MedSpaLanding from '@/pages/MedSpaLanding';
-import ConsultationFlow from '@/components/ConsultationFlow';
-import ConsultationResults from '@/pages/ConsultationResults';
-import RealisticConsultationFlow from '@/components/RealisticConsultationFlow';
-import UnifiedConsultationFlow from '@/components/UnifiedConsultationFlow';
-import { ServiceCartProvider } from '@/contexts/ServiceCartContext';
+// Import pages
+import HomePage from './pages/Home';
+import HairSalonLanding from './pages/HairSalonLanding';
+import MakeupStudioLanding from './pages/MakeupStudioLanding';
+import MedSpaLanding from './pages/MedSpaLanding';
+import ServicesPage from './pages/Services';
+import PersonalizedResultsPage from './pages/PersonalizedResultsPage';
+import BookingPage from './pages/BookingPage';
+import BookingConfirmationPage from './pages/BookingConfirmationPage';
 
-const queryClient = new QueryClient();
+// Import components
+import Cart from './components/Cart';
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ServiceCartProvider>
-        <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-white">
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/hair-salon" element={<HairSalonLanding />} />
-              <Route path="/makeup-studio" element={<MakeupStudioLanding />} />
-              <Route path="/med-spa" element={<MedSpaLanding />} />
-              {/* Legacy domain-specific consultation routes */}
-              <Route path="/consultation/:domain/:journey" element={<ConsultationFlow />} />
-              <Route path="/consultation/:domain/:journey/results" element={<ConsultationResults />} />
-              <Route path="/hair-salon/consultation" element={<RealisticConsultationFlow domain="hair-salon" />} />
-              <Route path="/makeup-studio/consultation" element={<RealisticConsultationFlow domain="makeup-studio" />} />
-              <Route path="/med-spa/consultation" element={<RealisticConsultationFlow domain="med-spa" />} />
-              
-              {/* NEW: Unified motivation-first consultation */}
-              <Route path="/consultation" element={<UnifiedConsultationFlow />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <Toaster />
-          </BrowserRouter>
+    <CartProvider>
+      <Router>
+        <div className="app">
+          {/* Global Cart Component */}
+          <div className="fixed top-4 right-4 z-50">
+            <Cart />
+          </div>
+          
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/hair-salon" element={<HairSalonLanding />} />
+            <Route path="/makeup-studio" element={<MakeupStudioLanding />} />
+            <Route path="/med-spa" element={<MedSpaLanding />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/personalized-results" element={<PersonalizedResultsPage />} />
+            <Route path="/booking" element={<BookingPage />} />
+            <Route path="/booking-confirmation" element={<BookingConfirmationPage />} />
+          </Routes>
+          
+          {/* Toast notifications */}
+          <Toaster />
         </div>
-      </ServiceCartProvider>
-    </QueryClientProvider>
+      </Router>
+    </CartProvider>
   );
 }
 
 export default App;
+
