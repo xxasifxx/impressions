@@ -11,7 +11,15 @@ import {
   getUnifiedServiceRecommendations 
 } from '@/data/unifiedConsultationFlow';
 
-const UnifiedConsultationFlow: React.FC = () => {
+interface UnifiedConsultationFlowProps {
+  onProgressChange?: (progress: number, domain?: string) => void;
+  onComplete?: (results: any) => void;
+}
+
+const UnifiedConsultationFlow: React.FC<UnifiedConsultationFlowProps> = ({
+  onProgressChange,
+  onComplete
+}) => {
   const navigate = useNavigate();
   
   const [currentNodeId, setCurrentNodeId] = useState('root');
@@ -26,6 +34,38 @@ const UnifiedConsultationFlow: React.FC = () => {
   const totalNodes = Object.keys(unifiedDecisionTree).length;
   const completedNodes = Object.keys(responses).length;
   const progressPercentage = Math.min((completedNodes / Math.max(totalNodes - 2, 1)) * 100, 100);
+
+  // Update progress when it changes
+  React.useEffect(() => {
+    if (onProgressChange) {
+      onProgressChange(progressPercentage / 100, getDominantDomain());
+    }
+  }, [progressPercentage]);
+
+  // Get the dominant domain from responses
+  const getDominantDomain = (): string | undefined => {
+    const domainCounts: Record<string, number> = {};
+    
+    Object.values(responses).forEach(response => {
+      if (response.domains) {
+        response.domains.forEach(domain => {
+          domainCounts[domain] = (domainCounts[domain] || 0) + 1;
+        });
+      }
+    });
+    
+    let maxCount = 0;
+    let dominantDomain: string | undefined = undefined;
+    
+    Object.entries(domainCounts).forEach(([domain, count]) => {
+      if (count > maxCount) {
+        maxCount = count;
+        dominantDomain = domain;
+      }
+    });
+    
+    return dominantDomain;
+  };
 
   const handleOptionSelect = (option: UnifiedDecisionOption) => {
     // Record response with domain information
@@ -51,6 +91,11 @@ const UnifiedConsultationFlow: React.FC = () => {
       const result = getUnifiedServiceRecommendations(newResponses);
       setRecommendations(result);
       setIsComplete(true);
+      
+      // Call onComplete callback if provided
+      if (onComplete) {
+        onComplete(result);
+      }
     } else {
       setCurrentNodeId(option.nextNodeId);
     }
@@ -288,7 +333,7 @@ const UnifiedConsultationFlow: React.FC = () => {
                 )}
 
                 {/* Cross-Domain Packages */}
-                {recommendations.crossDomainPackages.length > 0 && (
+                {recommendations.crossDomainPackages && recommendations.crossDomainPackages.length > 0 && (
                   <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-6 border-2 border-yellow-200">
                     <h3 className="text-lg font-semibold mb-3 text-gray-900 flex items-center gap-2">
                       <span className="text-xl">🎁</span>

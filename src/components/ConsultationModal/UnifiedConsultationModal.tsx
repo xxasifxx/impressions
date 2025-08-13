@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { UnifiedConsultationFlow } from '../UnifiedConsultationFlow';
+import UnifiedConsultationFlow from '../UnifiedConsultationFlow';
 import { AestheticProvider } from './AestheticProvider';
 
 interface UnifiedConsultationModalProps {
