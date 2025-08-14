@@ -43,7 +43,7 @@ const EnhancedConsultationModal: React.FC<EnhancedConsultationModalProps> = ({
   
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="p-0 w-[min(95vw,800px)] h-[min(90vh,700px)] rounded-lg overflow-hidden">
+      <DialogContent className="p-0 w-[min(95vw,1200px)] h-[min(90vh,800px)] rounded-lg overflow-hidden">
         <div className="w-full h-full overflow-hidden">
           <AestheticProvider 
             consultationProgress={consultationProgress}
