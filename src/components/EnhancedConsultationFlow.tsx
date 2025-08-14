@@ -3,15 +3,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, CheckCircle, ShoppingCart, Sparkles } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import ImageChoiceQuestion from './ImageChoiceQuestion';
+import { ArrowLeft } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
 import { 
   enhancedDecisionTree, 
-  EnhancedDecisionNode, 
   EnhancedDecisionOption,
   getUnifiedServiceRecommendations 
 } from '@/data/enhancedConsultationFlow';
+import ConsultationQuestion from './ConsultationQuestion';
+import ConsultationResults from './ConsultationResults';
 
 interface EnhancedConsultationFlowProps {
   onProgressChange?: (progress: number, domain?: string) => void;
@@ -53,7 +53,7 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
     if (onProgressChange) {
       onProgressChange(progressPercentage / 100, getDominantDomain());
     }
-  }, [progressPercentage]);
+  }, [progressPercentage, onProgressChange]);
 
   // Get the dominant domain from responses
   const getDominantDomain = (): string | undefined => {
@@ -253,193 +253,20 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
           {/* Current Question or Results - Flex-grow to fill available space */}
           <AnimatePresence mode="wait">
             {!isComplete ? (
-              <motion.div
-                key="question"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: isTransitioning ? 0 : 1, y: isTransitioning ? 10 : 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.4 }}
-                className="flex-grow flex"
-              >
-                <Card className="p-4 bg-white/90 backdrop-blur-sm flex-grow">
-                  <ImageChoiceQuestion
-                    question={currentNode.question}
-                    options={currentNode.options}
-                    onSelect={handleOptionSelect}
-                    aspectRatio={aspectRatio}
-                  />
-                  
-                  {/* Back Button */}
-                  {completedNodes > 0 && (
-                    <div className="flex justify-start mt-3">
-                      <Button
-                        onClick={handleGoBack}
-                        variant="ghost"
-                        size="sm"
-                        className="text-gray-600 hover:text-gray-800 text-xs h-8"
-                        disabled={isTransitioning}
-                      >
-                        <ArrowLeft className="w-3 h-3 mr-1" />
-                        Go Back
-                      </Button>
-                    </div>
-                  )}
-                </Card>
-              </motion.div>
+              <ConsultationQuestion 
+                node={currentNode}
+                aspectRatio={aspectRatio}
+                isTransitioning={isTransitioning}
+                onSelect={handleOptionSelect}
+                onGoBack={handleGoBack}
+                showBackButton={completedNodes > 0}
+              />
             ) : (
-              /* Results */
-              <motion.div
-                key="results"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="flex-grow flex"
-              >
-                <Card className="p-4 flex-grow">
-                  <div className="text-center mb-4">
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 }}
-                    >
-                      <Sparkles className="w-10 h-10 text-red-600 mx-auto mb-2" />
-                    </motion.div>
-                    <h2 className="text-xl font-light mb-2 text-gray-900">
-                      Perfect! We have recommendations for you.
-                    </h2>
-                    <p className="text-sm text-gray-600">
-                      Based on your needs, here are services that would be perfect for you.
-                    </p>
-                  </div>
-
-                  {/* Cross-Domain Recommendations - Scrollable */}
-                  <div className="space-y-3 mb-4 max-h-[40vh] overflow-auto">
-                    
-                    {/* Hair Salon Services */}
-                    {recommendations.recommendedServices['hair-salon'].length > 0 && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.3 }}
-                        className="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-3"
-                      >
-                        <h3 className="text-base font-semibold mb-2 text-gray-900 flex items-center gap-2">
-                          <span className="text-lg">💇‍♀️</span>
-                          Hair Salon Services
-                        </h3>
-                        <div className="space-y-1">
-                          {recommendations.recommendedServices['hair-salon'].map((serviceId: string, index: number) => (
-                            <div key={serviceId} className="flex items-center gap-2">
-                              <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
-                              <span className="text-sm text-gray-700">
-                                {serviceId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {/* Makeup Studio Services */}
-                    {recommendations.recommendedServices['makeup-studio'].length > 0 && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.4 }}
-                        className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg p-3"
-                      >
-                        <h3 className="text-base font-semibold mb-2 text-gray-900 flex items-center gap-2">
-                          <span className="text-lg">💄</span>
-                          Makeup Studio Services
-                        </h3>
-                        <div className="space-y-1">
-                          {recommendations.recommendedServices['makeup-studio'].map((serviceId: string, index: number) => (
-                            <div key={serviceId} className="flex items-center gap-2">
-                              <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
-                              <span className="text-sm text-gray-700">
-                                {serviceId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {/* Med Spa Services */}
-                    {recommendations.recommendedServices['med-spa'].length > 0 && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.5 }}
-                        className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-3"
-                      >
-                        <h3 className="text-base font-semibold mb-2 text-gray-900 flex items-center gap-2">
-                          <span className="text-lg">✨</span>
-                          Med Spa Services
-                        </h3>
-                        <div className="space-y-1">
-                          {recommendations.recommendedServices['med-spa'].map((serviceId: string, index: number) => (
-                            <div key={serviceId} className="flex items-center gap-2">
-                              <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
-                              <span className="text-sm text-gray-700">
-                                {serviceId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {/* Cross-Domain Packages */}
-                    {recommendations.crossDomainPackages && recommendations.crossDomainPackages.length > 0 && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.6 }}
-                        className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-3 border-2 border-yellow-200"
-                      >
-                        <h3 className="text-base font-semibold mb-2 text-gray-900 flex items-center gap-2">
-                          <span className="text-lg">🎁</span>
-                          Special Package Deals
-                        </h3>
-                        <div className="space-y-1">
-                          {recommendations.crossDomainPackages.map((packageId: string, index: number) => (
-                            <div key={packageId} className="flex items-center gap-2">
-                              <Sparkles className="w-3 h-3 text-yellow-600 flex-shrink-0" />
-                              <span className="text-sm text-gray-700 font-medium">
-                                {packageId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} Package
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </div>
-
-                  {/* Action Buttons - Fixed at bottom */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.7 }}
-                    className="flex flex-col sm:flex-row gap-2 mt-auto"
-                  >
-                    <Button
-                      onClick={handleViewServices}
-                      className="flex-1 bg-red-600 hover:bg-red-700 text-white text-sm h-9"
-                    >
-                      <ShoppingCart className="w-3 h-3 mr-1" />
-                      View Services & Book
-                    </Button>
-                    <Button
-                      onClick={handleStartOver}
-                      variant="outline"
-                      className="flex-1 text-sm h-9"
-                    >
-                      Start Over
-                    </Button>
-                  </motion.div>
-                </Card>
-              </motion.div>
+              <ConsultationResults 
+                recommendations={recommendations}
+                onViewServices={handleViewServices}
+                onStartOver={handleStartOver}
+              />
             )}
           </AnimatePresence>
         </div>
