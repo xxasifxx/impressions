@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import EnhancedConsultationFlow from '../EnhancedConsultationFlow';
 import { AestheticProvider } from './AestheticProvider';
@@ -20,6 +20,29 @@ const EnhancedConsultationModal: React.FC<EnhancedConsultationModalProps> = ({
 }) => {
   const [consultationProgress, setConsultationProgress] = useState(0);
   const [currentDomain, setCurrentDomain] = useState<string | undefined>();
+  const [modalWidth, setModalWidth] = useState('95vw');
+  
+  // Dynamically adjust modal width based on viewport
+  useEffect(() => {
+    const updateModalWidth = () => {
+      const width = window.innerWidth;
+      if (width >= 1920) {
+        setModalWidth('1400px');
+      } else if (width >= 1440) {
+        setModalWidth('1200px');
+      } else if (width >= 1024) {
+        setModalWidth('900px');
+      } else if (width >= 768) {
+        setModalWidth('700px');
+      } else {
+        setModalWidth('95vw');
+      }
+    };
+    
+    updateModalWidth();
+    window.addEventListener('resize', updateModalWidth);
+    return () => window.removeEventListener('resize', updateModalWidth);
+  }, []);
   
   // Track consultation progress for aesthetic evolution
   const handleProgressChange = (progress: number, domain?: string) => {
@@ -43,7 +66,10 @@ const EnhancedConsultationModal: React.FC<EnhancedConsultationModalProps> = ({
   
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="p-0 w-[min(95vw,1200px)] h-[min(90vh,800px)] rounded-lg overflow-hidden">
+      <DialogContent 
+        className="p-0 rounded-lg overflow-hidden max-h-[90vh]"
+        style={{ width: modalWidth, maxWidth: '95vw', height: 'min(90vh, 800px)' }}
+      >
         <div className="w-full h-full overflow-hidden">
           <AestheticProvider 
             consultationProgress={consultationProgress}
