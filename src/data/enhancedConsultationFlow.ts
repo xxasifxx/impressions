@@ -112,6 +112,74 @@ export const enhancedDecisionTree: Record<string, EnhancedDecisionNode> = {
     ]
   },
 
+  // New node with 2 options
+  'beauty-style': {
+    id: 'beauty-style',
+    question: 'What beauty style do you prefer?',
+    backgroundImage: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&q=80&w=1000',
+    options: [
+      { 
+        id: 'natural-look', 
+        label: 'Natural, subtle look', 
+        weight: 7, 
+        nextNodeId: 'service-preferences', 
+        emoji: '🍃',
+        domains: ['hair-salon', 'makeup-studio', 'med-spa'],
+        imageUrl: 'https://images.unsplash.com/photo-1588946322855-e31b17d2fdf6?auto=format&fit=crop&q=80&w=800',
+        description: 'Enhance your natural beauty with subtle techniques'
+      },
+      { 
+        id: 'glamorous-look', 
+        label: 'Bold, glamorous look', 
+        weight: 8, 
+        nextNodeId: 'service-preferences', 
+        emoji: '✨',
+        domains: ['hair-salon', 'makeup-studio'],
+        imageUrl: 'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&q=80&w=800',
+        description: 'Make a statement with dramatic, eye-catching styles'
+      }
+    ]
+  },
+
+  // New node with 3 options
+  'color-preference': {
+    id: 'color-preference',
+    question: 'What color palette do you prefer?',
+    backgroundImage: 'https://images.unsplash.com/photo-1513297887119-d46091b24bfa?auto=format&fit=crop&q=80&w=1000',
+    options: [
+      { 
+        id: 'warm-tones', 
+        label: 'Warm tones', 
+        weight: 6, 
+        nextNodeId: 'service-preferences', 
+        emoji: '🔥',
+        domains: ['hair-salon', 'makeup-studio'],
+        imageUrl: 'https://images.unsplash.com/photo-1581182800629-7d90925ad072?auto=format&fit=crop&q=80&w=800',
+        description: 'Rich, warm colors that enhance your natural glow'
+      },
+      { 
+        id: 'cool-tones', 
+        label: 'Cool tones', 
+        weight: 6, 
+        nextNodeId: 'service-preferences', 
+        emoji: '❄️',
+        domains: ['hair-salon', 'makeup-studio'],
+        imageUrl: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&q=80&w=800',
+        description: 'Sophisticated cool tones for an elegant look'
+      },
+      { 
+        id: 'vibrant-colors', 
+        label: 'Vibrant, bold colors', 
+        weight: 7, 
+        nextNodeId: 'service-preferences', 
+        emoji: '🌈',
+        domains: ['hair-salon', 'makeup-studio'],
+        imageUrl: 'https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?auto=format&fit=crop&q=80&w=800',
+        description: 'Stand out with bold, vibrant color choices'
+      }
+    ]
+  },
+
   'event-timeline': {
     id: 'event-timeline',
     question: 'When is your event?',
@@ -121,7 +189,7 @@ export const enhancedDecisionTree: Record<string, EnhancedDecisionNode> = {
         id: 'this-week', 
         label: 'This week', 
         weight: 9, 
-        nextNodeId: 'service-preferences', 
+        nextNodeId: 'beauty-style', 
         emoji: '⚡',
         imageUrl: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800',
         description: 'Quick turnaround services for immediate needs'
@@ -130,7 +198,7 @@ export const enhancedDecisionTree: Record<string, EnhancedDecisionNode> = {
         id: 'next-week', 
         label: 'Next week', 
         weight: 8, 
-        nextNodeId: 'service-preferences', 
+        nextNodeId: 'beauty-style', 
         emoji: '📅',
         imageUrl: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800',
         description: 'Perfect timing for most beauty services'
@@ -139,8 +207,8 @@ export const enhancedDecisionTree: Record<string, EnhancedDecisionNode> = {
         id: 'this-month', 
         label: 'This month', 
         weight: 7, 
-        nextNodeId: 'service-preferences', 
-        emoji: '🗓️',
+        nextNodeId: 'color-preference', 
+        emoji: '📓️',
         imageUrl: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800',
         description: 'Time for comprehensive beauty preparation'
       },
@@ -148,7 +216,7 @@ export const enhancedDecisionTree: Record<string, EnhancedDecisionNode> = {
         id: 'planning-ahead', 
         label: 'Planning ahead (2+ months)', 
         weight: 6, 
-        nextNodeId: 'service-preferences', 
+        nextNodeId: 'color-preference', 
         emoji: '🎯',
         imageUrl: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800',
         description: 'Ideal for transformative services and treatments'

@@ -26,7 +26,6 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
   
   const [currentNodeId, setCurrentNodeId] = useState('root');
   const [responses, setResponses] = useState<Record<string, { optionId: string; weight: number; domains?: string[] }>>({});
-  const [conversationHistory, setConversationHistory] = useState<Array<{ question: string; answer: string }>>([]);
   const [isComplete, setIsComplete] = useState(false);
   const [recommendations, setRecommendations] = useState<any>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -93,17 +92,10 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
         domains: option.domains 
       }
     };
-    
-    // Add to conversation history
-    const newHistory = [...conversationHistory, {
-      question: currentNode.question,
-      answer: option.label
-    }];
 
     // Use setTimeout to create a smooth transition effect
     setTimeout(() => {
       setResponses(newResponses);
-      setConversationHistory(newHistory);
       
       // Navigate to next node or complete
       if (option.isLeaf || !option.nextNodeId) {
@@ -125,28 +117,21 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
   };
 
   const handleGoBack = () => {
-    if (conversationHistory.length === 0) return;
+    if (completedNodes === 0) return;
     
     setIsTransitioning(true);
 
     // Use setTimeout to create a smooth transition effect
     setTimeout(() => {
-      // Remove last response and conversation entry
-      const newHistory = conversationHistory.slice(0, -1);
-      setConversationHistory(newHistory);
-
+      // Remove last response
       const newResponses = { ...responses };
       delete newResponses[currentNodeId];
       setResponses(newResponses);
 
       // Navigate back to previous node
-      if (newHistory.length === 0) {
-        setCurrentNodeId('root');
-      } else {
-        // In a real implementation, we would track the node history
-        // For now, we'll just go back to root as a simplification
-        setCurrentNodeId('root');
-      }
+      // In a real implementation, we would track the node history
+      // For now, we'll just go back to root as a simplification
+      setCurrentNodeId('root');
       
       setIsTransitioning(false);
     }, 400);
@@ -169,7 +154,6 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
     setTimeout(() => {
       setCurrentNodeId('root');
       setResponses({});
-      setConversationHistory([]);
       setIsComplete(false);
       setRecommendations(null);
       setIsTransitioning(false);
@@ -199,7 +183,7 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
 
   // Calculate relative container size based on aspect ratio
   const getContainerStyle = () => {
-    // For wide screens (landscape with ratio > 1.5), limit width proportionally
+    // For wide screens (landscape with ratio > 1.8), limit width proportionally
     if (aspectRatio > 1.8) {
       // For ultrawide screens, use a percentage of viewport height for width
       // This ensures the modal doesn't get too wide on ultrawide screens
@@ -266,37 +250,6 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
           className="h-full flex flex-col py-3 px-3 sm:py-4 sm:px-4"
           style={getContainerStyle()}
         >
-          {/* Conversation History - Limited height, scrollable */}
-          {conversationHistory.length > 0 && (
-            <div className="mb-3 space-y-2 max-h-[25vh] overflow-auto flex-shrink-0">
-              {/* On mobile, only show the last 2 responses when there are many */}
-              {(conversationHistory.length <= 2 ? conversationHistory : conversationHistory.slice(-2)).map((entry, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="bg-white/80 backdrop-blur-sm rounded-lg p-2 border border-red-100"
-                >
-                  <div className="text-xs text-gray-600 mb-1">{entry.question}</div>
-                  <div className="font-medium text-sm text-gray-900 flex items-center gap-2">
-                    <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
-                    {entry.answer}
-                  </div>
-                </motion.div>
-              ))}
-              
-              {/* Show a summary badge when there are many responses */}
-              {conversationHistory.length > 2 && (
-                <div className="text-center">
-                  <span className="inline-block bg-gray-100 text-gray-600 text-xs rounded-full px-2 py-1">
-                    {conversationHistory.length - 2} previous answers
-                  </span>
-                </div>
-              )}
-            </div>
-          )}
-
           {/* Current Question or Results - Flex-grow to fill available space */}
           <AnimatePresence mode="wait">
             {!isComplete ? (
@@ -317,7 +270,7 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
                   />
                   
                   {/* Back Button */}
-                  {conversationHistory.length > 0 && (
+                  {completedNodes > 0 && (
                     <div className="flex justify-start mt-3">
                       <Button
                         onClick={handleGoBack}
