@@ -30,17 +30,6 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
   const [isComplete, setIsComplete] = useState(false);
   const [recommendations, setRecommendations] = useState<any>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1440);
-
-  // Track screen size for responsive layout
-  useEffect(() => {
-    const handleResize = () => {
-      setIsLargeScreen(window.innerWidth >= 1440);
-    };
-    
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const currentNode = enhancedDecisionTree[currentNodeId];
 
@@ -179,7 +168,7 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
   if (!currentNode && !isComplete) {
     return (
       <div className="h-full flex items-center justify-center bg-gradient-to-br from-red-50 via-stone-50 to-red-50/30">
-        <Card className="p-4 max-w-md text-center">
+        <Card className="p-4 text-center">
           <h2 className="text-xl font-semibold mb-4">Something went wrong</h2>
           <p className="text-gray-600 mb-6">We couldn't load the consultation.</p>
           <Link to="/">
@@ -196,22 +185,6 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   } : {};
-
-  // Get appropriate container width based on content and screen size
-  const getContainerWidth = () => {
-    // For 2-3 options, use a narrower container to avoid unnecessary width
-    if (currentNode && currentNode.options.length <= 3) {
-      return isLargeScreen ? 'max-w-3xl' : 'max-w-2xl';
-    }
-    
-    // For 4 options, use a medium width container
-    if (currentNode && currentNode.options.length === 4) {
-      return isLargeScreen ? 'max-w-4xl' : 'max-w-3xl';
-    }
-    
-    // For 5+ options or results screen, use a wider container
-    return isLargeScreen ? 'max-w-5xl' : 'max-w-4xl';
-  };
 
   return (
     <div 
@@ -251,14 +224,14 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
       </header>
 
       {/* Main Content - Scrollable with flex-grow */}
-      <main className="flex-grow overflow-y-auto">
-        <div className="p-3 sm:p-4 h-full">
-          {/* Content-aware container width */}
-          <div className={`w-full ${getContainerWidth()} mx-auto h-full flex flex-col`}>
+      <main className="flex-grow overflow-auto">
+        <div className="p-3 sm:p-4 h-full flex flex-col items-center">
+          {/* Content container - auto width based on content */}
+          <div className="w-auto h-full flex flex-col">
             
             {/* Conversation History - Limited height, scrollable */}
             {conversationHistory.length > 0 && (
-              <div className="mb-3 space-y-2 overflow-y-auto max-h-[30vh] flex-shrink-0">
+              <div className="mb-3 space-y-2 max-h-[30vh] flex-shrink-0">
                 {/* On mobile, only show the last 2 responses when there are many */}
                 {(conversationHistory.length <= 2 ? conversationHistory : conversationHistory.slice(-2)).map((entry, index) => (
                   <motion.div
@@ -296,9 +269,9 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
                   animate={{ opacity: isTransitioning ? 0 : 1, y: isTransitioning ? 10 : 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.4 }}
-                  className="flex-grow flex flex-col"
+                  className="flex-grow"
                 >
-                  <Card className="p-3 bg-white/90 backdrop-blur-sm overflow-y-auto flex-grow">
+                  <Card className="p-3 bg-white/90 backdrop-blur-sm">
                     <ImageChoiceQuestion
                       question={currentNode.question}
                       options={currentNode.options}
@@ -329,9 +302,9 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
-                  className="flex-grow overflow-y-auto"
+                  className="flex-grow"
                 >
-                  <Card className="p-3 h-full overflow-y-auto">
+                  <Card className="p-3">
                     <div className="text-center mb-4">
                       <motion.div
                         initial={{ scale: 0 }}
@@ -349,7 +322,7 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
                     </div>
 
                     {/* Cross-Domain Recommendations - Scrollable */}
-                    <div className="space-y-3 mb-4 overflow-y-auto max-h-[40vh]">
+                    <div className="space-y-3 mb-4 max-h-[40vh]">
                       
                       {/* Hair Salon Services */}
                       {recommendations.recommendedServices['hair-salon'].length > 0 && (
