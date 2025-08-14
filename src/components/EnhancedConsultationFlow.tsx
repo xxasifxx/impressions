@@ -30,6 +30,17 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
   const [isComplete, setIsComplete] = useState(false);
   const [recommendations, setRecommendations] = useState<any>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [aspectRatio, setAspectRatio] = useState(window.innerWidth / window.innerHeight);
+
+  // Track screen aspect ratio for responsive layout
+  useEffect(() => {
+    const handleResize = () => {
+      setAspectRatio(window.innerWidth / window.innerHeight);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const currentNode = enhancedDecisionTree[currentNodeId];
 
@@ -186,6 +197,25 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
     backgroundPosition: 'center',
   } : {};
 
+  // Calculate relative container size based on aspect ratio
+  const getContainerStyle = () => {
+    // For wide screens (landscape with ratio > 1.5), limit width proportionally
+    if (aspectRatio > 1.5) {
+      // Use a percentage of viewport height for width to maintain proportions
+      // This ensures the modal doesn't get too wide on ultrawide screens
+      return {
+        maxWidth: `${Math.min(85, 70 * aspectRatio)}vh`,
+        width: 'auto'
+      };
+    }
+    
+    // For more square or portrait screens, use a percentage of viewport width
+    return {
+      maxWidth: '85vw',
+      width: 'auto'
+    };
+  };
+
   return (
     <div 
       className="h-full flex flex-col transition-all duration-1000 ease-in-out"
@@ -224,234 +254,235 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
       </header>
 
       {/* Main Content - Scrollable with flex-grow */}
-      <main className="flex-grow overflow-auto">
-        <div className="p-3 sm:p-4 h-full flex flex-col items-center">
-          {/* Content container - auto width based on content */}
-          <div className="w-auto h-full flex flex-col">
-            
-            {/* Conversation History - Limited height, scrollable */}
-            {conversationHistory.length > 0 && (
-              <div className="mb-3 space-y-2 max-h-[30vh] flex-shrink-0">
-                {/* On mobile, only show the last 2 responses when there are many */}
-                {(conversationHistory.length <= 2 ? conversationHistory : conversationHistory.slice(-2)).map((entry, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.1 }}
-                    className="bg-white/80 backdrop-blur-sm rounded-lg p-2 border border-red-100"
-                  >
-                    <div className="text-xs text-gray-600 mb-1">{entry.question}</div>
-                    <div className="font-medium text-sm text-gray-900 flex items-center gap-2">
-                      <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
-                      {entry.answer}
-                    </div>
-                  </motion.div>
-                ))}
-                
-                {/* Show a summary badge when there are many responses */}
-                {conversationHistory.length > 2 && (
-                  <div className="text-center">
-                    <span className="inline-block bg-gray-100 text-gray-600 text-xs rounded-full px-2 py-1">
-                      {conversationHistory.length - 2} previous answers
-                    </span>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Current Question or Results - Flex-grow to fill available space */}
-            <AnimatePresence mode="wait">
-              {!isComplete ? (
+      <main className="flex-grow flex items-center justify-center overflow-auto">
+        {/* Content container with relative sizing based on aspect ratio */}
+        <div 
+          className="h-full flex flex-col py-3 px-3 sm:py-4 sm:px-4"
+          style={getContainerStyle()}
+        >
+          {/* Conversation History - Limited height, scrollable */}
+          {conversationHistory.length > 0 && (
+            <div className="mb-3 space-y-2 max-h-[25vh] overflow-auto flex-shrink-0">
+              {/* On mobile, only show the last 2 responses when there are many */}
+              {(conversationHistory.length <= 2 ? conversationHistory : conversationHistory.slice(-2)).map((entry, index) => (
                 <motion.div
-                  key="question"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: isTransitioning ? 0 : 1, y: isTransitioning ? 10 : 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.4 }}
-                  className="flex-grow"
-                >
-                  <Card className="p-3 bg-white/90 backdrop-blur-sm">
-                    <ImageChoiceQuestion
-                      question={currentNode.question}
-                      options={currentNode.options}
-                      onSelect={handleOptionSelect}
-                    />
-                    
-                    {/* Back Button */}
-                    {conversationHistory.length > 0 && (
-                      <div className="flex justify-start mt-3">
-                        <Button
-                          onClick={handleGoBack}
-                          variant="ghost"
-                          size="sm"
-                          className="text-gray-600 hover:text-gray-800 text-xs h-8"
-                          disabled={isTransitioning}
-                        >
-                          <ArrowLeft className="w-3 h-3 mr-1" />
-                          Go Back
-                        </Button>
-                      </div>
-                    )}
-                  </Card>
-                </motion.div>
-              ) : (
-                /* Results */
-                <motion.div
-                  key="results"
+                  key={index}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="flex-grow"
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  className="bg-white/80 backdrop-blur-sm rounded-lg p-2 border border-red-100"
                 >
-                  <Card className="p-3">
-                    <div className="text-center mb-4">
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 }}
-                      >
-                        <Sparkles className="w-10 h-10 text-red-600 mx-auto mb-2" />
-                      </motion.div>
-                      <h2 className="text-xl font-light mb-2 text-gray-900">
-                        Perfect! We have recommendations for you.
-                      </h2>
-                      <p className="text-sm text-gray-600">
-                        Based on your needs, here are services that would be perfect for you.
-                      </p>
-                    </div>
-
-                    {/* Cross-Domain Recommendations - Scrollable */}
-                    <div className="space-y-3 mb-4 max-h-[40vh]">
-                      
-                      {/* Hair Salon Services */}
-                      {recommendations.recommendedServices['hair-salon'].length > 0 && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.5, delay: 0.3 }}
-                          className="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-3"
-                        >
-                          <h3 className="text-base font-semibold mb-2 text-gray-900 flex items-center gap-2">
-                            <span className="text-lg">💇‍♀️</span>
-                            Hair Salon Services
-                          </h3>
-                          <div className="space-y-1">
-                            {recommendations.recommendedServices['hair-salon'].map((serviceId: string, index: number) => (
-                              <div key={serviceId} className="flex items-center gap-2">
-                                <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
-                                <span className="text-sm text-gray-700">
-                                  {serviceId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-
-                      {/* Makeup Studio Services */}
-                      {recommendations.recommendedServices['makeup-studio'].length > 0 && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.5, delay: 0.4 }}
-                          className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg p-3"
-                        >
-                          <h3 className="text-base font-semibold mb-2 text-gray-900 flex items-center gap-2">
-                            <span className="text-lg">💄</span>
-                            Makeup Studio Services
-                          </h3>
-                          <div className="space-y-1">
-                            {recommendations.recommendedServices['makeup-studio'].map((serviceId: string, index: number) => (
-                              <div key={serviceId} className="flex items-center gap-2">
-                                <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
-                                <span className="text-sm text-gray-700">
-                                  {serviceId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-
-                      {/* Med Spa Services */}
-                      {recommendations.recommendedServices['med-spa'].length > 0 && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.5, delay: 0.5 }}
-                          className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-3"
-                        >
-                          <h3 className="text-base font-semibold mb-2 text-gray-900 flex items-center gap-2">
-                            <span className="text-lg">✨</span>
-                            Med Spa Services
-                          </h3>
-                          <div className="space-y-1">
-                            {recommendations.recommendedServices['med-spa'].map((serviceId: string, index: number) => (
-                              <div key={serviceId} className="flex items-center gap-2">
-                                <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
-                                <span className="text-sm text-gray-700">
-                                  {serviceId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-
-                      {/* Cross-Domain Packages */}
-                      {recommendations.crossDomainPackages && recommendations.crossDomainPackages.length > 0 && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.5, delay: 0.6 }}
-                          className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-3 border-2 border-yellow-200"
-                        >
-                          <h3 className="text-base font-semibold mb-2 text-gray-900 flex items-center gap-2">
-                            <span className="text-lg">🎁</span>
-                            Special Package Deals
-                          </h3>
-                          <div className="space-y-1">
-                            {recommendations.crossDomainPackages.map((packageId: string, index: number) => (
-                              <div key={packageId} className="flex items-center gap-2">
-                                <Sparkles className="w-3 h-3 text-yellow-600 flex-shrink-0" />
-                                <span className="text-sm text-gray-700 font-medium">
-                                  {packageId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} Package
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </div>
-
-                    {/* Action Buttons - Fixed at bottom */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.7 }}
-                      className="flex flex-col sm:flex-row gap-2 mt-auto"
-                    >
-                      <Button
-                        onClick={handleViewServices}
-                        className="flex-1 bg-red-600 hover:bg-red-700 text-white text-sm h-9"
-                      >
-                        <ShoppingCart className="w-3 h-3 mr-1" />
-                        View Services & Book
-                      </Button>
-                      <Button
-                        onClick={handleStartOver}
-                        variant="outline"
-                        className="flex-1 text-sm h-9"
-                      >
-                        Start Over
-                      </Button>
-                    </motion.div>
-                  </Card>
+                  <div className="text-xs text-gray-600 mb-1">{entry.question}</div>
+                  <div className="font-medium text-sm text-gray-900 flex items-center gap-2">
+                    <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
+                    {entry.answer}
+                  </div>
                 </motion.div>
+              ))}
+              
+              {/* Show a summary badge when there are many responses */}
+              {conversationHistory.length > 2 && (
+                <div className="text-center">
+                  <span className="inline-block bg-gray-100 text-gray-600 text-xs rounded-full px-2 py-1">
+                    {conversationHistory.length - 2} previous answers
+                  </span>
+                </div>
               )}
-            </AnimatePresence>
-          </div>
+            </div>
+          )}
+
+          {/* Current Question or Results - Flex-grow to fill available space */}
+          <AnimatePresence mode="wait">
+            {!isComplete ? (
+              <motion.div
+                key="question"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: isTransitioning ? 0 : 1, y: isTransitioning ? 10 : 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.4 }}
+                className="flex-grow flex"
+              >
+                <Card className="p-3 bg-white/90 backdrop-blur-sm flex-grow">
+                  <ImageChoiceQuestion
+                    question={currentNode.question}
+                    options={currentNode.options}
+                    onSelect={handleOptionSelect}
+                    aspectRatio={aspectRatio}
+                  />
+                  
+                  {/* Back Button */}
+                  {conversationHistory.length > 0 && (
+                    <div className="flex justify-start mt-3">
+                      <Button
+                        onClick={handleGoBack}
+                        variant="ghost"
+                        size="sm"
+                        className="text-gray-600 hover:text-gray-800 text-xs h-8"
+                        disabled={isTransitioning}
+                      >
+                        <ArrowLeft className="w-3 h-3 mr-1" />
+                        Go Back
+                      </Button>
+                    </div>
+                  )}
+                </Card>
+              </motion.div>
+            ) : (
+              /* Results */
+              <motion.div
+                key="results"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="flex-grow flex"
+              >
+                <Card className="p-3 flex-grow">
+                  <div className="text-center mb-4">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 }}
+                    >
+                      <Sparkles className="w-10 h-10 text-red-600 mx-auto mb-2" />
+                    </motion.div>
+                    <h2 className="text-xl font-light mb-2 text-gray-900">
+                      Perfect! We have recommendations for you.
+                    </h2>
+                    <p className="text-sm text-gray-600">
+                      Based on your needs, here are services that would be perfect for you.
+                    </p>
+                  </div>
+
+                  {/* Cross-Domain Recommendations - Scrollable */}
+                  <div className="space-y-3 mb-4 max-h-[40vh] overflow-auto">
+                    
+                    {/* Hair Salon Services */}
+                    {recommendations.recommendedServices['hair-salon'].length > 0 && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.3 }}
+                        className="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-3"
+                      >
+                        <h3 className="text-base font-semibold mb-2 text-gray-900 flex items-center gap-2">
+                          <span className="text-lg">💇‍♀️</span>
+                          Hair Salon Services
+                        </h3>
+                        <div className="space-y-1">
+                          {recommendations.recommendedServices['hair-salon'].map((serviceId: string, index: number) => (
+                            <div key={serviceId} className="flex items-center gap-2">
+                              <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
+                              <span className="text-sm text-gray-700">
+                                {serviceId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {/* Makeup Studio Services */}
+                    {recommendations.recommendedServices['makeup-studio'].length > 0 && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                        className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg p-3"
+                      >
+                        <h3 className="text-base font-semibold mb-2 text-gray-900 flex items-center gap-2">
+                          <span className="text-lg">💄</span>
+                          Makeup Studio Services
+                        </h3>
+                        <div className="space-y-1">
+                          {recommendations.recommendedServices['makeup-studio'].map((serviceId: string, index: number) => (
+                            <div key={serviceId} className="flex items-center gap-2">
+                              <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
+                              <span className="text-sm text-gray-700">
+                                {serviceId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {/* Med Spa Services */}
+                    {recommendations.recommendedServices['med-spa'].length > 0 && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.5 }}
+                        className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-3"
+                      >
+                        <h3 className="text-base font-semibold mb-2 text-gray-900 flex items-center gap-2">
+                          <span className="text-lg">✨</span>
+                          Med Spa Services
+                        </h3>
+                        <div className="space-y-1">
+                          {recommendations.recommendedServices['med-spa'].map((serviceId: string, index: number) => (
+                            <div key={serviceId} className="flex items-center gap-2">
+                              <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
+                              <span className="text-sm text-gray-700">
+                                {serviceId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {/* Cross-Domain Packages */}
+                    {recommendations.crossDomainPackages && recommendations.crossDomainPackages.length > 0 && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.6 }}
+                        className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-3 border-2 border-yellow-200"
+                      >
+                        <h3 className="text-base font-semibold mb-2 text-gray-900 flex items-center gap-2">
+                          <span className="text-lg">🎁</span>
+                          Special Package Deals
+                        </h3>
+                        <div className="space-y-1">
+                          {recommendations.crossDomainPackages.map((packageId: string, index: number) => (
+                            <div key={packageId} className="flex items-center gap-2">
+                              <Sparkles className="w-3 h-3 text-yellow-600 flex-shrink-0" />
+                              <span className="text-sm text-gray-700 font-medium">
+                                {packageId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} Package
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
+
+                  {/* Action Buttons - Fixed at bottom */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.7 }}
+                    className="flex flex-col sm:flex-row gap-2 mt-auto"
+                  >
+                    <Button
+                      onClick={handleViewServices}
+                      className="flex-1 bg-red-600 hover:bg-red-700 text-white text-sm h-9"
+                    >
+                      <ShoppingCart className="w-3 h-3 mr-1" />
+                      View Services & Book
+                    </Button>
+                    <Button
+                      onClick={handleStartOver}
+                      variant="outline"
+                      className="flex-1 text-sm h-9"
+                    >
+                      Start Over
+                    </Button>
+                  </motion.div>
+                </Card>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </main>
     </div>

@@ -6,64 +6,84 @@ interface ImageChoiceQuestionProps {
   question: string;
   options: UnifiedDecisionOption[];
   onSelect: (option: UnifiedDecisionOption) => void;
+  aspectRatio?: number;
 }
 
 const ImageChoiceQuestion: React.FC<ImageChoiceQuestionProps> = ({
   question,
   options,
-  onSelect
+  onSelect,
+  aspectRatio = 1
 }) => {
-  // State to track viewport orientation and size
+  // State to track viewport orientation
   const [isPortrait, setIsPortrait] = useState(window.innerHeight > window.innerWidth);
-  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1440);
   
-  // Update orientation and screen size on resize
+  // Update orientation on resize
   useEffect(() => {
     const handleResize = () => {
       setIsPortrait(window.innerHeight > window.innerWidth);
-      setIsLargeScreen(window.innerWidth >= 1440);
     };
     
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   
-  // Determine grid layout based on number of options and orientation
+  // Determine grid layout based on number of options, orientation and aspect ratio
   const getGridClass = () => {
     const count = options.length;
     
-    if (count <= 3) {
-      // 2-3 options: Full-width vertical stack
+    // For wide screens with few options, use a horizontal layout
+    if (aspectRatio > 1.5 && count <= 3) {
       return 'grid-cols-1';
-    } else if (count === 4) {
-      // 4 options: 2×2 grid
-      return 'grid-cols-2';
-    } else {
-      // 5+ options: Adapt based on orientation
-      if (isPortrait) {
-        return 'grid-cols-2';  // Portrait: 2 columns
-      } else {
-        return 'grid-cols-3';  // Landscape: 3 columns
+    }
+    
+    // For 2-3 options on normal screens
+    if (count <= 3) {
+      return 'grid-cols-1';
+    } 
+    // For 4 options
+    else if (count === 4) {
+      // On wide screens, consider a single row
+      if (aspectRatio > 1.8) {
+        return 'grid-cols-4';
+      }
+      // On medium-wide screens
+      else if (aspectRatio > 1.2) {
+        return 'grid-cols-2';
+      }
+      // On portrait screens
+      else {
+        return 'grid-cols-2';
+      }
+    } 
+    // For 5+ options
+    else {
+      // On very wide screens
+      if (aspectRatio > 1.8) {
+        return count <= 6 ? 'grid-cols-' + count : 'grid-cols-6';
+      }
+      // On wide screens
+      else if (aspectRatio > 1.2) {
+        return 'grid-cols-3';
+      }
+      // On portrait screens
+      else {
+        return 'grid-cols-2';
       }
     }
   };
   
-  // Get appropriate height class for horizontal layout based on screen size
-  const getHeightClass = () => {
-    if (isLargeScreen) {
-      return 'h-28';
-    } else {
-      return 'h-24';
+  // Get appropriate height for horizontal layout based on aspect ratio
+  const getCardStyle = () => {
+    // For horizontal layout on wide screens
+    if (aspectRatio > 1.5 && options.length <= 3) {
+      return {
+        display: 'flex',
+        height: aspectRatio > 2 ? '20vh' : '24vh'
+      };
     }
-  };
-  
-  // Get appropriate width class for image in horizontal layout based on screen size
-  const getWidthClass = () => {
-    if (isLargeScreen) {
-      return 'w-28';
-    } else {
-      return 'w-24';
-    }
+    
+    return {};
   };
   
   return (
@@ -80,16 +100,17 @@ const ImageChoiceQuestion: React.FC<ImageChoiceQuestionProps> = ({
             <motion.div
               key={option.id}
               className="image-choice-option cursor-pointer overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100"
+              style={getCardStyle()}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => onSelect(option)}
             >
-              {/* For 2-3 options: horizontal layout with image on left */}
-              {options.length <= 3 ? (
-                <div className={`flex items-stretch ${getHeightClass()}`}>
+              {/* For 2-3 options on wide screens: horizontal layout with image on left */}
+              {options.length <= 3 && aspectRatio > 1.5 ? (
+                <div className="flex h-full">
                   {/* Image thumbnail */}
                   {option.imageUrl && (
-                    <div className={`relative ${getWidthClass()} overflow-hidden flex-shrink-0`}>
+                    <div className="relative aspect-square h-full overflow-hidden flex-shrink-0">
                       <img 
                         src={option.imageUrl} 
                         alt={option.label}
@@ -128,8 +149,8 @@ const ImageChoiceQuestion: React.FC<ImageChoiceQuestionProps> = ({
                   </div>
                 </div>
               ) : (
-                // For 4+ options: card layout with image on top
-                <div className="flex flex-col">
+                // For 4+ options or non-wide screens: card layout with image on top
+                <div className="flex flex-col h-full">
                   {/* Image */}
                   {option.imageUrl && (
                     <div className="relative aspect-[4/3] overflow-hidden">
@@ -144,7 +165,7 @@ const ImageChoiceQuestion: React.FC<ImageChoiceQuestionProps> = ({
                   )}
                   
                   {/* Option text */}
-                  <div className="p-2 bg-white">
+                  <div className="p-2 bg-white flex-grow">
                     <div className="flex items-center gap-1">
                       {option.emoji && (
                         <span className="text-base">{option.emoji}</span>
