@@ -200,11 +200,17 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
   // Calculate relative container size based on aspect ratio
   const getContainerStyle = () => {
     // For wide screens (landscape with ratio > 1.5), limit width proportionally
-    if (aspectRatio > 1.5) {
-      // Use a percentage of viewport height for width to maintain proportions
+    if (aspectRatio > 1.8) {
+      // For ultrawide screens, use a percentage of viewport height for width
       // This ensures the modal doesn't get too wide on ultrawide screens
       return {
-        maxWidth: `${Math.min(85, 70 * aspectRatio)}vh`,
+        maxWidth: `${Math.min(75, 60 * aspectRatio)}vh`,
+        width: 'auto'
+      };
+    } else if (aspectRatio > 1.5) {
+      // For regular wide screens
+      return {
+        maxWidth: `${Math.min(80, 65 * aspectRatio)}vh`,
         width: 'auto'
       };
     }
@@ -302,7 +308,7 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
                 transition={{ duration: 0.4 }}
                 className="flex-grow flex"
               >
-                <Card className="p-3 bg-white/90 backdrop-blur-sm flex-grow">
+                <Card className="p-4 bg-white/90 backdrop-blur-sm flex-grow">
                   <ImageChoiceQuestion
                     question={currentNode.question}
                     options={currentNode.options}
@@ -336,7 +342,7 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
                 transition={{ duration: 0.5 }}
                 className="flex-grow flex"
               >
-                <Card className="p-3 flex-grow">
+                <Card className="p-4 flex-grow">
                   <div className="text-center mb-4">
                     <motion.div
                       initial={{ scale: 0 }}

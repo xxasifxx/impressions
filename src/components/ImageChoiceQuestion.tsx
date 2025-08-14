@@ -32,20 +32,15 @@ const ImageChoiceQuestion: React.FC<ImageChoiceQuestionProps> = ({
   const getGridClass = () => {
     const count = options.length;
     
-    // For wide screens with few options, use a horizontal layout
-    if (aspectRatio > 1.5 && count <= 3) {
-      return 'grid-cols-1';
-    }
-    
-    // For 2-3 options on normal screens
+    // For 2-3 options: always use vertical stack for better readability
     if (count <= 3) {
       return 'grid-cols-1';
     } 
     // For 4 options
     else if (count === 4) {
-      // On wide screens, consider a single row
+      // On very wide screens (ultrawide), use 2x2 grid for better proportions
       if (aspectRatio > 1.8) {
-        return 'grid-cols-4';
+        return 'grid-cols-2';
       }
       // On medium-wide screens
       else if (aspectRatio > 1.2) {
@@ -60,7 +55,7 @@ const ImageChoiceQuestion: React.FC<ImageChoiceQuestionProps> = ({
     else {
       // On very wide screens
       if (aspectRatio > 1.8) {
-        return count <= 6 ? 'grid-cols-' + count : 'grid-cols-6';
+        return 'grid-cols-3';  // Max 3 columns for readability
       }
       // On wide screens
       else if (aspectRatio > 1.2) {
@@ -73,13 +68,13 @@ const ImageChoiceQuestion: React.FC<ImageChoiceQuestionProps> = ({
     }
   };
   
-  // Get appropriate height for horizontal layout based on aspect ratio
+  // Get appropriate style for cards based on aspect ratio and content
   const getCardStyle = () => {
-    // For horizontal layout on wide screens
+    // For horizontal layout on wide screens with few options
     if (aspectRatio > 1.5 && options.length <= 3) {
       return {
         display: 'flex',
-        height: aspectRatio > 2 ? '20vh' : '24vh'
+        height: aspectRatio > 2 ? '22vh' : '26vh'
       };
     }
     
@@ -95,7 +90,7 @@ const ImageChoiceQuestion: React.FC<ImageChoiceQuestionProps> = ({
       {/* Options container - flex-grow to fill available space */}
       <div className="flex-grow">
         {/* Adaptive grid layout */}
-        <div className={`grid ${getGridClass()} gap-3`}>
+        <div className={`grid ${getGridClass()} gap-4`}>
           {options.map((option) => (
             <motion.div
               key={option.id}
