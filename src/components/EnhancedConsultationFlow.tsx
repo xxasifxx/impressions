@@ -226,7 +226,7 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
       {/* Main Content - Scrollable with flex-grow */}
       <main className="flex-grow overflow-y-auto">
         <div className="p-3 sm:p-4 h-full">
-          <div className="max-w-2xl mx-auto h-full flex flex-col">
+          <div className="w-full max-w-full mx-auto h-full flex flex-col">
             
             {/* Conversation History - Limited height, scrollable */}
             {conversationHistory.length > 0 && (
@@ -268,9 +268,9 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
                   animate={{ opacity: isTransitioning ? 0 : 1, y: isTransitioning ? 10 : 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.4 }}
-                  className="flex-grow flex flex-col"
+                  className="flex-grow flex flex-col w-full"
                 >
-                  <Card className="p-3 bg-white/90 backdrop-blur-sm overflow-y-auto flex-grow">
+                  <Card className="p-3 bg-white/90 backdrop-blur-sm overflow-y-auto flex-grow w-full">
                     <ImageChoiceQuestion
                       question={currentNode.question}
                       options={currentNode.options}
@@ -301,9 +301,9 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
-                  className="flex-grow overflow-y-auto"
+                  className="flex-grow overflow-y-auto w-full"
                 >
-                  <Card className="p-3 h-full overflow-y-auto">
+                  <Card className="p-3 h-full overflow-y-auto w-full">
                     <div className="text-center mb-4">
                       <motion.div
                         initial={{ scale: 0 }}
