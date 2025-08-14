@@ -30,6 +30,17 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
   const [isComplete, setIsComplete] = useState(false);
   const [recommendations, setRecommendations] = useState<any>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1440);
+
+  // Track screen size for responsive layout
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth >= 1440);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const currentNode = enhancedDecisionTree[currentNodeId];
 
@@ -186,6 +197,22 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
     backgroundPosition: 'center',
   } : {};
 
+  // Get appropriate container width based on content and screen size
+  const getContainerWidth = () => {
+    // For 2-3 options, use a narrower container to avoid unnecessary width
+    if (currentNode && currentNode.options.length <= 3) {
+      return isLargeScreen ? 'max-w-3xl' : 'max-w-2xl';
+    }
+    
+    // For 4 options, use a medium width container
+    if (currentNode && currentNode.options.length === 4) {
+      return isLargeScreen ? 'max-w-4xl' : 'max-w-3xl';
+    }
+    
+    // For 5+ options or results screen, use a wider container
+    return isLargeScreen ? 'max-w-5xl' : 'max-w-4xl';
+  };
+
   return (
     <div 
       className="h-full flex flex-col transition-all duration-1000 ease-in-out"
@@ -226,7 +253,8 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
       {/* Main Content - Scrollable with flex-grow */}
       <main className="flex-grow overflow-y-auto">
         <div className="p-3 sm:p-4 h-full">
-          <div className="w-full max-w-full mx-auto h-full flex flex-col">
+          {/* Content-aware container width */}
+          <div className={`w-full ${getContainerWidth()} mx-auto h-full flex flex-col`}>
             
             {/* Conversation History - Limited height, scrollable */}
             {conversationHistory.length > 0 && (
@@ -268,9 +296,9 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
                   animate={{ opacity: isTransitioning ? 0 : 1, y: isTransitioning ? 10 : 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.4 }}
-                  className="flex-grow flex flex-col w-full"
+                  className="flex-grow flex flex-col"
                 >
-                  <Card className="p-3 bg-white/90 backdrop-blur-sm overflow-y-auto flex-grow w-full">
+                  <Card className="p-3 bg-white/90 backdrop-blur-sm overflow-y-auto flex-grow">
                     <ImageChoiceQuestion
                       question={currentNode.question}
                       options={currentNode.options}
@@ -301,9 +329,9 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
-                  className="flex-grow overflow-y-auto w-full"
+                  className="flex-grow overflow-y-auto"
                 >
-                  <Card className="p-3 h-full overflow-y-auto w-full">
+                  <Card className="p-3 h-full overflow-y-auto">
                     <div className="text-center mb-4">
                       <motion.div
                         initial={{ scale: 0 }}
