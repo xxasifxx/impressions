@@ -43,16 +43,18 @@ const EnhancedConsultationModal: React.FC<EnhancedConsultationModalProps> = ({
   
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="p-0 overflow-hidden w-[95vw] max-w-4xl h-[90vh] max-h-[800px] rounded-lg">
-        <AestheticProvider 
-          consultationProgress={consultationProgress}
-          currentServiceCategory={currentDomain}
-        >
-          <EnhancedConsultationFlow 
-            onProgressChange={handleProgressChange}
-            onComplete={handleComplete}
-          />
-        </AestheticProvider>
+      <DialogContent className="p-0 w-[calc(100vw-32px)] sm:w-[calc(100vw-64px)] md:w-[calc(100vw-128px)] max-w-3xl h-[calc(100vh-64px)] max-h-[800px] rounded-lg overflow-hidden">
+        <div className="w-full h-full overflow-hidden">
+          <AestheticProvider 
+            consultationProgress={consultationProgress}
+            currentServiceCategory={currentDomain}
+          >
+            <EnhancedConsultationFlow 
+              onProgressChange={handleProgressChange}
+              onComplete={handleComplete}
+            />
+          </AestheticProvider>
+        </div>
       </DialogContent>
     </Dialog>
   );
