@@ -80,6 +80,16 @@ const ImageChoiceQuestion: React.FC<ImageChoiceQuestionProps> = ({
     
     return {};
   };
+
+  // Get image aspect ratio class based on number of options
+  const getImageAspectRatioClass = () => {
+    // For 2-3 options, use 2:1 aspect ratio
+    if (options.length <= 3) {
+      return 'aspect-[2/1]';
+    }
+    // For 4+ options, use 4:3 aspect ratio
+    return 'aspect-[4/3]';
+  };
   
   return (
     <div className="image-choice-question h-full flex flex-col">
@@ -105,7 +115,7 @@ const ImageChoiceQuestion: React.FC<ImageChoiceQuestionProps> = ({
                 <div className="flex h-full">
                   {/* Image thumbnail */}
                   {option.imageUrl && (
-                    <div className="relative aspect-square h-full overflow-hidden flex-shrink-0">
+                    <div className="relative aspect-[2/1] h-full overflow-hidden flex-shrink-0">
                       <img 
                         src={option.imageUrl} 
                         alt={option.label}
@@ -148,7 +158,7 @@ const ImageChoiceQuestion: React.FC<ImageChoiceQuestionProps> = ({
                 <div className="flex flex-col h-full">
                   {/* Image */}
                   {option.imageUrl && (
-                    <div className="relative aspect-[4/3] overflow-hidden">
+                    <div className={`relative ${getImageAspectRatioClass()} overflow-hidden`}>
                       <img 
                         src={option.imageUrl} 
                         alt={option.label}
