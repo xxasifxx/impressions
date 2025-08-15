@@ -1,195 +1,77 @@
-
 import React from 'react';
-import { Clock, Star, Users, Award, Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { UnifiedService } from '@/data/unifiedServicesData';
-import { useDomainTheme } from '@/contexts/DomainThemeContext';
-import { useServiceCart } from '@/contexts/ServiceCartContext';
-import AppointmentBookingModal from './AppointmentBookingModal';
+import { Clock, DollarSign, ShoppingCart } from 'lucide-react';
+import { useAestheticContext } from '@/components/ConsultationModal/AestheticProvider';
 
 interface ServiceCardProps {
-  service: UnifiedService;
-  onDetailsClick: (service: UnifiedService) => void;
+  service: {
+    id: string;
+    name: string;
+    description: string;
+    price: string;
+    duration: string;
+  };
+  isPrimary?: boolean;
+  onAddToCart: () => void;
 }
 
-const ServiceCard = ({ service, onDetailsClick }: ServiceCardProps) => {
-  const { currentTheme } = useDomainTheme();
-  const { addToCart } = useServiceCart();
-
-  const difficultyColors = {
-    Easy: 'bg-green-100 text-green-700 border-green-200',
-    Moderate: 'bg-yellow-100 text-yellow-700 border-yellow-200',
-    Advanced: 'bg-red-100 text-red-700 border-red-200'
+const ServiceCard: React.FC<ServiceCardProps> = ({ 
+  service, 
+  isPrimary = false,
+  onAddToCart
+}) => {
+  const aesthetic = useAestheticContext();
+  
+  // Get animation class based on emotional state
+  const getAnimationClass = () => {
+    const state = aesthetic.currentState.emotionalState;
+    if (state === 'celebratory') return 'animate-pulse';
+    if (state === 'confident') return 'hover:scale-105 transition-transform';
+    return '';
   };
-
-  // Get domain badge color
-  const getDomainColor = (domain: string) => {
-    switch (domain) {
-      case 'hair-salon': return 'bg-red-100 text-red-700 border-red-200';
-      case 'makeup-studio': return 'bg-pink-100 text-pink-700 border-pink-200';
-      case 'med-spa': return 'bg-emerald-100 text-emerald-700 border-emerald-200';
-      default: return 'bg-gray-100 text-gray-700 border-gray-200';
-    }
-  };
-
+  
   return (
-    <div className="group bg-white/90 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-      {/* Service Image */}
-      <div className="relative h-48 overflow-hidden">
-        <img 
-          src={service.imageUrl} 
-          alt={service.name}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-        />
-        
-        {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-2">
-          {service.featured && (
-            <Badge 
-              className="bg-yellow-500 text-white border-0"
-            >
-              <Award className="w-3 h-3 mr-1" />
-              Featured
-            </Badge>
-          )}
-          
-          {/* Domain Badge */}
-          <Badge className={getDomainColor(service.domain)}>
-            {service.domain.replace('-', ' ')}
-          </Badge>
-        </div>
-
-        {service.difficulty && (
-          <Badge 
-            className={`absolute top-3 right-3 ${difficultyColors[service.difficulty]}`}
-          >
-            {service.difficulty}
-          </Badge>
-        )}
-      </div>
-      
+    <div 
+      className={`bg-white rounded-xl shadow-lg border-2 transition-all duration-300 hover:shadow-xl ${
+        isPrimary ? 'border-red-200 bg-gradient-to-br from-red-50 to-white' : 'border-gray-200 hover:border-gray-300'
+      } ${getAnimationClass()}`}
+    >
       <div className="p-6">
-        {/* Header */}
-        <div className="flex justify-between items-start mb-3">
-          <h3 
-            className="text-xl font-medium group-hover:scale-105 transition-transform cursor-pointer"
-            style={{ 
-              color: currentTheme.colors.primary,
-              fontFamily: currentTheme.fonts.heading 
-            }}
-            onClick={() => onDetailsClick(service)}
-          >
-            {service.name}
-          </h3>
-          <div className="text-right">
-            <div 
-              className="text-lg font-bold"
-              style={{ color: currentTheme.colors.primary }}
-            >
-              {service.price}
-            </div>
-            <div className="text-xs text-gray-500">{service.duration}</div>
-          </div>
-        </div>
-
-        {/* Service Info */}
-        <div className="flex items-center gap-4 mb-3 text-sm text-gray-500">
+        <h3 className={`text-xl font-semibold mb-2 ${isPrimary ? 'text-red-800' : 'text-gray-800'}`}>
+          {service.name}
+        </h3>
+        
+        <p className="text-gray-600 text-sm mb-3">{service.description}</p>
+        
+        <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
           <div className="flex items-center gap-1">
-            <Clock className="w-3 h-3" />
+            <Clock className="w-4 h-4" />
             <span>{service.duration}</span>
           </div>
-          {service.details?.specialist && (
-            <div className="flex items-center gap-1">
-              <Users className="w-3 h-3" />
-              <span className="truncate">{service.details.specialist}</span>
-            </div>
-          )}
-        </div>
-
-        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-          {service.description}
-        </p>
-
-        {/* Client Story */}
-        {service.clientStory && (
-          <div 
-            className="rounded-lg p-3 mb-4 border"
-            style={{ 
-              backgroundColor: currentTheme.colors.background,
-              borderColor: currentTheme.colors.primary + '20'
-            }}
-          >
-            <div className="flex items-center gap-1 mb-2">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-3 h-3 ${
-                    i < service.clientStory!.rating 
-                      ? 'text-yellow-400 fill-current' 
-                      : 'text-gray-300'
-                  }`}
-                />
-              ))}
-            </div>
-            <p className="text-sm text-gray-600 italic mb-1">
-              "{service.clientStory.quote}"
-            </p>
-            <p className="text-xs text-gray-500">— {service.clientStory.name}</p>
+          <div className="flex items-center gap-1">
+            <DollarSign className="w-4 h-4" />
+            <span className="font-medium text-gray-700">{service.price}</span>
           </div>
-        )}
-
-        {/* CTAs */}
-        <div className="space-y-3">
-          {/* Quick Add to Cart */}
-          <Button
-            onClick={() => addToCart(service)}
-            variant="outline"
-            className="w-full"
-            style={{ 
-              borderColor: currentTheme.colors.primary,
-              color: currentTheme.colors.primary
-            }}
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add to Cart - {service.price}
-          </Button>
-
-          {/* Book Single Service */}
-          <AppointmentBookingModal
-            trigger={
-              <Button 
-                className="w-full"
-                style={{ 
-                  backgroundColor: currentTheme.colors.primary,
-                  color: 'white'
-                }}
-              >
-                Book Now - {service.price}
-              </Button>
-            }
-            prefilledService={{
-              name: service.name,
-              price: service.price,
-              duration: service.duration
-            }}
-            sourcePage={`unified-services-${service.domain}`}
-          />
-          
-          <Button
-            variant="ghost"
-            className="w-full text-sm"
-            onClick={() => onDetailsClick(service)}
-            style={{ 
-              color: currentTheme.colors.primary
-            }}
-          >
-            View Details & Process
-          </Button>
         </div>
+        
+        <button
+          onClick={() => {
+            onAddToCart();
+            // Trigger celebratory state when adding to cart
+            aesthetic.triggerCelebratoryState('Added to cart');
+          }}
+          className={`w-full py-3 px-4 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center gap-2 ${
+            isPrimary 
+              ? 'bg-red-600 hover:bg-red-700 text-white' 
+              : 'border-2 border-red-200 text-red-700 hover:bg-red-50'
+          }`}
+        >
+          <ShoppingCart className="w-4 h-4" />
+          Add to Cart
+        </button>
       </div>
     </div>
   );
 };
 
 export default ServiceCard;
+

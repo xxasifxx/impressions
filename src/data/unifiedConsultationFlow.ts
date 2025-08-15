@@ -1,6 +1,8 @@
 // UNIFIED CONSULTATION FLOW - MOTIVATION-FIRST APPROACH
 // Starts with customer motivation, recommends across all domains
 
+import { EmotionalState, ConsultationMood } from '../types/AestheticTypes';
+
 export interface UnifiedDecisionNode {
   id: string;
   question: string;
@@ -15,12 +17,20 @@ export interface UnifiedDecisionOption {
   nextNodeId?: string;
   emoji?: string;
   domains?: string[]; // Which domains this might lead to
+  isLeaf?: boolean;
+  
+  // Aesthetic properties
+  aestheticState?: EmotionalState;
+  serviceCategory?: string;
+  mood?: ConsultationMood;
 }
 
 export interface UnifiedConsultationResult {
   customerMotivation: string;
   timeline?: string;
   budget?: string;
+  primaryServiceCategory?: string;
+  customerMood?: ConsultationMood;
   recommendedServices: {
     'hair-salon': string[];
     'makeup-studio': string[];
@@ -42,7 +52,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 8, 
         nextNodeId: 'event-type', 
         emoji: '✨',
-        domains: ['hair-salon', 'makeup-studio', 'med-spa']
+        domains: ['hair-salon', 'makeup-studio', 'med-spa'],
+        aestheticState: 'uncertain',
+        mood: 'exploratory'
       },
       { 
         id: 'regular-maintenance', 
@@ -50,7 +62,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 6, 
         nextNodeId: 'maintenance-areas', 
         emoji: '💅',
-        domains: ['hair-salon', 'makeup-studio', 'med-spa']
+        domains: ['hair-salon', 'makeup-studio', 'med-spa'],
+        aestheticState: 'confident',
+        mood: 'professional'
       },
       { 
         id: 'appearance-enhancement', 
@@ -58,7 +72,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 7, 
         nextNodeId: 'enhancement-goals', 
         emoji: '🌟',
-        domains: ['hair-salon', 'makeup-studio', 'med-spa']
+        domains: ['hair-salon', 'makeup-studio', 'med-spa'],
+        aestheticState: 'exploring',
+        mood: 'transformative'
       },
       { 
         id: 'skin-concerns', 
@@ -66,7 +82,10 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 7, 
         nextNodeId: 'skin-issues', 
         emoji: '✨',
-        domains: ['med-spa']
+        domains: ['med-spa'],
+        aestheticState: 'uncertain',
+        mood: 'rejuvenating',
+        serviceCategory: 'med-spa'
       }
     ]
   },
@@ -81,7 +100,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 10, 
         nextNodeId: 'event-timeline', 
         emoji: '💍',
-        domains: ['hair-salon', 'makeup-studio', 'med-spa']
+        domains: ['hair-salon', 'makeup-studio', 'med-spa'],
+        aestheticState: 'exploring',
+        mood: 'glamorous'
       },
       { 
         id: 'professional', 
@@ -89,7 +110,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 8, 
         nextNodeId: 'event-timeline', 
         emoji: '💼',
-        domains: ['hair-salon', 'makeup-studio']
+        domains: ['hair-salon', 'makeup-studio'],
+        aestheticState: 'confident',
+        mood: 'professional'
       },
       { 
         id: 'date-night', 
@@ -97,7 +120,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 7, 
         nextNodeId: 'event-timeline', 
         emoji: '💕',
-        domains: ['hair-salon', 'makeup-studio']
+        domains: ['hair-salon', 'makeup-studio'],
+        aestheticState: 'engaged',
+        mood: 'glamorous'
       },
       { 
         id: 'party-celebration', 
@@ -105,7 +130,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 6, 
         nextNodeId: 'event-timeline', 
         emoji: '🎉',
-        domains: ['hair-salon', 'makeup-studio']
+        domains: ['hair-salon', 'makeup-studio'],
+        aestheticState: 'celebratory',
+        mood: 'glamorous'
       }
     ]
   },
@@ -114,10 +141,42 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
     id: 'event-timeline',
     question: 'When is your event?',
     options: [
-      { id: 'this-week', label: 'This week', weight: 9, nextNodeId: 'service-preferences', emoji: '⚡' },
-      { id: 'next-week', label: 'Next week', weight: 8, nextNodeId: 'service-preferences', emoji: '📅' },
-      { id: 'this-month', label: 'This month', weight: 7, nextNodeId: 'service-preferences', emoji: '🗓️' },
-      { id: 'planning-ahead', label: 'Planning ahead (2+ months)', weight: 6, nextNodeId: 'service-preferences', emoji: '🎯' }
+      { 
+        id: 'this-week', 
+        label: 'This week', 
+        weight: 9, 
+        nextNodeId: 'service-preferences', 
+        emoji: '⚡',
+        aestheticState: 'engaged',
+        mood: 'urgent'
+      },
+      { 
+        id: 'next-week', 
+        label: 'Next week', 
+        weight: 8, 
+        nextNodeId: 'service-preferences', 
+        emoji: '📅',
+        aestheticState: 'engaged',
+        mood: 'transformative'
+      },
+      { 
+        id: 'this-month', 
+        label: 'This month', 
+        weight: 7, 
+        nextNodeId: 'service-preferences', 
+        emoji: '🗓️',
+        aestheticState: 'exploring',
+        mood: 'transformative'
+      },
+      { 
+        id: 'planning-ahead', 
+        label: 'Planning ahead (2+ months)', 
+        weight: 6, 
+        nextNodeId: 'service-preferences', 
+        emoji: '🎯',
+        aestheticState: 'confident',
+        mood: 'professional'
+      }
     ]
   },
 
@@ -131,7 +190,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 10, 
         isLeaf: true, 
         emoji: '💫',
-        domains: ['hair-salon', 'makeup-studio', 'med-spa']
+        domains: ['hair-salon', 'makeup-studio', 'med-spa'],
+        aestheticState: 'celebratory',
+        serviceCategory: 'full-service'
       },
       { 
         id: 'hair-makeup', 
@@ -139,7 +200,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 9, 
         isLeaf: true, 
         emoji: '💄',
-        domains: ['hair-salon', 'makeup-studio']
+        domains: ['hair-salon', 'makeup-studio'],
+        aestheticState: 'confident',
+        serviceCategory: 'hair-salon'
       },
       { 
         id: 'hair-only', 
@@ -147,7 +210,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 7, 
         isLeaf: true, 
         emoji: '✂️',
-        domains: ['hair-salon']
+        domains: ['hair-salon'],
+        aestheticState: 'confident',
+        serviceCategory: 'hair-salon'
       },
       { 
         id: 'makeup-only', 
@@ -155,7 +220,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 7, 
         isLeaf: true, 
         emoji: '💋',
-        domains: ['makeup-studio']
+        domains: ['makeup-studio'],
+        aestheticState: 'confident',
+        serviceCategory: 'makeup-studio'
       }
     ]
   },
@@ -170,7 +237,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 7, 
         nextNodeId: 'maintenance-frequency', 
         emoji: '💇‍♀️',
-        domains: ['hair-salon']
+        domains: ['hair-salon'],
+        aestheticState: 'confident',
+        serviceCategory: 'hair-salon'
       },
       { 
         id: 'beauty-maintenance', 
@@ -178,7 +247,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 6, 
         nextNodeId: 'maintenance-frequency', 
         emoji: '👁️',
-        domains: ['makeup-studio']
+        domains: ['makeup-studio'],
+        aestheticState: 'confident',
+        serviceCategory: 'makeup-studio'
       },
       { 
         id: 'skin-maintenance', 
@@ -186,7 +257,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 7, 
         nextNodeId: 'maintenance-frequency', 
         emoji: '✨',
-        domains: ['med-spa']
+        domains: ['med-spa'],
+        aestheticState: 'confident',
+        serviceCategory: 'med-spa'
       },
       { 
         id: 'multiple-areas', 
@@ -194,7 +267,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 9, 
         nextNodeId: 'maintenance-frequency', 
         emoji: '🌟',
-        domains: ['hair-salon', 'makeup-studio', 'med-spa']
+        domains: ['hair-salon', 'makeup-studio', 'med-spa'],
+        aestheticState: 'engaged',
+        serviceCategory: 'full-service'
       }
     ]
   },
@@ -203,10 +278,42 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
     id: 'maintenance-frequency',
     question: 'How often do you like to come in?',
     options: [
-      { id: 'monthly', label: 'Monthly', weight: 9, isLeaf: true, emoji: '📆' },
-      { id: 'every-6-weeks', label: 'Every 6 weeks', weight: 8, isLeaf: true, emoji: '⏰' },
-      { id: 'quarterly', label: 'Every few months', weight: 6, isLeaf: true, emoji: '🔄' },
-      { id: 'as-needed', label: 'As needed', weight: 5, isLeaf: true, emoji: '🤷‍♀️' }
+      { 
+        id: 'monthly', 
+        label: 'Monthly', 
+        weight: 9, 
+        isLeaf: true, 
+        emoji: '📆',
+        aestheticState: 'celebratory',
+        mood: 'professional'
+      },
+      { 
+        id: 'every-6-weeks', 
+        label: 'Every 6 weeks', 
+        weight: 8, 
+        isLeaf: true, 
+        emoji: '⏰',
+        aestheticState: 'confident',
+        mood: 'professional'
+      },
+      { 
+        id: 'quarterly', 
+        label: 'Every few months', 
+        weight: 6, 
+        isLeaf: true, 
+        emoji: '🔄',
+        aestheticState: 'confident',
+        mood: 'natural'
+      },
+      { 
+        id: 'as-needed', 
+        label: 'As needed', 
+        weight: 5, 
+        isLeaf: true, 
+        emoji: '🤷‍♀️',
+        aestheticState: 'uncertain',
+        mood: 'exploratory'
+      }
     ]
   },
 
@@ -220,7 +327,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 9, 
         nextNodeId: 'enhancement-areas', 
         emoji: '💥',
-        domains: ['hair-salon', 'makeup-studio', 'med-spa']
+        domains: ['hair-salon', 'makeup-studio', 'med-spa'],
+        aestheticState: 'exploring',
+        mood: 'transformative'
       },
       { 
         id: 'subtle-improvement', 
@@ -228,7 +337,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 7, 
         nextNodeId: 'enhancement-areas', 
         emoji: '✨',
-        domains: ['hair-salon', 'makeup-studio', 'med-spa']
+        domains: ['hair-salon', 'makeup-studio', 'med-spa'],
+        aestheticState: 'confident',
+        mood: 'natural'
       },
       { 
         id: 'confidence-boost', 
@@ -236,7 +347,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 8, 
         nextNodeId: 'enhancement-areas', 
         emoji: '💪',
-        domains: ['hair-salon', 'makeup-studio', 'med-spa']
+        domains: ['hair-salon', 'makeup-studio', 'med-spa'],
+        aestheticState: 'engaged',
+        mood: 'transformative'
       },
       { 
         id: 'professional-look', 
@@ -244,7 +357,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 7, 
         nextNodeId: 'enhancement-areas', 
         emoji: '💼',
-        domains: ['hair-salon', 'makeup-studio']
+        domains: ['hair-salon', 'makeup-studio'],
+        aestheticState: 'confident',
+        mood: 'professional'
       }
     ]
   },
@@ -259,7 +374,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 8, 
         isLeaf: true, 
         emoji: '💇‍♀️',
-        domains: ['hair-salon']
+        domains: ['hair-salon'],
+        aestheticState: 'confident',
+        serviceCategory: 'hair-salon'
       },
       { 
         id: 'beauty-focus', 
@@ -267,7 +384,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 7, 
         isLeaf: true, 
         emoji: '👁️',
-        domains: ['makeup-studio']
+        domains: ['makeup-studio'],
+        aestheticState: 'confident',
+        serviceCategory: 'makeup-studio'
       },
       { 
         id: 'skin-focus', 
@@ -275,7 +394,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 8, 
         isLeaf: true, 
         emoji: '✨',
-        domains: ['med-spa']
+        domains: ['med-spa'],
+        aestheticState: 'confident',
+        serviceCategory: 'med-spa'
       },
       { 
         id: 'overall-enhancement', 
@@ -283,7 +404,9 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 10, 
         isLeaf: true, 
         emoji: '🌟',
-        domains: ['hair-salon', 'makeup-studio', 'med-spa']
+        domains: ['hair-salon', 'makeup-studio', 'med-spa'],
+        aestheticState: 'celebratory',
+        serviceCategory: 'full-service'
       }
     ]
   },
@@ -298,7 +421,10 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 9, 
         nextNodeId: 'skin-timeline', 
         emoji: '⏰',
-        domains: ['med-spa']
+        domains: ['med-spa'],
+        aestheticState: 'exploring',
+        serviceCategory: 'med-spa',
+        mood: 'rejuvenating'
       },
       { 
         id: 'acne-breakouts', 
@@ -306,7 +432,10 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 8, 
         nextNodeId: 'skin-timeline', 
         emoji: '😤',
-        domains: ['med-spa']
+        domains: ['med-spa'],
+        aestheticState: 'uncertain',
+        serviceCategory: 'med-spa',
+        mood: 'rejuvenating'
       },
       { 
         id: 'skin-texture', 
@@ -314,7 +443,10 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 7, 
         nextNodeId: 'skin-timeline', 
         emoji: '🤚',
-        domains: ['med-spa']
+        domains: ['med-spa'],
+        aestheticState: 'exploring',
+        serviceCategory: 'med-spa',
+        mood: 'rejuvenating'
       },
       { 
         id: 'dull-skin', 
@@ -322,7 +454,10 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
         weight: 6, 
         nextNodeId: 'skin-timeline', 
         emoji: '😴',
-        domains: ['med-spa']
+        domains: ['med-spa'],
+        aestheticState: 'uncertain',
+        serviceCategory: 'med-spa',
+        mood: 'rejuvenating'
       }
     ]
   },
@@ -331,10 +466,42 @@ export const unifiedDecisionTree: Record<string, UnifiedDecisionNode> = {
     id: 'skin-timeline',
     question: 'When do you want to see results?',
     options: [
-      { id: 'immediate-results', label: 'Right away', weight: 9, isLeaf: true, emoji: '⚡' },
-      { id: 'this-month', label: 'Within a month', weight: 8, isLeaf: true, emoji: '📅' },
-      { id: 'gradual-improvement', label: 'Gradual improvement', weight: 7, isLeaf: true, emoji: '📈' },
-      { id: 'long-term-plan', label: 'Long-term plan', weight: 6, isLeaf: true, emoji: '🎯' }
+      { 
+        id: 'immediate-results', 
+        label: 'Right away', 
+        weight: 9, 
+        isLeaf: true, 
+        emoji: '⚡',
+        aestheticState: 'engaged',
+        mood: 'urgent'
+      },
+      { 
+        id: 'this-month', 
+        label: 'Within a month', 
+        weight: 8, 
+        isLeaf: true, 
+        emoji: '📅',
+        aestheticState: 'confident',
+        mood: 'transformative'
+      },
+      { 
+        id: 'gradual-improvement', 
+        label: 'Gradual improvement', 
+        weight: 7, 
+        isLeaf: true, 
+        emoji: '📈',
+        aestheticState: 'confident',
+        mood: 'natural'
+      },
+      { 
+        id: 'long-term-plan', 
+        label: 'Long-term plan', 
+        weight: 6, 
+        isLeaf: true, 
+        emoji: '🎯',
+        aestheticState: 'confident',
+        mood: 'professional'
+      }
     ]
   }
 };
@@ -357,6 +524,24 @@ export const getUnifiedServiceRecommendations = (
   // Get primary motivation from first response
   const firstResponse = Object.values(responses)[0];
   const primaryMotivation = firstResponse?.optionId || 'special-event';
+
+  // Determine primary service category and mood from responses
+  let primaryServiceCategory: string | undefined;
+  let customerMood: ConsultationMood | undefined;
+
+  // Find the last option selected to determine final aesthetic state
+  const nodeIds = Object.keys(responses);
+  if (nodeIds.length > 0) {
+    const lastNodeId = nodeIds[nodeIds.length - 1];
+    const lastOption = unifiedDecisionTree[lastNodeId]?.options.find(
+      option => option.id === responses[lastNodeId].optionId
+    );
+    
+    if (lastOption) {
+      primaryServiceCategory = lastOption.serviceCategory;
+      customerMood = lastOption.mood;
+    }
+  }
 
   // Service mapping based on unified motivations
   const unifiedServiceMap: Record<string, Record<string, string[]>> = {
@@ -443,7 +628,9 @@ export const getUnifiedServiceRecommendations = (
     customerMotivation: primaryMotivation,
     recommendedServices: recommendations,
     crossDomainPackages,
-    totalWeight
+    totalWeight,
+    primaryServiceCategory,
+    customerMood
   };
 };
 

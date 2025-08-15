@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -10,9 +10,11 @@ import {
   UnifiedDecisionOption,
   getUnifiedServiceRecommendations 
 } from '@/data/unifiedConsultationFlow';
+import { useAestheticContext } from '@/components/ConsultationModal/AestheticProvider';
 
 const UnifiedConsultationFlow: React.FC = () => {
   const navigate = useNavigate();
+  const aesthetic = useAestheticContext();
   
   const [currentNodeId, setCurrentNodeId] = useState('root');
   const [responses, setResponses] = useState<Record<string, { optionId: string; weight: number; domains?: string[] }>>({});
@@ -26,6 +28,26 @@ const UnifiedConsultationFlow: React.FC = () => {
   const totalNodes = Object.keys(unifiedDecisionTree).length;
   const completedNodes = Object.keys(responses).length;
   const progressPercentage = Math.min((completedNodes / Math.max(totalNodes - 2, 1)) * 100, 100);
+
+  // Set initial aesthetic state
+  useEffect(() => {
+    aesthetic.evolveToState('uncertain', 'Starting consultation');
+  }, []);
+
+  // Update aesthetic state based on progress
+  useEffect(() => {
+    const progress = completedNodes / Math.max(totalNodes - 2, 1);
+    
+    if (progress < 0.25) {
+      aesthetic.evolveToState('uncertain', 'Starting consultation');
+    } else if (progress < 0.5) {
+      aesthetic.evolveToState('exploring', 'Exploring options');
+    } else if (progress < 0.75) {
+      aesthetic.evolveToState('engaged', 'Actively participating');
+    } else if (progress < 1) {
+      aesthetic.evolveToState('confident', 'Nearing completion');
+    }
+  }, [completedNodes, aesthetic]);
 
   const handleOptionSelect = (option: UnifiedDecisionOption) => {
     // Record response with domain information
@@ -45,12 +67,38 @@ const UnifiedConsultationFlow: React.FC = () => {
       answer: option.label
     }]);
 
+    // Update aesthetic based on the selected option's path
+    if (option.aestheticState) {
+      aesthetic.evolveToState(option.aestheticState, `Selected ${option.label}`);
+    }
+    
+    // If option has a specific service category, apply it
+    if (option.serviceCategory) {
+      aesthetic.applyToElement(
+        document.documentElement,
+        option.serviceCategory
+      );
+    }
+    
+    // If option has a specific mood, apply it
+    if (option.mood) {
+      aesthetic.applyToElement(
+        document.documentElement,
+        undefined,
+        option.mood
+      );
+    }
+
     // Navigate to next node or complete
     if (option.isLeaf || !option.nextNodeId) {
       // Consultation complete
       const result = getUnifiedServiceRecommendations(newResponses);
-      setRecommendations(result);
-      setIsComplete(true);
+      
+      // Trigger celebratory state before navigation
+      aesthetic.triggerCelebratoryState('Completed consultation');
+      
+      // Navigate to results page
+      navigate('/consultation/results', { state: { results: result } });
     } else {
       setCurrentNodeId(option.nextNodeId);
     }
@@ -70,28 +118,21 @@ const UnifiedConsultationFlow: React.FC = () => {
     // Navigate back (simplified - would need proper navigation stack)
     if (newHistory.length === 0) {
       setCurrentNodeId('root');
+      aesthetic.evolveToState('uncertain', 'Starting over');
     } else {
-      setCurrentNodeId('root'); // Simplified back navigation
+      // Find the previous node ID
+      const prevNodeId = Object.keys(newResponses).pop() || 'root';
+      setCurrentNodeId(prevNodeId);
+      
+      // Update aesthetic state based on the previous node
+      const prevOption = Object.values(unifiedDecisionTree)
+        .flatMap(node => node.options)
+        .find(option => option.nextNodeId === prevNodeId);
+        
+      if (prevOption?.aestheticState) {
+        aesthetic.evolveToState(prevOption.aestheticState, 'Going back');
+      }
     }
-  };
-
-  const handleViewServices = () => {
-    // Navigate to unified services page with cross-domain recommendations
-    const allServices = [
-      ...recommendations.recommendedServices['hair-salon'],
-      ...recommendations.recommendedServices['makeup-studio'],
-      ...recommendations.recommendedServices['med-spa']
-    ];
-    const serviceParams = allServices.join(',');
-    navigate(`/services?recommended=${serviceParams}&motivation=${recommendations.customerMotivation}`);
-  };
-
-  const handleStartOver = () => {
-    setCurrentNodeId('root');
-    setResponses({});
-    setConversationHistory([]);
-    setIsComplete(false);
-    setRecommendations(null);
   };
 
   if (!currentNode && !isComplete) {
@@ -161,172 +202,55 @@ const UnifiedConsultationFlow: React.FC = () => {
             </div>
           )}
 
-          {/* Current Question or Results */}
-          {!isComplete ? (
-            <Card className="p-8">
-              <div className="mb-8">
-                <h2 className="text-2xl font-light mb-4 text-gray-900">
-                  {currentNode.question}
-                </h2>
-              </div>
+          {/* Current Question */}
+          <Card className="p-8">
+            <div className="mb-8">
+              <h2 className="text-2xl font-light mb-4 text-gray-900">
+                {currentNode.question}
+              </h2>
+            </div>
 
-              {/* Options */}
-              <div className="space-y-3 mb-8">
-                {currentNode.options.map((option) => (
-                  <Button
-                    key={option.id}
-                    onClick={() => handleOptionSelect(option)}
-                    variant="outline"
-                    className="w-full p-4 h-auto text-left justify-start hover:border-red-300 hover:bg-red-50"
-                  >
-                    <div className="flex items-center gap-3 w-full">
-                      {option.emoji && (
-                        <span className="text-xl">{option.emoji}</span>
-                      )}
-                      <div className="flex-1">
-                        <span className="font-medium">{option.label}</span>
-                        {option.domains && option.domains.length > 1 && (
-                          <div className="text-xs text-gray-500 mt-1">
-                            Cross-domain services available
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </Button>
-                ))}
-              </div>
-
-              {/* Back Button */}
-              {conversationHistory.length > 0 && (
-                <div className="flex justify-start">
-                  <Button
-                    onClick={handleGoBack}
-                    variant="ghost"
-                    size="sm"
-                    className="text-gray-600 hover:text-gray-800"
-                  >
-                    <ArrowLeft className="w-4 h-4 mr-2" />
-                    Go Back
-                  </Button>
-                </div>
-              )}
-            </Card>
-          ) : (
-            /* Results */
-            <Card className="p-8">
-              <div className="text-center mb-8">
-                <Sparkles className="w-16 h-16 text-red-600 mx-auto mb-4" />
-                <h2 className="text-3xl font-light mb-4 text-gray-900">
-                  Perfect! We have personalized recommendations for you.
-                </h2>
-                <p className="text-lg text-gray-600">
-                  Based on your needs, here are services across our beauty domains that would be perfect for you.
-                </p>
-              </div>
-
-              {/* Cross-Domain Recommendations */}
-              <div className="space-y-6 mb-8">
-                
-                {/* Hair Salon Services */}
-                {recommendations.recommendedServices['hair-salon'].length > 0 && (
-                  <div className="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-6">
-                    <h3 className="text-lg font-semibold mb-3 text-gray-900 flex items-center gap-2">
-                      <span className="text-xl">💇‍♀️</span>
-                      Hair Salon Services
-                    </h3>
-                    <div className="space-y-2">
-                      {recommendations.recommendedServices['hair-salon'].map((serviceId: string, index: number) => (
-                        <div key={serviceId} className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-600" />
-                          <span className="text-gray-700">
-                            {serviceId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Makeup Studio Services */}
-                {recommendations.recommendedServices['makeup-studio'].length > 0 && (
-                  <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg p-6">
-                    <h3 className="text-lg font-semibold mb-3 text-gray-900 flex items-center gap-2">
-                      <span className="text-xl">💄</span>
-                      Makeup Studio Services
-                    </h3>
-                    <div className="space-y-2">
-                      {recommendations.recommendedServices['makeup-studio'].map((serviceId: string, index: number) => (
-                        <div key={serviceId} className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-600" />
-                          <span className="text-gray-700">
-                            {serviceId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Med Spa Services */}
-                {recommendations.recommendedServices['med-spa'].length > 0 && (
-                  <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
-                    <h3 className="text-lg font-semibold mb-3 text-gray-900 flex items-center gap-2">
-                      <span className="text-xl">✨</span>
-                      Med Spa Services
-                    </h3>
-                    <div className="space-y-2">
-                      {recommendations.recommendedServices['med-spa'].map((serviceId: string, index: number) => (
-                        <div key={serviceId} className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-600" />
-                          <span className="text-gray-700">
-                            {serviceId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Cross-Domain Packages */}
-                {recommendations.crossDomainPackages.length > 0 && (
-                  <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-6 border-2 border-yellow-200">
-                    <h3 className="text-lg font-semibold mb-3 text-gray-900 flex items-center gap-2">
-                      <span className="text-xl">🎁</span>
-                      Special Package Deals
-                    </h3>
-                    <div className="space-y-2">
-                      {recommendations.crossDomainPackages.map((packageId: string, index: number) => (
-                        <div key={packageId} className="flex items-center gap-2">
-                          <Sparkles className="w-4 h-4 text-yellow-600" />
-                          <span className="text-gray-700 font-medium">
-                            {packageId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} Package
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
+            {/* Options */}
+            <div className="space-y-3 mb-8">
+              {currentNode.options.map((option) => (
                 <Button
-                  onClick={handleViewServices}
-                  className="flex-1 bg-red-600 hover:bg-red-700 text-white"
-                >
-                  <ShoppingCart className="w-4 h-4 mr-2" />
-                  View Services & Book
-                </Button>
-                <Button
-                  onClick={handleStartOver}
+                  key={option.id}
+                  onClick={() => handleOptionSelect(option)}
                   variant="outline"
-                  className="flex-1"
+                  className="w-full p-4 h-auto text-left justify-start hover:border-red-300 hover:bg-red-50"
                 >
-                  Start Over
+                  <div className="flex items-center gap-3 w-full">
+                    {option.emoji && (
+                      <span className="text-xl">{option.emoji}</span>
+                    )}
+                    <div className="flex-1">
+                      <span className="font-medium">{option.label}</span>
+                      {option.domains && option.domains.length > 1 && (
+                        <div className="text-xs text-gray-500 mt-1">
+                          Cross-domain services available
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </Button>
+              ))}
+            </div>
+
+            {/* Back Button */}
+            {conversationHistory.length > 0 && (
+              <div className="flex justify-start">
+                <Button
+                  onClick={handleGoBack}
+                  variant="ghost"
+                  size="sm"
+                  className="text-gray-600 hover:text-gray-800"
+                >
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Go Back
                 </Button>
               </div>
-            </Card>
-          )}
+            )}
+          </Card>
         </div>
       </main>
     </div>

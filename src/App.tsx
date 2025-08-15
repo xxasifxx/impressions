@@ -8,14 +8,10 @@ import Services from '@/pages/Services';
 import Contact from '@/pages/Contact';
 import About from '@/pages/About';
 import NotFound from '@/pages/NotFound';
-import HairSalonLanding from '@/pages/HairSalonLanding';
-import MakeupStudioLanding from '@/pages/MakeupStudioLanding';
-import MedSpaLanding from '@/pages/MedSpaLanding';
-import ConsultationFlow from '@/components/ConsultationFlow';
-import ConsultationResults from '@/pages/ConsultationResults';
-import RealisticConsultationFlow from '@/components/RealisticConsultationFlow';
 import UnifiedConsultationFlow from '@/components/UnifiedConsultationFlow';
+import ConsultationResults from '@/pages/ConsultationResults';
 import { ServiceCartProvider } from '@/contexts/ServiceCartContext';
+import { AestheticProvider } from '@/components/ConsultationModal/AestheticProvider';
 
 const queryClient = new QueryClient();
 
@@ -23,33 +19,29 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ServiceCartProvider>
-        <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-white">
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/hair-salon" element={<HairSalonLanding />} />
-              <Route path="/makeup-studio" element={<MakeupStudioLanding />} />
-              <Route path="/med-spa" element={<MedSpaLanding />} />
-              {/* Legacy domain-specific consultation routes */}
-              <Route path="/consultation/:domain/:journey" element={<ConsultationFlow />} />
-              <Route path="/consultation/:domain/:journey/results" element={<ConsultationResults />} />
-              <Route path="/hair-salon/consultation" element={<RealisticConsultationFlow domain="hair-salon" />} />
-              <Route path="/makeup-studio/consultation" element={<RealisticConsultationFlow domain="makeup-studio" />} />
-              <Route path="/med-spa/consultation" element={<RealisticConsultationFlow domain="med-spa" />} />
-              
-              {/* NEW: Unified motivation-first consultation */}
-              <Route path="/consultation" element={<UnifiedConsultationFlow />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <Toaster />
-          </BrowserRouter>
-        </div>
+        <AestheticProvider>
+          <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-white">
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/about" element={<About />} />
+                
+                {/* Unified consultation system */}
+                <Route path="/consultation" element={<UnifiedConsultationFlow />} />
+                <Route path="/consultation/results" element={<ConsultationResults />} />
+                
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              <Toaster />
+            </BrowserRouter>
+          </div>
+        </AestheticProvider>
       </ServiceCartProvider>
     </QueryClientProvider>
   );
 }
 
 export default App;
+
