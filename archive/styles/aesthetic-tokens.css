@@ -1,0 +1,357 @@
+/**
+ * Aesthetic Evolution CSS Custom Properties
+ * 
+ * Dynamic CSS variables that update based on emotional state evolution.
+ * These tokens are controlled by the AestheticEvolutionEngine and provide
+ * smooth transitions between different aesthetic states.
+ */
+
+:root {
+  /* === AESTHETIC EVOLUTION TOKENS === */
+  
+  /* Colors - Updated dynamically based on emotional state */
+  --aesthetic-color-primary: #D4C4B0;
+  --aesthetic-color-secondary: #F8F6F3;
+  --aesthetic-color-accent: #9CAF88;
+  --aesthetic-color-background: #FEFEFE;
+  --aesthetic-color-surface: #F8F6F3;
+  --aesthetic-color-text: #2C2C2C;
+  --aesthetic-color-text-secondary: #666666;
+  
+  /* Typography - Evolves both personality and technical properties */
+  --aesthetic-font-family-heading: 'Inter, system-ui, sans-serif';
+  --aesthetic-font-family-body: 'Inter, system-ui, sans-serif';
+  --aesthetic-font-weight-heading: 300;
+  --aesthetic-font-size-heading: 1.5rem;
+  --aesthetic-font-size-body: 0.95rem;
+  --aesthetic-letter-spacing: 0.02em;
+  --aesthetic-line-height: 1.6;
+  
+  /* Spacing - Expands with confidence */
+  --aesthetic-container-padding: 2rem;
+  --aesthetic-element-gap: 1.5rem;
+  --aesthetic-border-radius: 8px;
+  
+  /* Effects - Intensifies with engagement */
+  --aesthetic-shadow-intensity: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --aesthetic-blur-amount: 0px;
+  --aesthetic-gradient-intensity: 0.1;
+  
+  /* Animation - Responds to emotional energy */
+  --aesthetic-animation-duration: 0.3s;
+  --aesthetic-animation-easing: ease-out;
+  
+  /* Layout - Adapts to consultation flow */
+  --aesthetic-max-width: 480px;
+  --aesthetic-content-alignment: center;
+  --aesthetic-vertical-spacing: 1.6rem;
+  
+  /* === TRANSITION PROPERTIES === */
+  
+  /* Smooth transitions for all aesthetic properties */
+  --aesthetic-transition-duration: var(--aesthetic-animation-duration);
+  --aesthetic-transition-easing: var(--aesthetic-animation-easing);
+  
+  /* Respect user motion preferences */
+  --aesthetic-transition-enabled: 1;
+}
+
+/* Disable transitions for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --aesthetic-transition-enabled: 0;
+    --aesthetic-animation-duration: 0.1s;
+  }
+}
+
+/* === AESTHETIC STATE CLASSES === */
+
+/* Applied dynamically by AestheticEvolutionEngine */
+
+.aesthetic-state-uncertain {
+  --aesthetic-color-primary: #D4C4B0;
+  --aesthetic-color-secondary: #F8F6F3;
+  --aesthetic-color-accent: #9CAF88;
+  --aesthetic-color-background: #FEFEFE;
+  --aesthetic-color-surface: #F8F6F3;
+  --aesthetic-color-text: #2C2C2C;
+  --aesthetic-color-text-secondary: #666666;
+  
+  --aesthetic-font-family-heading: 'Inter, system-ui, sans-serif';
+  --aesthetic-font-family-body: 'Inter, system-ui, sans-serif';
+  --aesthetic-font-weight-heading: 300;
+  --aesthetic-font-size-heading: 1.5rem;
+  --aesthetic-font-size-body: 0.95rem;
+  --aesthetic-letter-spacing: 0.02em;
+  --aesthetic-line-height: 1.6;
+  
+  --aesthetic-container-padding: 2rem;
+  --aesthetic-element-gap: 1.5rem;
+  --aesthetic-border-radius: 8px;
+  
+  --aesthetic-shadow-intensity: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --aesthetic-blur-amount: 0px;
+  --aesthetic-gradient-intensity: 0.1;
+  
+  --aesthetic-animation-duration: 0.3s;
+  --aesthetic-animation-easing: ease-out;
+  
+  --aesthetic-max-width: 480px;
+  --aesthetic-vertical-spacing: 1.6rem;
+}
+
+.aesthetic-state-exploring {
+  --aesthetic-color-primary: #9CAF88;
+  --aesthetic-color-secondary: #98D8C8;
+  --aesthetic-color-accent: #FF6B6B;
+  --aesthetic-color-background: #FAFBFC;
+  --aesthetic-color-surface: #FFFFFF;
+  --aesthetic-color-text: #2C2C2C;
+  --aesthetic-color-text-secondary: #555555;
+  
+  --aesthetic-font-family-heading: 'Playfair Display, serif';
+  --aesthetic-font-family-body: 'Inter, system-ui, sans-serif';
+  --aesthetic-font-weight-heading: 400;
+  --aesthetic-font-size-heading: 1.75rem;
+  --aesthetic-font-size-body: 1rem;
+  --aesthetic-letter-spacing: 0.01em;
+  --aesthetic-line-height: 1.5;
+  
+  --aesthetic-container-padding: 2.5rem;
+  --aesthetic-element-gap: 2rem;
+  --aesthetic-border-radius: 12px;
+  
+  --aesthetic-shadow-intensity: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --aesthetic-blur-amount: 1px;
+  --aesthetic-gradient-intensity: 0.3;
+  
+  --aesthetic-animation-duration: 0.4s;
+  --aesthetic-animation-easing: ease-in-out;
+  
+  --aesthetic-max-width: 520px;
+  --aesthetic-vertical-spacing: 1.6rem;
+}
+
+.aesthetic-state-engaged {
+  --aesthetic-color-primary: #FF6B6B;
+  --aesthetic-color-secondary: #E8B4B8;
+  --aesthetic-color-accent: #D4AF37;
+  --aesthetic-color-background: #F9F7F4;
+  --aesthetic-color-surface: #FFFFFF;
+  --aesthetic-color-text: #2C2C2C;
+  --aesthetic-color-text-secondary: #444444;
+  
+  --aesthetic-font-family-heading: 'Dancing Script, cursive';
+  --aesthetic-font-family-body: 'Inter, system-ui, sans-serif';
+  --aesthetic-font-weight-heading: 500;
+  --aesthetic-font-size-heading: 2rem;
+  --aesthetic-font-size-body: 1.05rem;
+  --aesthetic-letter-spacing: 0em;
+  --aesthetic-line-height: 1.4;
+  
+  --aesthetic-container-padding: 3rem;
+  --aesthetic-element-gap: 2.5rem;
+  --aesthetic-border-radius: 16px;
+  
+  --aesthetic-shadow-intensity: 0 6px 24px rgba(0, 0, 0, 0.2);
+  --aesthetic-blur-amount: 2px;
+  --aesthetic-gradient-intensity: 0.5;
+  
+  --aesthetic-animation-duration: 0.5s;
+  --aesthetic-animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  --aesthetic-max-width: 560px;
+  --aesthetic-vertical-spacing: 2rem;
+}
+
+.aesthetic-state-confident {
+  --aesthetic-color-primary: #2C2C2C;
+  --aesthetic-color-secondary: #D4AF37;
+  --aesthetic-color-accent: #50C878;
+  --aesthetic-color-background: #F5F5F5;
+  --aesthetic-color-surface: #FFFFFF;
+  --aesthetic-color-text: #2C2C2C;
+  --aesthetic-color-text-secondary: #333333;
+  
+  --aesthetic-font-family-heading: 'Imperial Script, cursive';
+  --aesthetic-font-family-body: 'Playfair Display, serif';
+  --aesthetic-font-weight-heading: 600;
+  --aesthetic-font-size-heading: 2rem;
+  --aesthetic-font-size-body: 1.05rem;
+  --aesthetic-letter-spacing: -0.01em;
+  --aesthetic-line-height: 1.4;
+  
+  --aesthetic-container-padding: 3.5rem;
+  --aesthetic-element-gap: 3rem;
+  --aesthetic-border-radius: 20px;
+  
+  --aesthetic-shadow-intensity: 0 8px 32px rgba(0, 0, 0, 0.25);
+  --aesthetic-blur-amount: 3px;
+  --aesthetic-gradient-intensity: 0.7;
+  
+  --aesthetic-animation-duration: 0.6s;
+  --aesthetic-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  --aesthetic-max-width: 600px;
+  --aesthetic-vertical-spacing: 2rem;
+}
+
+.aesthetic-state-celebratory {
+  --aesthetic-color-primary: #800020;
+  --aesthetic-color-secondary: #D4AF37;
+  --aesthetic-color-accent: #E5E4E2;
+  --aesthetic-color-background: linear-gradient(135deg, #F8F6F3 0%, #F7E7CE 100%);
+  --aesthetic-color-surface: #FFFFFF;
+  --aesthetic-color-text: #2C2C2C;
+  --aesthetic-color-text-secondary: #2C2C2C;
+  
+  --aesthetic-font-family-heading: 'Fleur De Leah, cursive';
+  --aesthetic-font-family-body: 'Dancing Script, cursive';
+  --aesthetic-font-weight-heading: 400;
+  --aesthetic-font-size-heading: 2.5rem;
+  --aesthetic-font-size-body: 1.15rem;
+  --aesthetic-letter-spacing: 0.02em;
+  --aesthetic-line-height: 1.4;
+  
+  --aesthetic-container-padding: 4rem;
+  --aesthetic-element-gap: 3.5rem;
+  --aesthetic-border-radius: 24px;
+  
+  --aesthetic-shadow-intensity: 0 12px 48px rgba(0, 0, 0, 0.3);
+  --aesthetic-blur-amount: 4px;
+  --aesthetic-gradient-intensity: 1.0;
+  
+  --aesthetic-animation-duration: 0.8s;
+  --aesthetic-animation-easing: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  --aesthetic-max-width: 640px;
+  --aesthetic-vertical-spacing: 2rem;
+}
+
+/* === SERVICE-SPECIFIC MODIFICATIONS === */
+
+.aesthetic-service-hair {
+  --aesthetic-color-accent: #CD7F32; /* Bronze for transformation */
+}
+
+.aesthetic-service-makeup {
+  --aesthetic-color-accent: #FF6B6B; /* Coral for confidence */
+}
+
+.aesthetic-service-skincare {
+  --aesthetic-color-accent: #98D8C8; /* Mint for renewal */
+}
+
+.aesthetic-service-brows {
+  --aesthetic-color-accent: #D4C4B0; /* Taupe for polish */
+}
+
+.aesthetic-service-lashes {
+  --aesthetic-color-accent: #0F52BA; /* Sapphire for glamour */
+}
+
+/* === MOOD-SPECIFIC ADJUSTMENTS === */
+
+.aesthetic-mood-urgent {
+  --aesthetic-animation-duration: 0.2s;
+  --aesthetic-container-padding: 1.5rem;
+  --aesthetic-element-gap: 1rem;
+  --aesthetic-vertical-spacing: 1.2rem;
+}
+
+.aesthetic-mood-rejuvenating {
+  --aesthetic-color-primary: #9CAF88;
+  --aesthetic-color-accent: #98D8C8;
+  --aesthetic-shadow-intensity: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.aesthetic-mood-glamorous {
+  --aesthetic-color-accent: #D4AF37;
+  --aesthetic-color-secondary: #E5E4E2;
+  --aesthetic-shadow-intensity: 0 8px 32px rgba(0, 0, 0, 0.25);
+  --aesthetic-gradient-intensity: 0.8;
+}
+
+/* === TRANSITION CLASSES === */
+
+.aesthetic-transitioning {
+  transition: 
+    color var(--aesthetic-transition-duration) var(--aesthetic-transition-easing),
+    background-color var(--aesthetic-transition-duration) var(--aesthetic-transition-easing),
+    border-color var(--aesthetic-transition-duration) var(--aesthetic-transition-easing),
+    box-shadow var(--aesthetic-transition-duration) var(--aesthetic-transition-easing),
+    transform var(--aesthetic-transition-duration) var(--aesthetic-transition-easing),
+    opacity var(--aesthetic-transition-duration) var(--aesthetic-transition-easing);
+}
+
+.aesthetic-transitioning * {
+  transition: inherit;
+}
+
+/* Disable transitions when user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .aesthetic-transitioning,
+  .aesthetic-transitioning * {
+    transition: none !important;
+  }
+}
+
+/* === UTILITY CLASSES === */
+
+.aesthetic-primary-color {
+  color: var(--aesthetic-color-primary);
+}
+
+.aesthetic-secondary-color {
+  color: var(--aesthetic-color-secondary);
+}
+
+.aesthetic-accent-color {
+  color: var(--aesthetic-color-accent);
+}
+
+.aesthetic-primary-bg {
+  background-color: var(--aesthetic-color-primary);
+}
+
+.aesthetic-secondary-bg {
+  background-color: var(--aesthetic-color-secondary);
+}
+
+.aesthetic-accent-bg {
+  background-color: var(--aesthetic-color-accent);
+}
+
+.aesthetic-surface-bg {
+  background-color: var(--aesthetic-color-surface);
+}
+
+.aesthetic-heading {
+  font-weight: var(--aesthetic-font-weight-heading);
+  font-size: var(--aesthetic-font-size-heading);
+  letter-spacing: var(--aesthetic-letter-spacing);
+  line-height: var(--aesthetic-line-height);
+  color: var(--aesthetic-color-text);
+}
+
+.aesthetic-body {
+  font-size: var(--aesthetic-font-size-body);
+  line-height: var(--aesthetic-line-height);
+  color: var(--aesthetic-color-text);
+}
+
+.aesthetic-container {
+  max-width: var(--aesthetic-max-width);
+  padding: var(--aesthetic-container-padding);
+  border-radius: var(--aesthetic-border-radius);
+  background: var(--aesthetic-color-surface);
+  box-shadow: var(--aesthetic-shadow-intensity);
+}
+
+.aesthetic-element-gap {
+  gap: var(--aesthetic-element-gap);
+}
+
+.aesthetic-vertical-spacing > * + * {
+  margin-top: var(--aesthetic-vertical-spacing);
+}
