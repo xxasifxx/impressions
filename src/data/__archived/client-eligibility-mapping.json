@@ -1,0 +1,503 @@
+{
+  "metadata": {
+    "generated_date": "2025-07-18",
+    "total_services": 85,
+    "description": "Complete mapping of services to ClientEligibility_Tags for tag-based filtering system",
+    "tags": {
+      "universal-suitable": "Services appropriate for all clients without special requirements",
+      "consultation-required": "Services requiring professional assessment before booking",
+      "health-restrictions": "Services with specific health or condition-based limitations"
+    }
+  },
+  "statistics": {
+    "universal-suitable": 45,
+    "consultation-required": 39,
+    "health-restrictions": 1,
+    "services_with_multiple_tags": 1
+  },
+  "services_by_eligibility": {
+    "universal-suitable": [
+      {
+        "file": "brow_001_eyebrow_tinting.md",
+        "name": "Eyebrow Tinting",
+        "category": "brow"
+      },
+      {
+        "file": "brow_003_eyebrow_shaping.md",
+        "name": "Eyebrow Shaping",
+        "category": "brow"
+      },
+      {
+        "file": "brow_004_brow_mapping.md",
+        "name": "Brow Mapping",
+        "category": "brow"
+      },
+      {
+        "file": "brow_005_brow_design_consultation.md",
+        "name": "Brow Design Consultation",
+        "category": "brow"
+      },
+      {
+        "file": "facial_003_kreine_fruit_facial.md",
+        "name": "K-reine Fruit Facial",
+        "category": "facial"
+      },
+      {
+        "file": "facial_005_dermacos_all_skin.md",
+        "name": "DermaCos for all skin type",
+        "category": "facial"
+      },
+      {
+        "file": "facial_007_janssen_all_skin.md",
+        "name": "Janssen for all skin type",
+        "category": "facial"
+      },
+      {
+        "file": "facial_008_express_facial.md",
+        "name": "Express Facial",
+        "category": "facial"
+      },
+      {
+        "file": "facial_010_hydrating_facial.md",
+        "name": "Hydrating Facial",
+        "category": "facial"
+      },
+      {
+        "file": "facial_014_oxygen_facial.md",
+        "name": "Oxygen Facial",
+        "category": "facial"
+      },
+      {
+        "file": "facial_015_mens_facial.md",
+        "name": "Men's Facial",
+        "category": "facial"
+      },
+      {
+        "file": "hair_001_haircut_women.md",
+        "name": "Haircut - Women",
+        "category": "hair"
+      },
+      {
+        "file": "hair_002_haircut_men.md",
+        "name": "Haircut - Men",
+        "category": "hair"
+      },
+      {
+        "file": "hair_003_haircut_kids.md",
+        "name": "Haircut - Kids (under 10)",
+        "category": "hair"
+      },
+      {
+        "file": "hair_004_bundle_cut_wash_blowout.md",
+        "name": "Bundle (Cut, Wash, Blow Out)",
+        "category": "hair"
+      },
+      {
+        "file": "hair_005_blow_out.md",
+        "name": "Blow Out",
+        "category": "hair"
+      },
+      {
+        "file": "hair_006_blow_out_flat_iron.md",
+        "name": "Blow Out with Flat Iron",
+        "category": "hair"
+      },
+      {
+        "file": "hair_007_hairstyle.md",
+        "name": "Hairstyle",
+        "category": "hair"
+      },
+      {
+        "file": "hair_008_roller_set.md",
+        "name": "Roller Set",
+        "category": "hair"
+      },
+      {
+        "file": "hair_022_hair_gloss.md",
+        "name": "Hair Gloss",
+        "category": "hair"
+      },
+      {
+        "file": "hair_023_root_touch_up.md",
+        "name": "Root Touch Up",
+        "category": "hair"
+      },
+      {
+        "file": "hair_024_scalp_treatment.md",
+        "name": "Scalp Treatment",
+        "category": "hair"
+      },
+      {
+        "file": "hair_025_hair_consultation.md",
+        "name": "Hair Consultation",
+        "category": "hair"
+      },
+      {
+        "file": "hair_026_bridal_hair_styling.md",
+        "name": "Bridal Hair Styling",
+        "category": "hair"
+      },
+      {
+        "file": "hair_027_express_blowout.md",
+        "name": "Express Blowout",
+        "category": "hair"
+      },
+      {
+        "file": "hair_028_beard_trim.md",
+        "name": "Beard Trim",
+        "category": "hair"
+      },
+      {
+        "file": "lash_001_eyelash_tinting.md",
+        "name": "Eyelash Tinting",
+        "category": "lash"
+      },
+      {
+        "file": "lash_005_lash_curl.md",
+        "name": "Lash Curl",
+        "category": "lash"
+      },
+      {
+        "file": "lash_006_lash_consultation.md",
+        "name": "Lash Consultation",
+        "category": "lash"
+      },
+      {
+        "file": "makeup_001_dinner_party_makeup.md",
+        "name": "Dinner Party Makeup",
+        "category": "makeup"
+      },
+      {
+        "file": "makeup_002_formal_party_makeup.md",
+        "name": "Formal Party Makeup",
+        "category": "makeup"
+      },
+      {
+        "file": "makeup_003_bridal_silver.md",
+        "name": "Bridal Makeup (Silver Package)",
+        "category": "makeup"
+      },
+      {
+        "file": "makeup_004_bridal_gold.md",
+        "name": "Bridal Makeup (Gold Package)",
+        "category": "makeup"
+      },
+      {
+        "file": "makeup_006_natural_makeup.md",
+        "name": "Natural Makeup",
+        "category": "makeup"
+      },
+      {
+        "file": "makeup_009_makeup_lesson.md",
+        "name": "Makeup Lesson",
+        "category": "makeup"
+      },
+      {
+        "file": "makeup_010_makeup_consultation.md",
+        "name": "Makeup Consultation",
+        "category": "makeup"
+      },
+      {
+        "file": "makeup_011_makeup_touch_up.md",
+        "name": "Makeup Touch Up",
+        "category": "makeup"
+      },
+      {
+        "file": "thread_001_eyebrow.md",
+        "name": "Threading - Eyebrow",
+        "category": "thread"
+      },
+      {
+        "file": "thread_002_upper_lip.md",
+        "name": "Threading - Upper Lip",
+        "category": "thread"
+      },
+      {
+        "file": "thread_003_chin.md",
+        "name": "Threading - Chin",
+        "category": "thread"
+      },
+      {
+        "file": "thread_004_sideburns.md",
+        "name": "Threading - Sideburns",
+        "category": "thread"
+      },
+      {
+        "file": "wax_001_underarms.md",
+        "name": "Waxing - Underarms",
+        "category": "wax"
+      },
+      {
+        "file": "wax_003_arms_half.md",
+        "name": "Waxing - Arms (Half)",
+        "category": "wax"
+      },
+      {
+        "file": "wax_004_arms_full.md",
+        "name": "Waxing - Arms (Full)",
+        "category": "wax"
+      },
+      {
+        "file": "wax_005_legs_half.md",
+        "name": "Waxing - Legs (Half)",
+        "category": "wax"
+      },
+      {
+        "file": "wax_006_legs_full.md",
+        "name": "Waxing - Legs (Full)",
+        "category": "wax"
+      }
+    ],
+    "consultation-required": [
+      {
+        "file": "brow_002_eyebrow_laminating.md",
+        "name": "Eyebrow Laminating",
+        "category": "brow"
+      },
+      {
+        "file": "combo_001_bundle_tinting_laminating.md",
+        "name": "Bundle (Tinting & Laminating)",
+        "category": "combo"
+      },
+      {
+        "file": "facial_001_gold_facial.md",
+        "name": "Gold Facial (for sensitive skin)",
+        "category": "facial"
+      },
+      {
+        "file": "facial_002_diamond_glow_facial.md",
+        "name": "Diamond Glow Facial",
+        "category": "facial"
+      },
+      {
+        "file": "facial_004_purex_anti_aging.md",
+        "name": "Purex Anti-Aging",
+        "category": "facial"
+      },
+      {
+        "file": "facial_006_mad_anti_aging.md",
+        "name": "M.A.D. Anti-Aging Skin",
+        "category": "facial"
+      },
+      {
+        "file": "facial_009_acne_facial.md",
+        "name": "Acne Facial",
+        "category": "facial"
+      },
+      {
+        "file": "facial_011_chemical_peel.md",
+        "name": "Chemical Peel",
+        "category": "facial"
+      },
+      {
+        "file": "facial_012_microdermabrasion.md",
+        "name": "Microdermabrasion",
+        "category": "facial"
+      },
+      {
+        "file": "facial_013_led_light_therapy.md",
+        "name": "LED Light Therapy",
+        "category": "facial"
+      },
+      {
+        "file": "facial_016_sensitive_skin_treatment.md",
+        "name": "Sensitive Skin Treatment",
+        "category": "facial"
+      },
+      {
+        "file": "hair_009_deep_conditioning.md",
+        "name": "Deep Conditioning Treatment",
+        "category": "hair"
+      },
+      {
+        "file": "hair_010_perm.md",
+        "name": "Perm",
+        "category": "hair"
+      },
+      {
+        "file": "hair_011_keratin_treatment.md",
+        "name": "Keratin Treatment",
+        "category": "hair"
+      },
+      {
+        "file": "hair_012_color.md",
+        "name": "Hair Color",
+        "category": "hair"
+      },
+      {
+        "file": "hair_013_organic_color.md",
+        "name": "Organic Hair Color",
+        "category": "hair"
+      },
+      {
+        "file": "hair_014_toner.md",
+        "name": "Toner",
+        "category": "hair"
+      },
+      {
+        "file": "hair_015_partial_highlights.md",
+        "name": "Partial Highlights",
+        "category": "hair"
+      },
+      {
+        "file": "hair_016_full_highlights.md",
+        "name": "Full Highlights",
+        "category": "hair"
+      },
+      {
+        "file": "hair_017_balayage.md",
+        "name": "Balayage",
+        "category": "hair"
+      },
+      {
+        "file": "hair_018_ombre.md",
+        "name": "Ombre",
+        "category": "hair"
+      },
+      {
+        "file": "hair_019_color_correction.md",
+        "name": "Color Correction",
+        "category": "hair"
+      },
+      {
+        "file": "hair_020_hair_extensions.md",
+        "name": "Hair Extensions",
+        "category": "hair"
+      },
+      {
+        "file": "hair_021_chemical_straightening.md",
+        "name": "Chemical Straightening",
+        "category": "hair"
+      },
+      {
+        "file": "lash_002_eyelash_extension.md",
+        "name": "Eyelash Extension",
+        "category": "lash"
+      },
+      {
+        "file": "lash_003_lash_lift.md",
+        "name": "Lash Lift",
+        "category": "lash"
+      },
+      {
+        "file": "lash_004_lash_volume_extensions.md",
+        "name": "Lash Volume Extensions",
+        "category": "lash"
+      },
+      {
+        "file": "makeup_005_bridal_platinum.md",
+        "name": "Bridal Makeup (Platinum Package)",
+        "category": "makeup"
+      },
+      {
+        "file": "makeup_007_airbrush_makeup.md",
+        "name": "Airbrush Makeup",
+        "category": "makeup"
+      },
+      {
+        "file": "makeup_008_photography_makeup.md",
+        "name": "Photography Makeup",
+        "category": "makeup"
+      },
+      {
+        "file": "makeup_012_contouring_makeup.md",
+        "name": "Contouring Makeup",
+        "category": "makeup"
+      },
+      {
+        "file": "thread_005_neck.md",
+        "name": "Threading - Neck (chin not included)",
+        "category": "thread"
+      },
+      {
+        "file": "thread_006_full_face.md",
+        "name": "Threading - Full Face",
+        "category": "thread"
+      },
+      {
+        "file": "wax_002_bikini.md",
+        "name": "Waxing - Bikini",
+        "category": "wax"
+      },
+      {
+        "file": "wax_007_chest.md",
+        "name": "Waxing - Chest",
+        "category": "wax"
+      },
+      {
+        "file": "wax_008_back.md",
+        "name": "Waxing - Back",
+        "category": "wax"
+      },
+      {
+        "file": "wax_009_brazilian.md",
+        "name": "Waxing - Brazilian",
+        "category": "wax"
+      },
+      {
+        "file": "wax_010_full_body.md",
+        "name": "Full Body Wax",
+        "category": "wax"
+      }
+    ],
+    "health-restrictions": [
+      {
+        "file": "brow_006_microblading.md",
+        "name": "Microblading",
+        "category": "brow",
+        "additional_tags": ["consultation-required"]
+      }
+    ]
+  },
+  "services_by_category": {
+    "brow": {
+      "total": 6,
+      "universal-suitable": 4,
+      "consultation-required": 1,
+      "health-restrictions": 1
+    },
+    "combo": {
+      "total": 1,
+      "universal-suitable": 0,
+      "consultation-required": 1,
+      "health-restrictions": 0
+    },
+    "facial": {
+      "total": 16,
+      "universal-suitable": 7,
+      "consultation-required": 9,
+      "health-restrictions": 0
+    },
+    "hair": {
+      "total": 28,
+      "universal-suitable": 15,
+      "consultation-required": 13,
+      "health-restrictions": 0
+    },
+    "lash": {
+      "total": 6,
+      "universal-suitable": 3,
+      "consultation-required": 3,
+      "health-restrictions": 0
+    },
+    "makeup": {
+      "total": 12,
+      "universal-suitable": 8,
+      "consultation-required": 4,
+      "health-restrictions": 0
+    },
+    "thread": {
+      "total": 6,
+      "universal-suitable": 4,
+      "consultation-required": 2,
+      "health-restrictions": 0
+    },
+    "wax": {
+      "total": 10,
+      "universal-suitable": 5,
+      "consultation-required": 5,
+      "health-restrictions": 0
+    }
+  }
+}
+

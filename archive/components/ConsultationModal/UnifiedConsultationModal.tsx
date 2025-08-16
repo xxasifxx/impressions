@@ -1,0 +1,62 @@
+import React, { useState, useEffect } from 'react';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import UnifiedConsultationFlow from '../UnifiedConsultationFlow';
+import { AestheticProvider } from './AestheticProvider';
+
+interface UnifiedConsultationModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onComplete?: (results: any) => void;
+}
+
+/**
+ * Modal wrapper for the unified consultation flow
+ * Integrates the consultation with aesthetic evolution
+ */
+const UnifiedConsultationModal: React.FC<UnifiedConsultationModalProps> = ({ 
+  isOpen, 
+  onClose,
+  onComplete
+}) => {
+  const [consultationProgress, setConsultationProgress] = useState(0);
+  const [currentDomain, setCurrentDomain] = useState<string | undefined>();
+  
+  // Track consultation progress for aesthetic evolution
+  const handleProgressChange = (progress: number, domain?: string) => {
+    setConsultationProgress(progress);
+    if (domain) setCurrentDomain(domain);
+  };
+  
+  // Handle consultation completion
+  const handleComplete = (results: any) => {
+    // Store results in localStorage for persistence
+    localStorage.setItem('consultationResults', JSON.stringify(results));
+    
+    // Call onComplete callback if provided
+    if (onComplete) {
+      onComplete(results);
+    }
+    
+    // Close the modal
+    onClose();
+  };
+  
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="p-0 overflow-hidden max-w-4xl w-full h-[90vh] max-h-[800px]">
+        <AestheticProvider 
+          consultationProgress={consultationProgress}
+          currentServiceCategory={currentDomain}
+        >
+          <UnifiedConsultationFlow 
+            onProgressChange={handleProgressChange}
+            onComplete={handleComplete}
+          />
+        </AestheticProvider>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default UnifiedConsultationModal;
+
