@@ -540,3 +540,6 @@ export class BriefGenerator {
     };
   }
 }
+
+// Export the class
+export { BriefGenerator };
