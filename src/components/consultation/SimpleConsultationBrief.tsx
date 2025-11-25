@@ -151,38 +151,6 @@ const SimpleConsultationBrief = () => {
     }
   };
 
-  const generateWhatsAppMessage = () => {
-    let message = "💄 New Beauty Consultation Request from Impressions\n\n";
-    
-    if (briefData.purpose) {
-      message += `Service Needed: ${briefData.purpose}\n`;
-    }
-    if (briefData.budget) {
-      message += `Budget: ${briefData.budget}\n`;
-    }
-    if (briefData.timeline) {
-      message += `Timeline: ${briefData.timeline}\n`;
-    }
-    if (briefData.preferences) {
-      message += `Style Preference: ${briefData.preferences}\n`;
-    }
-    if (briefData.requirements && briefData.requirements.length > 0) {
-      message += `Special Requirements: ${briefData.requirements.join(", ")}\n`;
-    }
-    if (briefData.contact) {
-      message += `Contact: ${briefData.contact}\n`;
-    }
-    
-    message += "\nPlease reach out to discuss this consultation request. Thank you!";
-    return message;
-  };
-
-  const sendToWhatsApp = () => {
-    const message = generateWhatsAppMessage();
-    const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, "_blank");
-  };
-
   const currentStepData = consultationSteps[currentStep - 1];
   const isLastStep = currentStep === totalSteps;
   const canProceed = currentStepData?.required ? briefData[currentStepData.key] : true;
