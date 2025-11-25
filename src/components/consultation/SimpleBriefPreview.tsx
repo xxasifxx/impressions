@@ -10,15 +10,15 @@ interface SimpleBriefPreviewProps {
 
 const SimpleBriefPreview = ({ briefData, onSend, onBack }: SimpleBriefPreviewProps) => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 to-pink-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8">
+    <div className="w-full max-w-3xl mx-auto animate-fade-in">
+      <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
         <div className="space-y-6 animate-fade-in">
           <div className="text-center mb-8">
             <CheckCircle2 className="h-16 w-16 text-rose-500 mx-auto mb-4" />
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
               Here's your consultation request
             </h2>
-            <p className="text-gray-600">
+            <p className="text-white/80">
               We'll send this to our beauty team on WhatsApp
             </p>
           </div>
@@ -28,8 +28,8 @@ const SimpleBriefPreview = ({ briefData, onSend, onBack }: SimpleBriefPreviewPro
               <div className="flex items-start gap-3">
                 <span className="text-2xl">🎯</span>
                 <div>
-                  <div className="text-sm text-gray-600">Service Needed</div>
-                  <div className="text-lg text-gray-800 font-medium">
+                  <div className="text-sm text-white/70">Service Needed</div>
+                  <div className="text-lg text-white font-medium">
                     {briefData.purpose}
                   </div>
                 </div>
@@ -40,8 +40,8 @@ const SimpleBriefPreview = ({ briefData, onSend, onBack }: SimpleBriefPreviewPro
               <div className="flex items-start gap-3">
                 <span className="text-2xl">💰</span>
                 <div>
-                  <div className="text-sm text-gray-600">Budget</div>
-                  <div className="text-lg text-gray-800 font-medium">
+                  <div className="text-sm text-white/70">Budget</div>
+                  <div className="text-lg text-white font-medium">
                     {briefData.budget}
                   </div>
                 </div>
@@ -52,8 +52,8 @@ const SimpleBriefPreview = ({ briefData, onSend, onBack }: SimpleBriefPreviewPro
               <div className="flex items-start gap-3">
                 <span className="text-2xl">📅</span>
                 <div>
-                  <div className="text-sm text-gray-600">Timeline</div>
-                  <div className="text-lg text-gray-800 font-medium">
+                  <div className="text-sm text-white/70">Timeline</div>
+                  <div className="text-lg text-white font-medium">
                     {briefData.timeline}
                   </div>
                 </div>
@@ -64,8 +64,8 @@ const SimpleBriefPreview = ({ briefData, onSend, onBack }: SimpleBriefPreviewPro
               <div className="flex items-start gap-3">
                 <span className="text-2xl">💅</span>
                 <div>
-                  <div className="text-sm text-gray-600">Style Preference</div>
-                  <div className="text-lg text-gray-800 font-medium">
+                  <div className="text-sm text-white/70">Style Preference</div>
+                  <div className="text-lg text-white font-medium">
                     {briefData.preferences}
                   </div>
                 </div>
@@ -76,8 +76,8 @@ const SimpleBriefPreview = ({ briefData, onSend, onBack }: SimpleBriefPreviewPro
               <div className="flex items-start gap-3">
                 <span className="text-2xl">✨</span>
                 <div>
-                  <div className="text-sm text-gray-600">Special Requirements</div>
-                  <div className="text-lg text-gray-800 font-medium">
+                  <div className="text-sm text-white/70">Special Requirements</div>
+                  <div className="text-lg text-white font-medium">
                     {briefData.requirements.join(", ")}
                   </div>
                 </div>
@@ -88,8 +88,8 @@ const SimpleBriefPreview = ({ briefData, onSend, onBack }: SimpleBriefPreviewPro
               <div className="flex items-start gap-3">
                 <span className="text-2xl">📱</span>
                 <div>
-                  <div className="text-sm text-gray-600">Contact Information</div>
-                  <div className="text-lg text-gray-800 font-medium">
+                  <div className="text-sm text-white/70">Contact Information</div>
+                  <div className="text-lg text-white font-medium">
                     {briefData.contact}
                   </div>
                 </div>
@@ -110,13 +110,13 @@ const SimpleBriefPreview = ({ briefData, onSend, onBack }: SimpleBriefPreviewPro
             <Button
               variant="outline"
               onClick={onBack}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 border-white/30 text-white hover:bg-white/10"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Edit
             </Button>
             
-            <p className="text-center text-sm text-gray-500">
+            <p className="text-center text-sm text-white/70">
               Our beauty team typically responds within 30 minutes
             </p>
           </div>
@@ -127,4 +127,3 @@ const SimpleBriefPreview = ({ briefData, onSend, onBack }: SimpleBriefPreviewPro
 };
 
 export default SimpleBriefPreview;
-

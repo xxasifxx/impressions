@@ -11,6 +11,38 @@ const SimpleConsultationBrief = () => {
   const totalSteps = 6;
   const whatsappNumber = "+1234567890"; // Configure with actual business number
 
+  const generateWhatsAppMessage = () => {
+    let message = "💄 New Beauty Consultation Request from Impressions\n\n";
+    
+    if (briefData.purpose) {
+      message += `Service Needed: ${briefData.purpose}\n`;
+    }
+    if (briefData.budget) {
+      message += `Budget: ${briefData.budget}\n`;
+    }
+    if (briefData.timeline) {
+      message += `Timeline: ${briefData.timeline}\n`;
+    }
+    if (briefData.preferences) {
+      message += `Style Preference: ${briefData.preferences}\n`;
+    }
+    if (briefData.requirements && briefData.requirements.length > 0) {
+      message += `Special Requirements: ${briefData.requirements.join(", ")}\n`;
+    }
+    if (briefData.contact) {
+      message += `Contact: ${briefData.contact}\n`;
+    }
+    
+    message += "\nPlease reach out to discuss this consultation request. Thank you!";
+    
+    return encodeURIComponent(message);
+  };
+
+  const sendToWhatsApp = () => {
+    const message = generateWhatsAppMessage();
+    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
+  };
+
   const consultationSteps: ConsultationStep[] = [
     {
       id: 1,
@@ -161,15 +193,15 @@ const SimpleConsultationBrief = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 to-pink-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8">
+    <div className="w-full max-w-3xl mx-auto animate-fade-in">
+      <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
         {/* Progress indicator */}
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">
-            <span className="text-sm text-gray-500">Step {currentStep} of {totalSteps}</span>
-            <span className="text-sm text-gray-500">{Math.round((currentStep / totalSteps) * 100)}% Complete</span>
+            <span className="text-sm text-white/70">Step {currentStep} of {totalSteps}</span>
+            <span className="text-sm text-white/70">{Math.round((currentStep / totalSteps) * 100)}% Complete</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-white/20 rounded-full h-2">
             <div 
               className="bg-gradient-to-r from-rose-400 to-pink-500 h-2 rounded-full transition-all duration-300"
               style={{ width: `${(currentStep / totalSteps) * 100}%` }}
@@ -180,10 +212,10 @@ const SimpleConsultationBrief = () => {
         {/* Step content */}
         <div className="space-y-6">
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
               {currentStepData.title}
             </h2>
-            <p className="text-gray-600">
+            <p className="text-white/80">
               {currentStepData.question}
             </p>
           </div>
@@ -198,8 +230,8 @@ const SimpleConsultationBrief = () => {
                     onClick={() => updateBrief(currentStepData.key, option)}
                     className={`p-4 text-left rounded-lg border-2 transition-all duration-200 ${
                       briefData[currentStepData.key] === option
-                        ? 'border-rose-400 bg-rose-50 text-rose-700'
-                        : 'border-gray-200 hover:border-rose-200 hover:bg-rose-25'
+                        ? 'border-rose-400 bg-rose-500 text-white'
+                        : 'border-white/30 bg-white/10 text-white hover:border-rose-300 hover:bg-white/20'
                     }`}
                   >
                     {option}
@@ -224,16 +256,16 @@ const SimpleConsultationBrief = () => {
                       }}
                       className={`p-4 text-left rounded-lg border-2 transition-all duration-200 ${
                         isSelected
-                          ? 'border-rose-400 bg-rose-50 text-rose-700'
-                          : 'border-gray-200 hover:border-rose-200 hover:bg-rose-25'
+                          ? 'border-rose-400 bg-rose-500 text-white'
+                          : 'border-white/30 bg-white/10 text-white hover:border-rose-300 hover:bg-white/20'
                       }`}
                     >
                       <div className="flex items-center">
                         <div className={`w-4 h-4 rounded border-2 mr-3 ${
-                          isSelected ? 'bg-rose-400 border-rose-400' : 'border-gray-300'
+                          isSelected ? 'bg-white border-white' : 'border-white/50'
                         }`}>
                           {isSelected && (
-                            <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <svg className="w-3 h-3 text-rose-500" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
                           )}
@@ -263,7 +295,7 @@ const SimpleConsultationBrief = () => {
               variant="outline"
               onClick={prevStep}
               disabled={currentStep === 1}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 border-white/30 text-white hover:bg-white/10"
             >
               <ArrowLeft className="w-4 h-4" />
               Back
@@ -285,7 +317,7 @@ const SimpleConsultationBrief = () => {
           <div className="text-center mt-4">
             <button
               onClick={nextStep}
-              className="text-gray-500 hover:text-gray-700 text-sm underline"
+              className="text-white/70 hover:text-white text-sm underline"
             >
               Skip this step
             </button>
@@ -297,4 +329,3 @@ const SimpleConsultationBrief = () => {
 };
 
 export default SimpleConsultationBrief;
-

@@ -14,6 +14,7 @@ import PersonalizedResultsPage from './pages/PersonalizedResultsPage';
 import BookingPage from './pages/BookingPage';
 import BookingConfirmationPage from './pages/BookingConfirmationPage';
 import SimpleConsultationBrief from './components/consultation/SimpleConsultationBrief';
+import LandingPage from './pages/LandingPage';
 
 // Import components
 import Cart from './components/Cart';
@@ -38,12 +39,12 @@ function App() {
             {/* Production Mode: Consultation-focused routing */}
             {isConsultationOnly ? (
               <>
-                {/* Redirect home to consultation */}
-                <Route path="/" element={<Navigate to="/consultation" replace />} />
+                {/* Show landing page with embedded consultation */}
+                <Route path="/" element={<LandingPage />} />
                 <Route path="/consultation" element={<SimpleConsultationBrief />} />
                 
-                {/* Redirect all other routes to consultation */}
-                <Route path="*" element={<Navigate to="/consultation" replace />} />
+                {/* Redirect all other routes to landing page */}
+                <Route path="*" element={<Navigate to="/" replace />} />
               </>
             ) : (
               <>
