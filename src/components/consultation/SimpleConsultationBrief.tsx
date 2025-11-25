@@ -32,31 +32,10 @@ const SimpleConsultationBrief = () => {
     return message;
   };
 
-  const sendToWhatsApp = async () => {
+  const sendToWhatsApp = () => {
     const message = generateWhatsAppMessage();
-    
-    try {
-      // TODO: Replace with actual WhatsApp Business API endpoint
-      const response = await fetch('/api/send-whatsapp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          to: whatsappNumber,
-          message: message
-        })
-      });
-      
-      if (response.ok) {
-        alert('✅ Consultation request sent successfully! We\'ll contact you soon.');
-      } else {
-        throw new Error('Failed to send message');
-      }
-    } catch (error) {
-      console.error('Error sending WhatsApp message:', error);
-      alert('❌ Failed to send consultation request. Please try again.');
-    }
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, "_blank");
   };
 
   const consultationSteps: ConsultationStep[] = [

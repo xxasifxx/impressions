@@ -39,7 +39,7 @@ const SimpleBriefPreview = ({ briefData, onSend, onBack }: SimpleBriefPreviewPro
               Here's your consultation request
             </h2>
             <p className="text-white/80">
-              We'll send this to our beauty team on WhatsApp
+              This will open WhatsApp with your message ready to send
             </p>
           </div>
 
@@ -115,7 +115,7 @@ const SimpleBriefPreview = ({ briefData, onSend, onBack }: SimpleBriefPreviewPro
               className="group shadow-lg w-full bg-gradient-to-r from-rose-400 to-pink-500 hover:from-rose-500 hover:to-pink-600"
             >
               <MessageCircle className="mr-2 group-hover:scale-110 transition-transform" />
-              Send Consultation Request
+              Send via WhatsApp
             </Button>
             
             <Button
@@ -128,7 +128,7 @@ const SimpleBriefPreview = ({ briefData, onSend, onBack }: SimpleBriefPreviewPro
             </Button>
             
             <p className="text-center text-sm text-white/70">
-              Our beauty team typically responds within 30 minutes
+              Click to open WhatsApp and send this message to our beauty team
             </p>
           </div>
         </div>
