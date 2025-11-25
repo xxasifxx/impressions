@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { AestheticProvider } from '@/components/ConsultationModal/AestheticProvider';
+// Removed aesthetic provider import - using simple styling
 import ServiceCard from '@/components/ServiceCard';
 import ServiceDetailModal from '@/components/ServiceDetailModal';
 import { useCart } from '@/contexts/CartContext';
@@ -131,11 +131,7 @@ const PersonalizedResultsPage: React.FC = () => {
   }
   
   return (
-    <AestheticProvider 
-      currentServiceCategory={primaryDomain}
-      options={{ initialState: 'confident' }}
-    >
-      <div className="personalized-results-page min-h-screen">
+    <div className="personalized-results-page min-h-screen">
         <header className="bg-white/90 backdrop-blur-sm border-b sticky top-0 z-10 py-4">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between">
@@ -293,9 +289,7 @@ const PersonalizedResultsPage: React.FC = () => {
           />
         )}
       </div>
-    </AestheticProvider>
   );
 };
 
 export default PersonalizedResultsPage;
-

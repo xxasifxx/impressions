@@ -13,8 +13,7 @@ import ServicesPage from './pages/Services';
 import PersonalizedResultsPage from './pages/PersonalizedResultsPage';
 import BookingPage from './pages/BookingPage';
 import BookingConfirmationPage from './pages/BookingConfirmationPage';
-import EnhancedConsultation from './pages/EnhancedConsultation';
-import ConsultationResults from './pages/ConsultationResults';
+import SimpleConsultationBrief from './components/consultation/SimpleConsultationBrief';
 
 // Import components
 import Cart from './components/Cart';
@@ -41,8 +40,7 @@ function App() {
               <>
                 {/* Redirect home to consultation */}
                 <Route path="/" element={<Navigate to="/consultation" replace />} />
-                <Route path="/consultation" element={<EnhancedConsultation />} />
-                <Route path="/consultation-results" element={<ConsultationResults />} />
+                <Route path="/consultation" element={<SimpleConsultationBrief />} />
                 
                 {/* Redirect all other routes to consultation */}
                 <Route path="*" element={<Navigate to="/consultation" replace />} />
@@ -51,8 +49,7 @@ function App() {
               <>
                 {/* Development/Full Mode: All routes available */}
                 <Route path="/" element={<HomePage />} />
-                <Route path="/consultation" element={<EnhancedConsultation />} />
-                <Route path="/consultation-results" element={<ConsultationResults />} />
+                <Route path="/consultation" element={<SimpleConsultationBrief />} />
                 
                 {/* Conditional routes based on feature flags */}
                 {isFeatureEnabled('servicePages') && (

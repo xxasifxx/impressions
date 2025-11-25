@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { withAestheticEvolution } from './ConsultationModal/AestheticProvider';
+// Removed aesthetic evolution import - using simple styling
 import { Clock, DollarSign, X, Check } from 'lucide-react';
 import { ServiceCardBase } from './ServiceCard';
 
@@ -10,7 +10,7 @@ interface ServiceDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   onAddToCart: () => void;
-  aesthetic?: any; // Provided by withAestheticEvolution
+  // Removed aesthetic prop - using simple styling
 }
 
 /**
@@ -22,7 +22,7 @@ const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({
   isOpen, 
   onClose, 
   onAddToCart,
-  aesthetic // Provided by withAestheticEvolution
+  // Removed aesthetic prop - using simple styling
 }) => {
   const [relatedServices, setRelatedServices] = useState<any[]>([]);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
@@ -145,7 +145,6 @@ const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({
   );
 };
 
-// Wrap with aesthetic evolution
-export default withAestheticEvolution(ServiceDetailModal, { autoApplyStyles: true });
+// Export simple version without aesthetic evolution
+export default ServiceDetailModal;
 export { ServiceDetailModal as ServiceDetailModalBase };
-
