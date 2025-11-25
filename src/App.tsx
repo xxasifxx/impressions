@@ -1,7 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { CartProvider } from './contexts/CartContext';
 import { Toaster } from './components/ui/toaster';
+import { isFeatureEnabled } from './config/production';
 
 // Import pages
 import HomePage from './pages/Home';
@@ -12,29 +13,65 @@ import ServicesPage from './pages/Services';
 import PersonalizedResultsPage from './pages/PersonalizedResultsPage';
 import BookingPage from './pages/BookingPage';
 import BookingConfirmationPage from './pages/BookingConfirmationPage';
+import EnhancedConsultation from './pages/EnhancedConsultation';
+import ConsultationResults from './pages/ConsultationResults';
 
 // Import components
 import Cart from './components/Cart';
 
 function App() {
+  // Production mode: redirect everything to consultation
+  const isConsultationOnly = isFeatureEnabled('consultationOnly');
+  const showCart = !isConsultationOnly;
+
   return (
     <CartProvider>
       <Router>
         <div className="app">
-          {/* Global Cart Component */}
-          <div className="fixed top-4 right-4 z-50">
-            <Cart />
-          </div>
+          {/* Global Cart Component - Hidden in production consultation mode */}
+          {showCart && (
+            <div className="fixed top-4 right-4 z-50">
+              <Cart />
+            </div>
+          )}
           
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/hair-salon" element={<HairSalonLanding />} />
-            <Route path="/makeup-studio" element={<MakeupStudioLanding />} />
-            <Route path="/med-spa" element={<MedSpaLanding />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/personalized-results" element={<PersonalizedResultsPage />} />
-            <Route path="/booking" element={<BookingPage />} />
-            <Route path="/booking-confirmation" element={<BookingConfirmationPage />} />
+            {/* Production Mode: Consultation-focused routing */}
+            {isConsultationOnly ? (
+              <>
+                {/* Redirect home to consultation */}
+                <Route path="/" element={<Navigate to="/consultation" replace />} />
+                <Route path="/consultation" element={<EnhancedConsultation />} />
+                <Route path="/consultation-results" element={<ConsultationResults />} />
+                
+                {/* Redirect all other routes to consultation */}
+                <Route path="*" element={<Navigate to="/consultation" replace />} />
+              </>
+            ) : (
+              <>
+                {/* Development/Full Mode: All routes available */}
+                <Route path="/" element={<HomePage />} />
+                <Route path="/consultation" element={<EnhancedConsultation />} />
+                <Route path="/consultation-results" element={<ConsultationResults />} />
+                
+                {/* Conditional routes based on feature flags */}
+                {isFeatureEnabled('servicePages') && (
+                  <>
+                    <Route path="/hair-salon" element={<HairSalonLanding />} />
+                    <Route path="/makeup-studio" element={<MakeupStudioLanding />} />
+                    <Route path="/med-spa" element={<MedSpaLanding />} />
+                    <Route path="/services" element={<ServicesPage />} />
+                  </>
+                )}
+                
+                <Route path="/personalized-results" element={<PersonalizedResultsPage />} />
+                <Route path="/booking" element={<BookingPage />} />
+                <Route path="/booking-confirmation" element={<BookingConfirmationPage />} />
+                
+                {/* Fallback for disabled routes */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </>
+            )}
           </Routes>
           
           {/* Toast notifications */}
@@ -46,4 +83,3 @@ function App() {
 }
 
 export default App;
-

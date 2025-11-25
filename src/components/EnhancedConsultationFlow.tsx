@@ -12,6 +12,9 @@ import {
 } from '@/data/enhancedConsultationFlow';
 import ConsultationQuestion from './ConsultationQuestion';
 import ConsultationResults from './ConsultationResults';
+import BriefPreview from './consultation/BriefPreview';
+import { BriefGenerator } from '@/engine/BriefGenerator';
+import { FormattedBrief } from '@/types/BriefTypes';
 
 interface EnhancedConsultationFlowProps {
   onProgressChange?: (progress: number, domain?: string) => void;
@@ -30,6 +33,8 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
   const [recommendations, setRecommendations] = useState<any>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [aspectRatio, setAspectRatio] = useState(window.innerWidth / window.innerHeight);
+  const [consultationBrief, setConsultationBrief] = useState<FormattedBrief | null>(null);
+  const [showBriefPreview, setShowBriefPreview] = useState(false);
 
   // Track screen aspect ratio for responsive layout
   useEffect(() => {
@@ -102,7 +107,19 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
         // Consultation complete
         const result = getUnifiedServiceRecommendations(newResponses);
         setRecommendations(result);
-        setIsComplete(true);
+        
+        // Generate consultation brief
+        try {
+          const briefGenerator = BriefGenerator.getInstance();
+          const sessionId = `consultation-${Date.now()}`;
+          const brief = briefGenerator.generateBrief(result, newResponses, sessionId);
+          setConsultationBrief(brief);
+          setShowBriefPreview(true);
+        } catch (error) {
+          console.error('Failed to generate consultation brief:', error);
+          // Fallback to original results view
+          setIsComplete(true);
+        }
         
         // Call onComplete callback if provided
         if (onComplete) {
@@ -156,8 +173,20 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
       setResponses({});
       setIsComplete(false);
       setRecommendations(null);
+      setConsultationBrief(null);
+      setShowBriefPreview(false);
       setIsTransitioning(false);
     }, 400);
+  };
+
+  const handleBriefExport = (format: string, success: boolean) => {
+    console.log(`Brief exported to ${format}:`, success);
+    // Could track analytics here
+  };
+
+  const handleCloseBrief = () => {
+    setShowBriefPreview(false);
+    setIsComplete(true); // Show original results as fallback
   };
 
   if (!currentNode && !isComplete) {
@@ -250,9 +279,16 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
           className="h-full flex flex-col py-3 px-3 sm:py-4 sm:px-4"
           style={getContainerStyle()}
         >
-          {/* Current Question or Results - Flex-grow to fill available space */}
+          {/* Current Question, Brief Preview, or Results - Flex-grow to fill available space */}
           <AnimatePresence mode="wait">
-            {!isComplete ? (
+            {showBriefPreview && consultationBrief ? (
+              <BriefPreview 
+                brief={consultationBrief}
+                onExport={handleBriefExport}
+                onClose={handleCloseBrief}
+                whatsappNumber="+1234567890" // Configure this as needed
+              />
+            ) : !isComplete ? (
               <ConsultationQuestion 
                 node={currentNode}
                 aspectRatio={aspectRatio}
@@ -276,4 +312,3 @@ const EnhancedConsultationFlow: React.FC<EnhancedConsultationFlowProps> = ({
 };
 
 export default EnhancedConsultationFlow;
-
