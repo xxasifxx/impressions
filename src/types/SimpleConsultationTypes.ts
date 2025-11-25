@@ -4,8 +4,6 @@ export interface ConsultationBriefData {
   budget?: string;
   timeline?: string;
   preferences?: string;
-  requirements?: string[];
-  contact?: string;
 }
 
 export interface ConsultationStep {
@@ -17,4 +15,3 @@ export interface ConsultationStep {
   key: keyof ConsultationBriefData;
   required?: boolean;
 }
-

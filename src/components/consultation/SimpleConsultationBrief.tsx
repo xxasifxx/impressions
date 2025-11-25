@@ -8,39 +8,55 @@ const SimpleConsultationBrief = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [briefData, setBriefData] = useState<ConsultationBriefData>({});
   
-  const totalSteps = 6;
+  const totalSteps = 4;
   const whatsappNumber = "+1234567890"; // Configure with actual business number
 
   const generateWhatsAppMessage = () => {
     let message = "💄 New Beauty Consultation Request from Impressions\n\n";
     
     if (briefData.purpose) {
-      message += `Service Needed: ${briefData.purpose}\n`;
+      message += `🎯 Service Needed: ${briefData.purpose}\n`;
     }
     if (briefData.budget) {
-      message += `Budget: ${briefData.budget}\n`;
+      message += `💰 Budget: ${briefData.budget}\n`;
     }
     if (briefData.timeline) {
-      message += `Timeline: ${briefData.timeline}\n`;
+      message += `📅 Timeline: ${briefData.timeline}\n`;
     }
     if (briefData.preferences) {
-      message += `Style Preference: ${briefData.preferences}\n`;
-    }
-    if (briefData.requirements && briefData.requirements.length > 0) {
-      message += `Special Requirements: ${briefData.requirements.join(", ")}\n`;
-    }
-    if (briefData.contact) {
-      message += `Contact: ${briefData.contact}\n`;
+      message += `💅 Style Preference: ${briefData.preferences}\n`;
     }
     
-    message += "\nPlease reach out to discuss this consultation request. Thank you!";
+    message += "\n✨ Ready to book this consultation! Please contact me to schedule.";
     
-    return encodeURIComponent(message);
+    return message;
   };
 
-  const sendToWhatsApp = () => {
+  const sendToWhatsApp = async () => {
     const message = generateWhatsAppMessage();
-    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
+    
+    try {
+      // TODO: Replace with actual WhatsApp Business API endpoint
+      const response = await fetch('/api/send-whatsapp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          to: whatsappNumber,
+          message: message
+        })
+      });
+      
+      if (response.ok) {
+        alert('✅ Consultation request sent successfully! We\'ll contact you soon.');
+      } else {
+        throw new Error('Failed to send message');
+      }
+    } catch (error) {
+      console.error('Error sending WhatsApp message:', error);
+      alert('❌ Failed to send consultation request. Please try again.');
+    }
   };
 
   const consultationSteps: ConsultationStep[] = [
@@ -106,32 +122,7 @@ const SimpleConsultationBrief = () => {
         "Bohemian and free-spirited",
         "I'm open to suggestions"
       ],
-      required: true
-    },
-    {
-      id: 5,
-      title: "Any special requirements?",
-      question: "Do you have any specific needs or preferences we should know about?",
-      type: "multiselect",
-      key: "requirements",
-      options: [
-        "Sensitive skin",
-        "Allergies to certain products",
-        "Prefer organic/natural products",
-        "Need long-lasting results",
-        "Mobile service (come to me)",
-        "Group booking",
-        "Photography included",
-        "Consultation first"
-      ]
-    },
-    {
-      id: 6,
-      title: "How can we reach you?",
-      question: "What's the best way to contact you?",
-      type: "text",
-      key: "contact",
-      required: true
+      required: false
     }
   ];
 

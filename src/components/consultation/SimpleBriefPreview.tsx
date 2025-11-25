@@ -8,6 +8,26 @@ interface SimpleBriefPreviewProps {
   onBack: () => void;
 }
 
+const generateWhatsAppMessage = (briefData: ConsultationBriefData) => {
+  let message = "💄 New Beauty Consultation Request from Impressions\n\n";
+  
+  if (briefData.purpose) {
+    message += `🎯 Service Needed: ${briefData.purpose}\n`;
+  }
+  if (briefData.budget) {
+    message += `💰 Budget: ${briefData.budget}\n`;
+  }
+  if (briefData.timeline) {
+    message += `📅 Timeline: ${briefData.timeline}\n`;
+  }
+  if (briefData.preferences) {
+    message += `💅 Style Preference: ${briefData.preferences}\n`;
+  }
+  
+  message += "\n✨ Ready to book this consultation! Please contact me to schedule.";
+  return message;
+};
+
 const SimpleBriefPreview = ({ briefData, onSend, onBack }: SimpleBriefPreviewProps) => {
   return (
     <div className="w-full max-w-3xl mx-auto animate-fade-in">
@@ -72,29 +92,20 @@ const SimpleBriefPreview = ({ briefData, onSend, onBack }: SimpleBriefPreviewPro
               </div>
             )}
 
-            {briefData.requirements && briefData.requirements.length > 0 && (
-              <div className="flex items-start gap-3">
-                <span className="text-2xl">✨</span>
-                <div>
-                  <div className="text-sm text-white/70">Special Requirements</div>
-                  <div className="text-lg text-white font-medium">
-                    {briefData.requirements.join(", ")}
-                  </div>
-                </div>
-              </div>
-            )}
 
-            {briefData.contact && (
-              <div className="flex items-start gap-3">
-                <span className="text-2xl">📱</span>
-                <div>
-                  <div className="text-sm text-white/70">Contact Information</div>
-                  <div className="text-lg text-white font-medium">
-                    {briefData.contact}
-                  </div>
-                </div>
-              </div>
-            )}
+          </div>
+
+          {/* WhatsApp Message Preview */}
+          <div className="bg-green-50 rounded-xl p-6 border border-green-200">
+            <div className="flex items-center gap-2 mb-4">
+              <MessageCircle className="h-5 w-5 text-green-600" />
+              <h3 className="text-lg font-semibold text-green-800">WhatsApp Message Preview</h3>
+            </div>
+            <div className="bg-white rounded-lg p-4 border border-green-200">
+              <pre className="text-sm text-gray-700 whitespace-pre-wrap font-mono">
+                {generateWhatsAppMessage(briefData)}
+              </pre>
+            </div>
           </div>
 
           <div className="flex flex-col gap-4 mt-8">
@@ -104,7 +115,7 @@ const SimpleBriefPreview = ({ briefData, onSend, onBack }: SimpleBriefPreviewPro
               className="group shadow-lg w-full bg-gradient-to-r from-rose-400 to-pink-500 hover:from-rose-500 hover:to-pink-600"
             >
               <MessageCircle className="mr-2 group-hover:scale-110 transition-transform" />
-              Send to WhatsApp
+              Send Consultation Request
             </Button>
             
             <Button
