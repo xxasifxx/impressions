@@ -11,6 +11,25 @@ export interface RecommendationResult {
   crossDomainPackages: string[];
 }
 
+export interface ServiceRecommendation {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  duration: string;
+  category: string;
+}
+
+export interface BundleRecommendation {
+  id: string;
+  name: string;
+  description: string;
+  services: string[];
+  originalPrice: number;
+  bundlePrice: number;
+  savings: number;
+}
+
 /**
  * Generate recommendations based on consultation responses
  */
@@ -129,3 +148,9 @@ export function generateRecommendations(
   return result;
 }
 
+/**
+ * Format price for display
+ */
+export function formatPrice(price: number): string {
+  return `$${price.toFixed(2)}`;
+}

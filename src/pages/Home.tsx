@@ -4,7 +4,7 @@ import BeautyBenefitsSection from '@/components/home/BeautyBenefitsSection';
 import ServicePreviewSection from '@/components/home/ServicePreviewSection';
 import UnifiedTestimonialsSection from '@/components/home/UnifiedTestimonialsSection';
 import ConsultationCTASection from '@/components/home/ConsultationCTASection';
-import EnhancedConsultationModal from '@/components/ConsultationModal/EnhancedConsultationModal';
+// Removed consultation modal import - using simple consultation page
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
@@ -51,15 +51,9 @@ const Home = () => {
         <p className="text-stone-500 text-sm font-light tracking-wide">(732) 613-1942 • Walk-ins Welcome</p>
       </footer>
       
-      {/* Enhanced Consultation Modal */}
-      <EnhancedConsultationModal
-        isOpen={isConsultationOpen}
-        onClose={closeConsultation}
-        onComplete={handleConsultationComplete}
-      />
+      {/* Removed consultation modal - using simple consultation page */}
     </div>
   );
 };
 
 export default Home;
-

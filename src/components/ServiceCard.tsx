@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { withAestheticEvolution } from './ConsultationModal/AestheticProvider';
+// Removed aesthetic evolution import - using simple styling
 import { Clock, DollarSign } from 'lucide-react';
 
 interface ServiceCardProps {
@@ -9,7 +9,7 @@ interface ServiceCardProps {
   onClick: () => void;
   onAddToCart: () => void;
   isPrimary?: boolean;
-  aesthetic?: any; // Provided by withAestheticEvolution
+  // Removed aesthetic prop - using simple styling
 }
 
 /**
@@ -21,7 +21,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   onClick, 
   onAddToCart, 
   isPrimary = false,
-  aesthetic // Provided by withAestheticEvolution
+  // Removed aesthetic prop - using simple styling
 }) => {
   // Handle click on the card
   const handleCardClick = (e: React.MouseEvent) => {
@@ -94,7 +94,6 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   );
 };
 
-// Export both the wrapped and unwrapped versions
-export default withAestheticEvolution(ServiceCard, { autoApplyStyles: true });
+// Export simple version without aesthetic evolution
+export default ServiceCard;
 export { ServiceCard as ServiceCardBase };
-
