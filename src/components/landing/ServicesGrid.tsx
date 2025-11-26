@@ -1,9 +1,10 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { MessageCircle } from 'lucide-react';
+import { getProductionConfig } from '@/config/production';
 
 const ServicesGrid = () => {
-  const whatsappNumber = "+1234567890"; // Replace with actual business number
+  const whatsappNumber = getProductionConfig().contact.whatsapp;
   
   const services = [
     {

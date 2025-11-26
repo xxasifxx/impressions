@@ -3,13 +3,14 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import SimpleBriefPreview from "./SimpleBriefPreview";
 import type { ConsultationBriefData, ConsultationStep } from "@/types/SimpleConsultationTypes";
+import { getProductionConfig } from "@/config/production";
 
 const SimpleConsultationBrief = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [briefData, setBriefData] = useState<ConsultationBriefData>({});
   
   const totalSteps = 4;
-  const whatsappNumber = "+1234567890"; // Configure with actual business number
+  const whatsappNumber = getProductionConfig().briefGeneration.whatsappNumber;
 
   const generateWhatsAppMessage = () => {
     let message = "💄 New Beauty Consultation Request from Impressions\n\n";

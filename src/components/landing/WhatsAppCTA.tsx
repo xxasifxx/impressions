@@ -1,9 +1,10 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { MessageCircle, ArrowRight } from 'lucide-react';
+import { getProductionConfig } from '@/config/production';
 
 const WhatsAppCTA = () => {
-  const whatsappNumber = "+1234567890"; // Replace with actual business number
+  const whatsappNumber = getProductionConfig().contact.whatsapp;
   const whatsappMessage = encodeURIComponent("Hi! I'd like to learn more about your beauty services. Can you help me?");
   
   return (

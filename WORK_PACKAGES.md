@@ -28,64 +28,67 @@ Performance and user experience enhancements
 
 ---
 
-## PACKAGE 1: Configuration Management System
+## PACKAGE 1: Centralize WhatsApp Configuration
 
 **Priority**: Critical  
-**Estimated Time**: 2-3 hours  
+**Estimated Time**: 1-2 hours  
 **Dependencies**: None  
 
 ### Objective
-Create centralized configuration system for business settings, WhatsApp integration, and environment-specific variables.
+Replace hardcoded WhatsApp numbers throughout the codebase with centralized configuration from the existing `production.ts` system.
 
-### Requirements
-1. Create `src/config/businessConfig.ts` with TypeScript interfaces
-2. Support environment variable overrides
-3. Provide default fallback values
-4. Include domain-specific configurations
+### Problem Identified
+Multiple components hardcode the WhatsApp number `"+1234567890"` instead of using the existing configuration system:
+- `SimpleConsultationBrief.tsx`: Line 12
+- `ServicesGrid.tsx`: Line 6  
+- `WhatsAppCTA.tsx`: Line 6
+
+The `production.ts` config system already exists with environment variable support but is not being used.
 
 ### Technical Specifications
 ```typescript
-// src/config/businessConfig.ts
-export interface BusinessConfig {
-  whatsappNumber: string;
-  businessName: string;
-  environment: 'development' | 'production';
-  domains: {
-    'hair-salon': DomainConfig;
-    'makeup-studio': DomainConfig;
-    'med-spa': DomainConfig;
-  };
-}
+// Replace hardcoded numbers with:
+import { getProductionConfig } from '@/config/production';
 
-export interface DomainConfig {
-  name: string;
-  primaryColor: string;
-  services: string[];
-  specialties: string[];
-}
+const config = getProductionConfig();
+const whatsappNumber = config.briefGeneration.whatsappNumber;
+// or
+const whatsappNumber = config.contact.whatsapp;
 ```
 
 ### Implementation Details
-- Use `process.env.VITE_WHATSAPP_NUMBER` for phone number
-- Provide development fallback: `'1234567890'`
-- Export `getBusinessConfig()` function
-- Include validation for required fields
+1. **Update SimpleConsultationBrief.tsx**:
+   - Remove: `const whatsappNumber = "+1234567890"`
+   - Add: Import and use `getProductionConfig().briefGeneration.whatsappNumber`
+
+2. **Update ServicesGrid.tsx**:
+   - Remove: `const whatsappNumber = "+1234567890"`
+   - Add: Import and use `getProductionConfig().contact.whatsapp`
+
+3. **Update WhatsAppCTA.tsx**:
+   - Remove: `const whatsappNumber = "+1234567890"`
+   - Add: Import and use `getProductionConfig().contact.whatsapp`
+
+4. **Verify Environment Override**:
+   - Test that `VITE_WHATSAPP_NUMBER` environment variable properly overrides default
+   - Confirm both `briefGeneration.whatsappNumber` and `contact.whatsapp` get updated
 
 ### Acceptance Criteria
-- [ ] Configuration loads without errors
-- [ ] Environment variables override defaults
-- [ ] TypeScript types are properly defined
-- [ ] All domains have complete configuration
-- [ ] Validation prevents invalid configurations
+- [ ] No hardcoded WhatsApp numbers remain in components
+- [ ] All components use `getProductionConfig()` for WhatsApp number
+- [ ] Environment variable `VITE_WHATSAPP_NUMBER` overrides work correctly
+- [ ] WhatsApp links function identically to before
+- [ ] TypeScript compilation succeeds without errors
 
-### Files to Create/Modify
-- `src/config/businessConfig.ts` (new)
-- `src/config/index.ts` (new)
+### Files to Modify
+- `src/components/consultation/SimpleConsultationBrief.tsx` (modify line 12)
+- `src/components/landing/ServicesGrid.tsx` (modify line 6)
+- `src/components/landing/WhatsAppCTA.tsx` (modify line 6)
 
 ### Testing Requirements
-- Unit tests for configuration loading
-- Environment variable override testing
-- Validation error handling tests
+- Manual testing: WhatsApp links open correctly
+- Environment variable testing: Set `VITE_WHATSAPP_NUMBER` and verify override
+- Regression testing: Ensure consultation flow still works end-to-end
 
 ---
 
@@ -786,4 +789,3 @@ Package 9 → Package 10 (Landing Pages) → Package 11 (Performance) → Packag
 - Accessibility audit
 
 This work package structure ensures that any agent can pick up and execute individual packages while maintaining system coherence and quality standards.
-
